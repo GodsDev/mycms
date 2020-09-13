@@ -26,7 +26,7 @@ class MyController extends MyCommon
     /**
      * HTTP request parameters
      *
-     * @var type
+     * @var array
      */
     protected $get;
 
