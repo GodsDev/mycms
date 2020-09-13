@@ -2,7 +2,7 @@
 XYZ web
 (Folder *dist* is an instant seed of new project.)
 
-# Stack
+## Stack
 
 Linux, Apache (mod_rewrite, mod_header, ssl...)
 PHP 7.0
@@ -18,7 +18,7 @@ apt install libapache2-mod-php7.0 apache2 mysql-server git composer php-xml php-
 
 Git flow (master,develop,feature,release,fix,hotfix)
 
-# Security
+## Security
 
 Check that `phinx.yml` and folder `log` are not accessible. Because `mod_alias` not only has to be enabled, but also
 in the `/etc/apache2/apache2.conf`, there has to be this setting:
@@ -28,11 +28,11 @@ in the `/etc/apache2/apache2.conf`, there has to be this setting:
         Options FollowSymLinks # not! Options Indexes FollowSymLinks which allows directory browsing
 ```
 
-# Content
+## Content
 
 
 
-# Web analytics
+## Web analytics
 
 Gtag version may be used only after <https://github.com/googleanalytics/autotrack> is updated to work with it.
 I.e. probably when it will be out of beta.
@@ -43,7 +43,7 @@ script/autotrack.V.V.V.js and script/autotrack.V.V.V.js.map are manually taken f
 * Production: UA-XYZ
 * Test: UA-39642385-1
 
-# MyCMS dist deployment
+## MyCMS dist deployment
 * Folder `/dist` contains initial *distribution* files for a new project using MyCMS, therefore copy it to your new project folder.
 * Replace the string `mycmsprojectnamespace` with your project namespace.
 * Replace the string `MYCMSPROJECTSPECIFIC` with other website specific information (Brand, Twitter address, phone number, database name, name of icon in manifest.json etc.).
@@ -51,7 +51,7 @@ script/autotrack.V.V.V.js and script/autotrack.V.V.V.js.map are manually taken f
 * Change `define('MYCMS_SECRET', 'u7-r!!T7.&&7y6ru');` //16-byte random string, unique per project in `conf/config.php`
 * Delete this section after the changes above are made
 
-# Deployment
+## Deployment
 
 Create database with `Collation=utf8_general_ci`
 
@@ -67,7 +67,7 @@ to `conf/config.local.php`.
 
 Best practice: Management often uses iPhone or Mac, therefore don't forget to test on Apple devices as well!
 
-## Adding new type of content to be displayed
+### Adding new type of content to be displayed
 | Add to this place | Why |
 |-----------------------------------------------|------|
 | conf/config.php 'templateAssignementParametricRules' | how a GET parameters translate to template |
@@ -77,14 +77,14 @@ Best practice: Management often uses iPhone or Mac, therefore don't forget to te
 | admin.php $AGENDAS | convenient way to administer records within admin.php |
 | template/NEW.latte | View layer |
 
-## Ad firewall
+### Ad firewall
 
 If the web will be running behind firewall hence REMOTE_ADDR would contain only firewall IP, then the original REMOTE_ADDR should be passed in another HTTP header, e.g. CLIENT_IP.
 So that trusted IPs for debugging may be used.
 For this deployment scenarion only (because otherwise it would be a vulnerability) uncomment `isset($_SERVER['HTTP_CLIENT_IP']) ? in_array($_SERVER['HTTP_CLIENT_IP'], $debugIpArray) :` line in `index.php` and `api\*\index.php`.
 
 
-## `build.sh` runs the following commands
+### `build.sh` runs the following commands
 1. `composer update`
 2. Note: All changes in database (structure) SHOULD be made by phinx migrations. Create your local `phinx.yml` as a copy of `phinx.dist.yml` to make it work, where you set your database connection into *development* section. 
 ```bash
@@ -93,14 +93,14 @@ vendor/bin/phinx migrate -e development # or production or testing
 3. `vendor/bin/phpunit` to always check the functionality
 4. `sass styles/index.sass styles/index.css` to keep order in the generated css
 
-## reCAPTCHA
+### reCAPTCHA
 
 Paste this snippet at the end of the <form> where you want the reCAPTCHA widget to appear:
 ```html
 <div class="g-recaptcha" data-sitekey="................"></div>
 ```
 
-# SEO
+## SEO
 
 Friendly URLs and redirects are *always* processed (if `mod_rewrite` is enabled and Rewrite section in `.htaccess` is present).
 If the web runs in the root of the domain, then the default token `PATHINFO_FILENAME` is an empty string;
@@ -145,7 +145,7 @@ TODO: make more clear
 
 TODO: ?article=1 vs ?article&id=1 a souvislost s 'idcode' => true ?
 
-#### Example of rules
+### Example of rules
 * `/?product=4` → `/konzultacni-poradenctvi`
 * `/?page=about` → `/o-firme-sro`
 * `/?news=37` → `/news/albus-novak-is-the-new-commercial-director-at-firma-sro`
@@ -156,11 +156,11 @@ Jazyk je uveden jako první a to dvoumístným kódem a lomítkem, např. `/cs/l
 TODO: explain and translate:
 Interně se jazyk do políčka `url_##` pro jiné (nedefaultní) jazyky nevkládá
 
-## Language management
+### Language management
 
 Languages are identified by two letter combination according to [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
-### Used languages
+#### Used languages
 Language versions (or translations) are specified when instatiating the MyCMS object in [conf/config.php](conf/config.php). For example:
 ```php
 [
@@ -178,13 +178,13 @@ For each language a corresponding file `language-xx.inc.php` is expected.
 (`cs` is considered as the default language, so it is accessible directly in application root),
 where page resouces may be in folders `styles|assets|fonts|images|scripts` which ignore the language directory.
 
-### Default language
+#### Default language
 Default language set in [conf/config.php](conf/config.php) as constant `'DEFAULT_LANGUAGE' => 'cs',`
 is the language in which the web starts without any additional information about language
 (such as language folder or session).
 The default language is typically shown in the application root.
 
-### Accepted types of URL
+#### Accepted types of URL
 
 * /alfa .. named page in the DEFAULT_LANGUAGE
 * /en/alfa .. named page in another language
@@ -196,9 +196,9 @@ The default language is typically shown in the application root.
 * /de/ .. default page in German
 * /?product&id=3&language=de .. parametric page in another language
 
-# CMS notes
+## CMS notes
 
-## Agenda
+### Agenda
 Agenda is an item in the `admin.php` left menu that refers to a set of rows in database. (All tables can be also accessed from the bottom of the page.)
 
 Examples of settings:
@@ -251,7 +251,7 @@ if path used: 'CONCAT(REPEAT("… ",LENGTH(' . $this->MyCMS->dbms->escapeDbIdent
 (TODO: explain better with examples.)
 
 
-## Asset folder structure
+### Asset folder structure
 * `assets/career/` - pro média spojené s pracovními příležitostmi
 * `assets/news/` - pro obrázky novinek
 * `assets/products/` - pro obrázky produktů
@@ -266,7 +266,7 @@ if path used: 'CONCAT(REPEAT("… ",LENGTH(' . $this->MyCMS->dbms->escapeDbIdent
 
 Note: assets expects only ONE sub-level.
 
-### admin.php expects
+#### admin.php expects
 * [Summernote](https://summernote.org/getting-started/#installation) v.0.8.18 (2020-05-20) (styles/summernote.css, styles/font/summernote.*, scripts/summernote.js, scripts/summernote.js.map)
 * scripts\bootstrap.js
 * scripts\admin-specific.js
@@ -277,14 +277,14 @@ Note: assets expects only ONE sub-level.
 * styles\ie10-viewport-bug-workaround.css
 * fonts\fa*.*
 
-## Admin UI
+### Admin UI
 Add protected functions to Admin.php according to MyAdmin.php in order to add menu relevant for the application, such as Translations, FriendlyURL, Divisions and products, etc.
 
-## Redirector
+### Redirector
 
 Note: Both the `old_url` and `new_url` MUST start with `/`.
 
-# Debugging
+## Debugging
 
 ```php
 // to write out a variable to `Tracy`
@@ -302,11 +302,11 @@ throw new \Exception('Exception description');
 
 Recommendation: use webmozart/assert (instead of beberlei/assert) as it is already required by phpdocumentor/reflection-docblock required by phpspec/prophecy required by phpunit/phpunit
 
-## REST API
+### REST API
 
 Note: `header("Content-type: application/json");` in outputJSON hides Tracy
 
-# Error handling
+## Error handling
 
 If your IP is among `$debugIpArray` you will see an Exception on screen. Otherwise, you will get "nice" Tracy 500 Internal server error.
 
@@ -317,12 +317,12 @@ Logs are in folder `log`:
 * `backyard-error.log.YYYY-MM.log` by PSR-3 logger implemented in GodsDev\Backyard\BackyardError
 * `sqlYYYY-MM-DD.sql` contains content changes by CMS as SQL statements with timestamp
 
-# Templating
+## Templating
 
 [`latte` templates](https://latte.nette.org/) are used.
 
 
-# Visual style
+## Visual style
 
 Pages have view-TEMPLATE class in <body/> to allow for exceptions.
 
@@ -333,22 +333,22 @@ sass styles/index.sass styles/index.css
 
 When changing index.css, index.js or admin.js, update `PAGE_RESOURCE_VERSION` in `config.php` in order to force cache reload these resources.
 
-# TODO
+## TODO
 
-## TODO lokalizace
+### TODO lokalizace
 * 200526: jazykový přepínač rovnou vybere správné URL, pokud pro daný jazky existuje
 * 200608: describe scenario when no language is `default` in terms that all pages run within /iso-639-1/ folder
 
-## TODO CMS
+### TODO CMS
 * 200610: bool field show as on/off 1/0 true/false or something else more reasonable than int input box
 
-## TODO SEO
+### TODO SEO
 
 
-## TODO vizualizace
+### TODO vizualizace
 
 
-## TODO other
+### TODO other
 * 190611: add article and search page types including controller tests
 * 190611: Make SASS to CSS conversion automatic (e.g. gulp)
 * 200609: admin table (with salt etc.) SHOULD NOT be available through admin.php

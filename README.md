@@ -1,5 +1,4 @@
-MyCMS [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms) [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms)
------
+# MyCMS [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms) [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms)
 
 Brief MVC framework for interactive websites including general administration.
 Works as a devstack which you install and then write your classes specific for the project.
@@ -14,7 +13,7 @@ MyCMS is designed to be used with following technologies:
 - [Psr\Log\LoggerInterface](https://www.php-fig.org/psr/psr-3/): for logging
 - [GodsDev\Backyard\BackyardMysqli](https://github.com/GodsDev/backyard/blob/master/GodsDev/Backyard/BackyardMysqli.php): for wrapping SQL layer
 
-# Installation
+## Installation
 Apache modules `mod_alias` (for hiding non-public files) and `mod_rewrite` (for friendly URL features) are expected.
 
 Require MyCMS in [`composer.json`](https://getcomposer.org/).
@@ -49,8 +48,9 @@ Files `process.php` and `admin-process.php` MUST exist and process forms.
 
 Note: `$MyCMS` name is expected by `ProjectSpecific extends ProjectCommon` class (@todo replace global $MyCMS by parameter handling)
 
-# Deployment
-## `/dist`
+## Deployment
+
+### `/dist`
 Folder `/dist` contains initial *distribution* files for a new project using MyCMS, therefore copy it to your new project folder in order to easily start.
 Replace the string `MYCMSPROJECTNAMESPACE` with your project namespace.
 Replace the string `MYCMSPROJECTSPECIFIC` with other website specific information (Brand, Twitter address, phone number, database table_prefix in phinx.yml...).
@@ -66,9 +66,9 @@ For deployment look also to [Deployment chapter](dist/README.md#deployment) and 
 
 MyCMS is used only as a library, so the application using it SHOULD implement `RedirectMatch 404 vendor\/` statement as prepared in `dist/.htaccess` to keep the library hidden from web access.
 
-# Admin notes
+## Admin notes
 
-## Database
+### Database
 
 Columns of tables displayed in admin can use various features set in the comment:
 | comment | feature                               |
@@ -89,7 +89,7 @@ TODO: active=0/1 display as on/off button
 
 TODO: better explain.
 
-## clientSideResources
+### clientSideResources
 In `class/Admin.php` you can redefine the `clientSideResources` variable with resources to load to the admin. Its default is:
 ```php
     protected $clientSideResources = [
@@ -115,7 +115,7 @@ In `class/Admin.php` you can redefine the `clientSideResources` variable with re
 `admin.css` may be inherited to a child project, however as vendor folder SHOULD have denied access from browser, 
 the content of that standard `admin.css` MUST be available through method MyAdmin::getAdminCss.
 
-# Testing
+## Testing
 
 Run from a command line:
 ```sh
@@ -184,7 +184,11 @@ new Controller(['requestUri' => $_SERVER['REQUEST_URI']])
 │   <──── redir or continue with calculated $controller->MyCMS->template
 ```
 
-# TODO
+## TROUBLESHOOTING
+
+| Home page returns 404 Not found | `define('HOME_TOKEN', 'parent-directory');` in `config.local.php` |
+
+## TODO
 
 * 190705: v classes\LogMysqli.php probíhá logování `'log/sql' . date("Y-m-d") . '.log.sql');` do aktuálního adresáře volajícího skriptu - což u API není výhodné. Jak vycházet z APP_ROOT?
 * 190723: pokud jsou v té samé doméně dvě různé instance MyCMS, tak přihlášením do jednoho admin.php jsem přihlášen do všech, i když ten uživatel tam ani neexistuje
