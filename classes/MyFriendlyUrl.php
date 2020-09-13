@@ -197,7 +197,6 @@ class MyFriendlyUrl extends MyCommon
      * $this->MyCMS->templateAssignementParametricRules is array where key is get parameter and value is array of 'template' => template-name and optionally (bool)'idcode' if value is not in $_GET[key] but either in (int)id or (string)code GET parameters
      *
      * TODO: simplify management of TEMPLATE_NOT_FOUND result as currently it is indicated as self::TEMPLATE_NOT_FOUND || null || true
-     * TODO: refactor this method as a single return with conditions
      *
      * @param array $options OPTIONAL verbose==true bleeds info to standard output
      * @return mixed `string` with name of the template when template determined || `array` with redir field when redirect || `bool (true)` when template set to `TEMPLATE_NOT_FOUND`
