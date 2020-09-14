@@ -59,7 +59,7 @@ class LogMysqli extends BackyardMysqli
      * @param bool $ERROR_LOG_OUTPUT optional
      * @param bool $logQuery optional default logging of database changing statement can be (for security reasons) turned off by value false
      * @return \mysqli_result Object|false
-     * @throws DBQueryException
+     * @throws \DBQueryException
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true, $logQuery = true)
     {
@@ -286,7 +286,7 @@ class LogMysqli extends BackyardMysqli
      * $sql = 'UPDATE employees SET ' . $this->values($data, 'pairs') . ' WHERE id=5';
      *
      * @param array $data
-     * @param string format either "values" (default), "fields" or "pairs"
+     * @param string $format either "values" (default), "fields" or "pairs"
      *      or anything containing %value% for value and %column% for column name that gets replaced
      * @return string
      */

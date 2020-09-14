@@ -17,7 +17,6 @@ use Tracy\Debugger;
  */
 class MyCMSMonoLingual
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -57,7 +56,9 @@ class MyCMSMonoLingual
             }
         }
         // Logger is obligatory
-        if (!is_object($this->logger) || !($this->logger instanceof LoggerInterface)) {
+        if (
+//            !is_object($this->logger) || 
+            !($this->logger instanceof LoggerInterface)) {
             error_log("Error: MyCMS constructed without logger. (" . get_class($this->logger) . ")");
             die('Fatal error - project is not configured.'); //@todo nicely formatted error page
         }
@@ -79,7 +80,7 @@ class MyCMSMonoLingual
             $_SESSION['token'] = [];
         }
         if (!$checkOnly || !count($_SESSION['token'])) {
-            $_SESSION['token'] [] = rand(1e8, 1e9);
+            $_SESSION['token'] [] = rand((int) 1e8, (int) 1e9);
         }
     }
 
@@ -90,7 +91,8 @@ class MyCMSMonoLingual
      */
     public function csrfCheck($token)
     {
-        return isset($token, $_SESSION['token']) && is_array($_SESSION['token']) && in_array($token, $_SESSION['token']);
+        // Variable $token always exists and is not nullable.
+        return isset($_SESSION['token']) && is_array($_SESSION['token']) && in_array($token, $_SESSION['token']);
     }
 
     /**
@@ -148,5 +150,4 @@ class MyCMSMonoLingual
             Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('SQL: ' . count($this->dbms->getStatementsArray()), $this->dbms->getStatementsArray()));
         }
     }
-
 }

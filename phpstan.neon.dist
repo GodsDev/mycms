@@ -1,0 +1,3 @@
+parameters:
+    bootstrapFiles:
+      - conf\constants.php

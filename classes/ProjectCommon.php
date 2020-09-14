@@ -23,7 +23,7 @@ class ProjectCommon extends MyCommon
 
     /**
      * Shortcut for echo'<pre>'; var_dump(); and exit;
-     * @param mixed variable(s) or expression to display
+     * @param mixed $var variable(s) or expression to display
      */
     public static function dump($var)
     {

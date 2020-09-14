@@ -30,6 +30,12 @@ class MyController extends MyCommon
      */
     protected $get;
 
+    /** @var string */
+    protected $language = DEFAULT_LANGUAGE;
+
+    /** @var string */
+    protected $requestUri = ''; //default is homepage
+
     /** @var array */
     protected $session;
 
