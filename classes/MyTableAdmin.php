@@ -27,10 +27,10 @@ class MyTableAdmin extends MyTableLister
     /**
      * Output HTML form to edit specific row in the table
      *
-     * @param mixed $where to identify which row to fetch and offer for edit
+     * @param $where mixed to identify which row to fetch and offer for edit
      *      e.g. ['id' => 5] translates as "WHERE id=5" in SQL
      *      scalar value translates as ['id' => value]
-     * @param array $options additional options
+     * @param $options array additional options
      *      [include-fields] - array of fields to include only
      *      [exclude-fields] - array of fields to exclude
      *      [exclude-form] - exclude the <form> element
@@ -400,11 +400,11 @@ class MyTableAdmin extends MyTableLister
     /**
      * Output HTML <select name=$field> with $values as its items
      *
-     * @param string $field name of the select element
-     * @param mixed $values either array of values for the <select>
+     * @param $field string name of the select element
+     * @param $values mixed either array of values for the <select>
      *        or string with the SQL SELECT statement
-     * @param scalar $default original value
-     * @param array $options additional options for the element rendition; plus
+     * @param $default scalar original value
+     * @param $options array additional options for the element rendition; plus
      *        [exclude] => value to exclude from select's options
      *        [class]
      *        [id]

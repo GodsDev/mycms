@@ -22,7 +22,7 @@ class MyAdminProcess extends MyCommon
     /** @var int how many seconds may pass before admin's record-editing tab is considered closed */
     protected $ACTIVITY_TIME_LIMIT = 180;
 
-    /** @var \GodsDev\MyCMS\TableAdmin */
+    /** @var \GodsDev\MyCMS\MyTableAdmin */
     protected $tableAdmin;
 
     /**

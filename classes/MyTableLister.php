@@ -84,9 +84,9 @@ class MyTableLister
     /**
      * Constructor - stores passed parameters to object's attributes
      *
-     * @param \mysqli database management system already connected to wanted database
-     * @param string table to view
-     * @param array options
+     * @param \mysqli $dbms database management system already connected to wanted database
+     * @param string $table to view
+     * @param array $options
      */
     public function __construct(\mysqli $dbms, $table, array $options = [])
     {
@@ -117,8 +117,9 @@ class MyTableLister
      * Set (or change) serviced table, get its fields.
      *
      * @param string $table table name
-     * @param bool $force do force reload if the current and desired table names are the same
+     * @param bool $forceReload do force reload if the current and desired table names are the same
      * @return void
+     * @throws \RunTimeException
      */
     public function setTable($table, $forceReload = false)
     {
@@ -179,7 +180,7 @@ class MyTableLister
             }
             $this->fields = $result;
         } else {
-            throw RunTimeException('Could not get columns from table ' . $this->table . '.');
+            throw new \RunTimeException('Could not get columns from table ' . $this->table . '.');
         }
         if ($query = $this->dbms->query('SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME 
             FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def" 
@@ -198,7 +199,7 @@ class MyTableLister
      * Compose a SELECT SQL statement with given columns and _GET variables
      *
      * @param array $columns
-     * @param array &$vars variables used to filter records
+     * @param array $vars &$vars variables used to filter records
      * @return array with these indexes: [join], [where], [sort], [sql]
      */
     public function selectSQL($columns, &$vars)
@@ -301,7 +302,7 @@ class MyTableLister
      * Operation `original` means "leave the column as is" (i.e. don't use it in this SQL statement)
      * And for any other (=unknown) operation is the column ignored, i.e. is not used in this SQL statement.
      *
-     * @param array &$vars variables used to filter records
+     * @param array $vars &$vars variables used to filter records
      * @return string
      */
     public function bulkUpdateSQL(&$vars)
@@ -374,7 +375,7 @@ class MyTableLister
     /**
      * Output a customizable table to browse, search, page and pick its items for editing
      *
-     * @param options configuration array
+     * @param array $options configuration array
      *   $options['form-action']=send.php - instead of <form action="">
      *   $options['read-only']=non-zero - no links to admin
      *   $options['no-sort']=non-zero - don't offer 'sorting' option
@@ -386,7 +387,7 @@ class MyTableLister
      *   $options['exclude']=array - columns to exclude
      *   $options['columns']=array - special treatment of columns
      *   $options['return-output']=non-zero - return output (instead of echo)
-     * @return void or string (for $options['return-output'])
+     * @return mixed void||string (for $options['return-output'])
      */
     public function view(array $options = [])
     {
@@ -423,8 +424,8 @@ class MyTableLister
     /**
      * Part of the view() method to output the controls.
      *
-     * @param array options as in view()
-     * @return void or string (for $options['return-output'])
+     * @param array $options as in view()
+     * @return mixed void||string (for $options['return-output'])
      */
     protected function viewInputs($options)
     {
@@ -505,12 +506,12 @@ class MyTableLister
     /**
      * Part of the view() method to output the content of selected table
      *
-     * @param object mysqli query
-     * @param array columns selected columns
-     * @param array options as in view()
-     * @return void or string (for $options['return-output'])
+     * @param \mysqli $query
+     * @param array $columns selected columns
+     * @param array $options as in view()
+     * @return mixed void or string (for $options['return-output'])
      */
-    protected function viewTable($query, array $columns, array $options)
+    protected function viewTable(\mysqli $query, array $columns, array $options)
     {
         Tools::setifnull($_GET['sort']);
         $output = '<form action="" method="post" enctype="multipart/form-data" data-rand="' . $this->rand . '">' . PHP_EOL
@@ -609,7 +610,7 @@ class MyTableLister
      * @param int $totalRows
      * @param int $offset
      * @param array $options as in view()
-     * @return void or string (for $options['return-output'])
+     * @return mixed void or string (for $options['return-output'])
      */
     public function pagination($rowsPerPage, $totalRows, $offset = null, $options = [])
     {
@@ -661,7 +662,7 @@ class MyTableLister
     /**
      * Return fields which are keys (indexes) of given type
      *
-     * @param string key type, either "PRI", "MUL", "UNI" or ""
+     * @param string $filterType key type, either "PRI", "MUL", "UNI" or ""
      * @return array key names
      */
     public function fieldKeys($filterType)
@@ -723,10 +724,10 @@ class MyTableLister
     /**
      * Resolve an SQL query and add given message for success or error
      *
-     * @param string SQL to execute
-     * @param string message in case of success
-     * @param string message in case of an error
-     * @param mixed optional message in case of no affected change
+     * @param string $sql SQL to execute
+     * @param string $successMessage message in case of success
+     * @param string $errorMessage message in case of an error
+     * @param mixed $noChangeMessage optional message in case of no affected change
      *   false = use $successMessage
      *
      * @return mixed true for success, false for failure of the query; if the query is empty return null (with no messages)
@@ -816,7 +817,7 @@ class MyTableLister
      * @param string $field
      * @param mixed $value field's value
      * @param array $record
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customInput($field, $value, array $record = [])
     {
@@ -852,7 +853,7 @@ class MyTableLister
     /**
      * Custom HTML to be show after detail's edit form but before action buttons
      *
-     * @param array @record
+     * @param array $record
      * @return string
      */
     public function customRecordDetail($record)
@@ -874,7 +875,7 @@ class MyTableLister
     /**
      * Custom saving of a record
      *
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customSave()
     {
@@ -884,7 +885,7 @@ class MyTableLister
     /**
      * Custom event after deleting of a record
      *
-     * @return boolean success
+     * @return bool success
      */
     public function customAfterDelete()
     {
@@ -894,7 +895,7 @@ class MyTableLister
     /**
      * Custom operation with table records. Called after the $table listing
      *
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customOperation()
     {

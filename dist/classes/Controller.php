@@ -18,8 +18,8 @@ class Controller extends MyController
 
     //project specific accepted attributes:
 
-//    /** @var string */
-//    protected $requestUri = ''; //default is homepage
+    /** @var string */
+    protected $requestUri;// = ''; //default is homepage
 
     /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
     private $projectSpecific;
@@ -27,8 +27,8 @@ class Controller extends MyController
     /** @var string */
     protected $httpMethod;
 
-//    /** @var string */
-//    protected $language = DEFAULT_LANGUAGE;
+    /** @var string */
+    protected $language;// = DEFAULT_LANGUAGE;
 
     /**
      * Feature flags that bubble down to latte and controller
