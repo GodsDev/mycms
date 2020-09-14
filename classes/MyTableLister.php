@@ -14,7 +14,7 @@ class MyTableLister
 
     use \Nette\SmartObject;
 
-    /** @var \mysqli database management system */
+    /** @var LogMysqli database management system */
     protected $dbms;
 
     /** @var string current database */
@@ -84,11 +84,11 @@ class MyTableLister
     /**
      * Constructor - stores passed parameters to object's attributes
      *
-     * @param \mysqli $dbms database management system already connected to wanted database
+     * @param LogMysqli $dbms database management system already connected to wanted database
      * @param string $table to view
      * @param array $options
      */
-    public function __construct(\mysqli $dbms, $table, array $options = [])
+    public function __construct(LogMysqli $dbms, $table, array $options = [])
     {
         $this->dbms = $dbms;
         $this->options = $options;
@@ -430,6 +430,7 @@ class MyTableLister
     protected function viewInputs($options)
     {
         $output = '<form action="" method="get" class="table-controls" data-rand="' . $this->rand . '">' . PHP_EOL;
+        // TODO nemá náhodou být $options ? Ask crs2
         if (!Tools::set($option['no-toggle'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#toggle-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-search fa fa-list-alt"></span> ' . $this->translate('Columns') . '</a></legend>
@@ -442,11 +443,13 @@ class MyTableLister
             }
             $output .= '</div></div></fieldset>' . PHP_EOL;
         }
+        // TODO nemá náhodou být $options ? Ask crs2
         if (!Tools::set($option['no-search'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#search-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-search fa fa-search"></span> ' . $this->translate('Search') . '</a></legend>
                 <div class="search-div" id="search-div' . $this->rand . '"></div></fieldset>' . PHP_EOL;
         }
+        // TODO nemá náhodou být $options ? Ask crs2
         if (!Tools::set($option['no-sort'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#sort-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-sort fa fa-sort mx-1"></span> ' . $this->translate('Sort') . '</a></legend>
