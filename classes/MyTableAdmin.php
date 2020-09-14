@@ -19,7 +19,7 @@ class MyTableAdmin extends MyTableLister
      * @param string $table table name
      * @param array $options
      */
-    public function __construct(\mysqli $dbms, $table, array $options = [])
+    public function __construct(LogMysqli $dbms, $table, array $options = [])
     {
         parent::__construct($dbms, $table, $options);
     }
