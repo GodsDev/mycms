@@ -27,10 +27,10 @@ class MyTableAdmin extends MyTableLister
     /**
      * Output HTML form to edit specific row in the table
      *
-     * @param $where mixed to identify which row to fetch and offer for edit
+     * @param mixed $where to identify which row to fetch and offer for edit
      *      e.g. ['id' => 5] translates as "WHERE id=5" in SQL
      *      scalar value translates as ['id' => value]
-     * @param $options array additional options
+     * @param array $options additional options
      *      [include-fields] - array of fields to include only
      *      [exclude-fields] - array of fields to exclude
      *      [exclude-form] - exclude the <form> element
@@ -40,7 +40,7 @@ class MyTableAdmin extends MyTableLister
      *      [original] - keep original values (to update only changed fields)
      *      [tabs] - divide fields into Bootstrap tabs, e.g. [null, 'English'=>'/^.+_en$/i', 'Chinese'=>'/^.+_cn$/i']
      *      [return-output] - non-zero: return output (instead of echo $output)
-     * @return void or string if $option[return-output] is non-zero
+     * @return mixed void or string if $option[return-output] is non-zero
      */
     public function outputForm($where, array $options = [])
     {
@@ -400,11 +400,11 @@ class MyTableAdmin extends MyTableLister
     /**
      * Output HTML <select name=$field> with $values as its items
      *
-     * @param $field string name of the select element
-     * @param $values mixed either array of values for the <select>
+     * @param string $field name of the select element
+     * @param mixed $values either array of values for the <select>
      *        or string with the SQL SELECT statement
-     * @param $default scalar original value
-     * @param $options array additional options for the element rendition; plus
+     * @param scalar $default original value
+     * @param array $options additional options for the element rendition; plus
      *        [exclude] => value to exclude from select's options
      *        [class]
      *        [id]

@@ -9,7 +9,6 @@ namespace GodsDev\MyCMS;
  *   TableAdmin.php
  */
 use GodsDev\Tools\Tools;
-//use GodsDev\MyCMS\MyCMS;
 use GodsDev\MyCMS\MyCommon;
 use Tracy\Debugger;
 
@@ -59,10 +58,10 @@ class MyAdminProcess extends MyCommon
      * Convert variables confining records of a table into a WHERE clause of a SQL statement.
      *
      * @param array $checks array of conditions, e.g. ["where[id]=4", "where[id]=5"]
-     * @param array &$errors this variable is filled with
+     * @param array $errors &$errors this variable is filled with
      * @return string SQL WHERE clause
      */
-    protected function filterChecks($checks, &$errors)
+    protected function filterChecks(array $checks, array &$errors)
     {
         $errors = [];
         $result = '';
@@ -224,7 +223,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "file delete" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFileDelete(&$post)
@@ -238,7 +237,7 @@ class MyAdminProcess extends MyCommon
             if (is_dir(DIR_ASSETS . $post['subfolder']) && is_array($post['delete-files'])) {
                 foreach ($post['delete-files'] as $value) {
                     if (unlink(DIR_ASSETS . $post['subfolder'] . "/$value")) {
-                        $result['processed-files'] ++;
+                        $result['processed-files']++;
                     }
                 }
                 Tools::addMessage('info', $result['message'] = $this->tableAdmin->translate('Total of deleted files: ') . $result['processed-files'] . '.');
@@ -253,7 +252,7 @@ class MyAdminProcess extends MyCommon
      * Files are added into the archive from the current directory and stored without directory.
      * The ZipArchive->addFile() method is used. Standard file/error handling is used.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFilePack(&$post)
@@ -300,7 +299,7 @@ class MyAdminProcess extends MyCommon
      * If the new file exists then the operation is aborted.
      * New file name must keep the same extension and consist only of letters, digits or ( ) . _
      *
-     * @param array &$post
+     * @param array $post &$post
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string) and "data" (string) of renamed file, if successful
      */
     public function processFileRename(&$post)
@@ -347,7 +346,7 @@ class MyAdminProcess extends MyCommon
      * 1) white list of file extentions
      * 2) file size limitation
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFileUnpack(&$post)
@@ -383,7 +382,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "files upload" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and on success reload the page
      * @todo change to return bool success. Or add $post[redir] as an option
      */
@@ -421,7 +420,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "login" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processLogin(&$post)
@@ -455,7 +454,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "logout" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processLogout(&$post)
@@ -472,7 +471,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Return files in /assets or its subfolder
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processSubfolder(&$post)
@@ -531,7 +530,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user change activation" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and output array JSON array containing indexes: "success" (bool), "data" (string) admin name
      */
     public function processUserActivation(&$post)
@@ -550,7 +549,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user change password" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processUserChangePassword(&$post)
@@ -576,7 +575,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user create" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processUserCreate(&$post)
@@ -595,7 +594,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user delete" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processUserDelete(&$post)
@@ -621,5 +620,4 @@ class MyAdminProcess extends MyCommon
         $this->endAdmin();
         Tools::redir($url);
     }
-
 }
