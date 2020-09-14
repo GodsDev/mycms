@@ -22,7 +22,7 @@
             "email": "rejthar@gods.cz"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "GodsDev\\mycmsprojectnamespace\\": ["classes/"]

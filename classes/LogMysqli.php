@@ -59,7 +59,6 @@ class LogMysqli extends BackyardMysqli
      * @param bool $ERROR_LOG_OUTPUT optional
      * @param bool $logQuery optional default logging of database changing statement can be (for security reasons) turned off by value false
      * @return \mysqli_result Object|false
-     * @throws \DBQueryException
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true, $logQuery = true)
     {
