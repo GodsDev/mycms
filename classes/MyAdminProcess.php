@@ -88,7 +88,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "activity" action - update activity column of all admins, delete old tabs.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void and output JSON
      */
     public function processActivity(&$post)
@@ -134,7 +134,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "clone" action.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @return void
      */
     public function processClone(&$post)
@@ -165,7 +165,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "export" action. If $post[download] is non-zero prompt the output as a download attachment.
      *
-     * @param array &$post $_POST
+     * @param array $post &$post $_POST
      * @param array $get
      * @return void
      */

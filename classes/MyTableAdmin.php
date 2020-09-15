@@ -15,7 +15,7 @@ class MyTableAdmin extends MyTableLister
     /**
      * Constructor
      *
-     * @param \mysqli $dbms database management system (e.g. new mysqli())
+     * @param LogMysqli $dbms database management system (e.g. new mysqli())
      * @param string $table table name
      * @param array $options
      */

@@ -509,12 +509,12 @@ class MyTableLister
     /**
      * Part of the view() method to output the content of selected table
      *
-     * @param \mysqli $query
+     * @param \mysqli_result $query
      * @param array $columns selected columns
      * @param array $options as in view()
      * @return mixed void or string (for $options['return-output'])
      */
-    protected function viewTable(\mysqli $query, array $columns, array $options)
+    protected function viewTable(\mysqli_result $query, array $columns, array $options)
     {
         Tools::setifnull($_GET['sort']);
         $output = '<form action="" method="post" enctype="multipart/form-data" data-rand="' . $this->rand . '">' . PHP_EOL
