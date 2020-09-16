@@ -15,7 +15,7 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var MyCMS
+     * @var MyCMSProject
      */
     protected $myCms;
 
@@ -44,7 +44,7 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
         $this->myCms = new MyCMSProject($mycmsOptions);
         $_SESSION = [
             'language' => $this->myCms->getSessionLanguage([], [], false),
-            'token' => rand(1e8, 1e9),
+            'token' => rand((int) 1e8, (int) 1e9),
         ]; //because $_SESSION is not defined in the PHPUnit mode
         $AGENDAS = [
             'category' => ['path' => 'path'],
@@ -55,7 +55,7 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
             'testimonial' => ['table' => 'content', 'where' => 'type="testimonial"', 'column' => 'description_' . DEFAULT_LANGUAGE, 'prefill' => ['type' => 'testimonial']],
             'system' => ['table' => 'content', 'where' => 'type="system"', 'column' => 'code', 'prefill' => ['type' => 'system']],
         ];
-        //maybe according to what you test, change $this->myCms->context before invoking $this->object = new Admin; within Test methods        
+        //maybe according to what you test, change $this->myCms->context before invoking $this->object = new Admin; within Test methods
         $this->object = new AdminProcess($this->myCms, ['agendas' => $AGENDAS]);
     }
 
@@ -65,7 +65,7 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        // no action
     }
 
     /**
@@ -93,5 +93,4 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
             __FUNCTION__ . ' has not been implemented yet.'
         );
     }
-
 }

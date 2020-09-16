@@ -11,7 +11,6 @@ use GodsDev\Tools\Tools;
  */
 class MyTableLister
 {
-
     use \Nette\SmartObject;
 
     /** @var LogMysqli database management system */
@@ -811,7 +810,6 @@ class MyTableLister
         $result = $this->translate("column:$column");
         return $result == "column:$column" ? $column : $result;
     }
-
     /** custom methods - meant to be rewritten in the class' children */
 
     /**
@@ -1037,5 +1035,4 @@ class MyTableLister
         }
         return $result;
     }
-
 }

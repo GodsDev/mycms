@@ -2,6 +2,7 @@
 
 namespace GodsDev\mycmsprojectnamespace;
 
+use GodsDev\MyCMS\LogMysqli;
 use GodsDev\Tools\Tools;
 
 class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
@@ -10,11 +11,11 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
 
     /**
      *
-     * @param \mysqli $dbms database management system (e.g. new mysqli())
+     * @param LogMysqli $dbms database management system (e.g. new mysqli())
      * @param string $table table name
      * @param array $options
      */
-    public function __construct(\mysqli $dbms, $table, array $options = [])
+    public function __construct(LogMysqli $dbms, $table, array $options = [])
     {
         parent::__construct($dbms, $table, $options);
         // TODO uses all example languages
@@ -304,18 +305,18 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
      * @param string $field
      * @param string $value field's value
      * @param array $record
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customInput($field, $value, array $record = [])
     {
         $result = false;
         //TODO: explain code below
-//        $fieldLang = $field;
-//        foreach ($this->TRANSLATIONS as $key => $value) {
-//            if (substr($field, -3) == '_' . $key) {
-//                $fieldLang = substr($field, -3) . '_##';
-//            }
-//        }
+//        /*        $fieldLang = $field;
+//          foreach ($this->TRANSLATIONS as $key => $value) {
+//          if (substr($field, -3) == '_' . $key) {
+//          $fieldLang = substr($field, -3) . '_##';
+//          }
+//          } */
         switch (mb_substr($this->table, mb_strlen(TAB_PREFIX)) . "\\" . $field) {
             //case "tableName\\fieldName": $result = ""; break; // SPECIMEN
             // URL fields have btn-webalize button
@@ -340,7 +341,7 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
     /**
      * Custom saving of a record. Record fields are in $_POST['fields'], other data in $_POST['database-table']
      *
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customSave()
     {
@@ -349,8 +350,10 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
         }
         // category.path - if admin changes the parent category (or picks it for a new record)
         // @todo insert this into TableAdmin.php
-        if (isset($_POST['table'], $_POST['path-original'], $_POST['path-parent'], $_POST['fields']['id']) &&
-            $_POST['table'] == TAB_PREFIX . 'category' && (!Tools::begins($_POST['path-original'], $_POST['path-parent']) || Tools::set($_POST['fields-null']['path']))) {
+        if (
+            isset($_POST['table'], $_POST['path-original'], $_POST['path-parent'], $_POST['fields']['id']) &&
+            $_POST['table'] == TAB_PREFIX . 'category' && (!Tools::begins($_POST['path-original'], $_POST['path-parent']) || Tools::set($_POST['fields-null']['path']))
+        ) {
             $length = [strlen($_POST['path-parent']), strlen($_POST['path-original'])];
             if ($_POST['path-original'] && $_POST['fields']['id'] != '') { // existing record whose parent category changed - we need to shift its sibblings that follow after it to fill the gap
                 $this->dbms->query('LOCK TABLES ' . Tools::escapeDbIdentifier($_POST['table']) . ' WRITE'); // we can't allow for other admin to write into categories during this op
@@ -376,16 +379,18 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
             // get path of the "last" child of given parent category, add +1
             $tmp = $this->dbms->fetchSingle('SELECT MAX(MID(path, ' . ($length[0] + PATH_MODULE) . ')) FROM ' . Tools::escapeDbIdentifier($_POST['table'])
                 . ' WHERE LEFT(path, ' . $length[0] . ')="' . $this->dbms->escapeSQL($_POST['path-parent']) . '" AND LENGTH(path)=' . ($length[0] + PATH_MODULE));
-            $_POST['fields']['path'] = $_POST['path-parent'] . str_pad(intval($tmp) + 1, PATH_MODULE, '0', STR_PAD_LEFT);
+            $_POST['fields']['path'] = $_POST['path-parent'] . str_pad((string) (intval($tmp) + 1), PATH_MODULE, '0', STR_PAD_LEFT);
             $this->dbms->query('UNLOCK TABLES');
             return false;
         }
+        // todo prozkoumat, co to udělá, když to dojde až sem
+        return false;
     }
 
     /**
      * Custom deletion of a record
      *
-     * @return boolean - true = method was applied so don't proceed with the default, false = method wasn't applied
+     * @return bool - true = method was applied so don't proceed with the default, false = method wasn't applied
      */
     public function customDelete()
     {
@@ -414,6 +419,8 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
             }
             return true;
         }
+        // TODO prozkoumat
+        return  false;
     }
 
     /**

@@ -15,7 +15,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var MyCMS
+     * @var MyCMSProject
      */
     protected $myCms;
 
@@ -112,5 +112,4 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->object = new Controller($this->myCms, $options);
         $this->assertEquals($options, $this->object->getVars());
     }
-
 }

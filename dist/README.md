@@ -306,6 +306,19 @@ Recommendation: use webmozart/assert (instead of beberlei/assert) as it is alrea
 
 Note: `header("Content-type: application/json");` in outputJSON hides Tracy
 
+## Coding style and linting
+
+super-linter uses PHPSTAN to identify PHPDoc errors
+* but github-action doesn't have access to libraries declared in composer (ignoreErrors)
+* and it needs to know which global constants are used (`.github/linters/conf/constants.php`)
+* and where to look for present classes (scanDirectories), hence following files:
+* `.github/linters/phpstan.neon` - for super-linter on github
+* `phpstan.neon.dist` - for local PHPSTAN
+ 
+* Note: PHPUnit 5.7.27 tests apparently is not possible to analyse with PHPSTAN
+* TODO: describe what phpstan.neon files are used in which scenario (mycms vs dist project)
+* TODO: .eslintrc.yml and dist/.eslintrc.yml - keep or delete?
+
 ## Error handling
 
 If your IP is among `$debugIpArray` you will see an Exception on screen. Otherwise, you will get "nice" Tracy 500 Internal server error.

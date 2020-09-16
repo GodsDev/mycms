@@ -45,9 +45,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->myCms = new MyCMSProject($mycmsOptions);
         $_SESSION = [
             'language' => $this->myCms->getSessionLanguage([], [], false),
-            'token' => rand(1e8, 1e9),
+            'token' => rand((int) 1e8, (int) 1e9),
         ]; //because $_SESSION is not defined in the PHPUnit mode
-        //maybe according to what you test, change $this->myCms->context before invoking $this->object = new Admin; within Test methods        
+        //maybe according to what you test, change $this->myCms->context before invoking $this->object = new Admin; within Test methods
         $this->object = new Admin($this->myCms, ['agendas' => [],
             'TableAdmin' => new TableAdmin($mycmsOptions['dbms'], '', [])
         ]);
@@ -59,7 +59,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        // no action
     }
 
     /**
@@ -73,19 +73,18 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
 //        // TODO: check HTML validity
 //        // use SimpleXMLElement;
-//		// Fail if errors
-//		$xml = new SimpleXMLElement($response);
-//		$nonDocumentErrors = $xml->{'non-document-error'};
-//		$errors = $xml->error;
-//		if (count($nonDocumentErrors) > 0) {
-//			// Indeterminate
-//			$this->markTestIncomplete();
-//		} elseif (count($errors) > 0) {
-//			// Invalid
-//			$this->fail("HTML output did not validate.");
-//		}
-//		// Valid
-//		$this->assertTrue(TRUE);
+//        // Fail if errors
+//        $xml = new SimpleXMLElement($response);
+//        $nonDocumentErrors = $xml->{'non-document-error'};
+//        $errors = $xml->error;
+//        if (count($nonDocumentErrors) > 0) {
+//            // Indeterminate
+//            $this->markTestIncomplete();
+//        } elseif (count($errors) > 0) {
+//            // Invalid
+//            $this->fail("HTML output did not validate.");
+//        }
+//        // Valid
+//        $this->assertTrue(TRUE);
     }
-
 }

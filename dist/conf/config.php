@@ -7,8 +7,8 @@
  * FOR LOCAL CHANGES USE config.local.php
  *
  */
-ini_set('session.use_strict_mode', 1);
-ini_set('display_errors', 0); // errors only in the log; override it in your config.local.php if you need
+ini_set('session.use_strict_mode', '1');
+ini_set('display_errors', '0'); // errors only in the log; override it in your config.local.php if you need
 
 define('DB_HOST', 'localhost');
 define('DB_PORT', ini_get('mysqli.default_port'));

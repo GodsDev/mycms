@@ -1,12 +1,13 @@
 <?php
 
-namespace GodsDev\mycmsprojectnamespace;
-
 /**
  * process for TableAdmin agendas
  * dependencies:
  * * TableAdmin.php
  */
+
+namespace GodsDev\mycmsprojectnamespace;
+
 use GodsDev\MyCMS\MyCMS;
 use GodsDev\MyCMS\MyAdminProcess;
 use GodsDev\Tools\Tools;
@@ -30,7 +31,7 @@ class AdminProcess extends MyAdminProcess
      * @param \GodsDev\MyCMS\MyCMS $MyCMS
      * @param array $options overrides default values of properties
      */
-    public function __construct(MyCMS $MyCMS, array $options = array())
+    public function __construct(MyCMS $MyCMS, array $options = [])
     {
         parent::__construct($MyCMS, $options);
     }
@@ -40,7 +41,7 @@ class AdminProcess extends MyAdminProcess
      * Commands with all required variables cause page redirection.
      * $_SESSION is manipulated by this function - mainly [messages] get added
      *
-     * @param mixed[] &$post $_POST variables
+     * @param array $post $_POST variable by reference
      * @todo refactor, so that $this->endAdmin(); is called automatically
      *
      * @return void
@@ -81,7 +82,8 @@ class AdminProcess extends MyAdminProcess
         }
         // further commands require token
         if (!isset($post['token']) || !$this->MyCMS->csrfCheck($post['token'])) {
-            $this->MyCMS->logger->warning("admin CSRF token mismatch - {$post['token']}"); //@todo nepotvrdit uložení nějak jinak, než že prostě potichu nenapíše Záznam uložen?
+            $this->MyCMS->logger->warning("admin CSRF token mismatch - {$post['token']}");
+            //@todo nepotvrdit uložení nějak jinak, než že prostě potichu nenapíše Záznam uložen?
             usleep(mt_rand(1000, 2000));
             return;
         }
@@ -116,7 +118,9 @@ class AdminProcess extends MyAdminProcess
                 $this->MyCMS->dbms->query('UPDATE ' . TAB_PREFIX . 'category SET path=NULL WHERE id IN (' . Tools::arrayListed(array_keys($edits), 8) . ')');
                 $i = 0;
                 foreach ($edits as $key => $value) {
-                    $tmp = substr($value, 0, $strlen - PATH_MODULE) . str_pad(substr($value, $strlen - PATH_MODULE, PATH_MODULE) + (Tools::begins($value, $path) ? 1 : -1) * $post['category-switch'], PATH_MODULE, '0', STR_PAD_LEFT) . substr($value, $strlen);
+                    $tmp = substr($value, 0, $strlen - PATH_MODULE)
+                        . str_pad((string) (intval(substr($value, $strlen - PATH_MODULE, PATH_MODULE)) + (Tools::begins($value, $path) ? 1 : -1) * $post['category-switch']), PATH_MODULE, '0', STR_PAD_LEFT)
+                        . substr($value, $strlen);
                     $this->MyCMS->dbms->query('UPDATE ' . TAB_PREFIX . 'category SET path="' . $this->MyCMS->escapeSQL($tmp) . '" WHERE id="' . $this->MyCMS->escapeSQL($key) . '"');
                     $i++;
                 }
@@ -185,6 +189,7 @@ class AdminProcess extends MyAdminProcess
         }
         // delete a table record
         if (isset($post['record-delete'])) {
+            // TODO nemá náhodou být ->customAfterDelete namísto customDelete? Ask crs2
             if (!$this->tableAdmin->customDelete()) {
                 $this->tableAdmin->recordDelete();
             }

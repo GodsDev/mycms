@@ -42,4 +42,7 @@ RedirectMatch 404 \/logs\/
 RedirectMatch 404 conf\/
 RedirectMatch 404 /VERSION$
 RedirectMatch 404 /\.sass-cache
+RedirectMatch 404 /package\.json
+RedirectMatch 404 /package\-lock\.json
+RedirectMatch 404 phpstan.neon.dist
 #</IfModule>

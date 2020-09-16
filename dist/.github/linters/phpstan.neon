@@ -1,0 +1,22 @@
+parameters:
+    level: 5
+    bootstrapFiles:
+      - conf/constants.php
+    excludes_analyse:
+      - ../../Test/
+    scanDirectories:
+      - ../../classes
+# TODO check all rules!
+    ignoreErrors:
+      -
+        message: '#Result of && is always false.#'
+        path: /github/workspace/conf/config.php
+      - '#Reflection error: GodsDev\\MyCMS\\MyController not found.#'
+      - '#Reflection error: GodsDev\\MyCMS\\MyFriendlyUrl not found.#'
+      - '#Reflection error: Nette\\SmartObject not found\.#'
+      - '#Reflection error: GodsDev\\MyCMS\\MyTableAdmin not found\.#'
+      - '#Reflection error: Phinx\\Migration\\AbstractMigration not found.#'
+      - '#Reflection error: GodsDev\\MyCMS\\MyAdminProcess not found.#'
+      - '#Instantiated class GodsDev\\MyCMS\\Tracy\\BarPanelTemplate not found\.#'
+      - '#Call to static method barDump\(\) on an unknown class Tracy\\Debugger.#'
+      - '#Call to static method addMessage\(\) on an unknown class GodsDev\\Tools\\Tools.#'

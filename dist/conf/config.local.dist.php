@@ -6,7 +6,7 @@
 /**
  * Debugging
  */
-//ini_set('display_errors', 1); // allow ONLY in your own development environment
+//ini_set('display_errors', '1'); // allow ONLY in your own development environment
 //define('DEBUG_VERBOSE', true); // show all debug messages to the admin
 define('EMAIL_ADMIN', 'rejthar@gods.cz'); // email used by Tracy\Debugger
 define('MAIL_SENDING_ACTIVE', false);
