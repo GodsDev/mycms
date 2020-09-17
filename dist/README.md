@@ -300,7 +300,8 @@ throw new \Exception('Exception description');
 
 `$debugIpArray` in `config.php` contains IPs for which Tracy will be displayed.
 
-Recommendation: use webmozart/assert (instead of beberlei/assert) as it is already required by phpdocumentor/reflection-docblock required by phpspec/prophecy required by phpunit/phpunit
+Recommendation: use `webmozart/assert` (instead of `beberlei/assert`) as it is already required by `phpdocumentor/reflection-docblock` required by `phpspec/prophecy` required by `phpunit/phpunit`.
+Note phpunit is only require-dev, so `webmozart/assert` MUST be required in the `composer.json` of this application.
 
 ### REST API
 
