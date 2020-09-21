@@ -9,7 +9,6 @@ use GodsDev\Tools\Tools;
  */
 class MyTableAdmin extends MyTableLister
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -241,7 +240,12 @@ class MyTableAdmin extends MyTableLister
             $field['type'] = null;
         }
         switch ($field['type']) {
-            case 'tinyint': case 'smallint': case 'int': case 'mediumint': case 'bigint': case 'year':
+            case 'tinyint':
+            case 'smallint':
+            case 'int':
+            case 'mediumint':
+            case 'bigint':
+            case 'year':
                 $input += ['type' => 'number', 'step' => 1, 'class' => 'form-control'];
                 if ($field['key'] == 'PRI') {
                     $input['readonly'] = 'readonly';
@@ -259,7 +263,8 @@ class MyTableAdmin extends MyTableLister
                 $value = +$value;
                 $input += ['class' => 'form-control text-right'];
                 break;
-            case 'datetime': case 'timestamp':
+            case 'datetime':
+            case 'timestamp':
                 if (isset($value[10]) && $value[10] == ' ') {
                     $value[10] = 'T';
                 }
@@ -307,7 +312,11 @@ class MyTableAdmin extends MyTableLister
                 }
                 $input = implode(', ', $tmp) . '<br>';
                 break;
-            case 'tinyblob': case 'mediumblob': case 'blob': case 'longblob': case 'binary':
+            case 'tinyblob':
+            case 'mediumblob':
+            case 'blob':
+            case 'longblob':
+            case 'binary':
                 if (preg_match('~(^\pC)*~i', $value)) {
                     $input = '<tt>' . Tools::ifempty(Tools::shortify($value, 100), '<i class="insipid">' . $this->translate('empty') . '</i>') . '</tt><br />'; //@todo constant --> parameter
                 } else {
@@ -566,7 +575,6 @@ class MyTableAdmin extends MyTableLister
     {
         $this->contentByType($options);
     }
-
 }
 
 // @todo nekde v cyklu prevest "0" a 0 na string/integer/double podle typu?

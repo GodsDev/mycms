@@ -4,8 +4,6 @@
  * Predefining constants for PHPSTAN analysis as recommanded by
  * https://phpstan.org/user-guide/discovering-symbols
  */
-//define('DEFAULT_LANGUAGE', 'cs');
-// ... use conf/config.php instead
 
 define('DIR_ASSETS', 'abc');
 define('DIR_TEMPLATE', __DIR__ . '/../template');

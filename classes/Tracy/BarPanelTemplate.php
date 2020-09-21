@@ -12,6 +12,7 @@ class BarPanelTemplate implements IBarPanel
 {
 
     protected $tabTitle;
+
     protected $panelDetails;
 
     /**
@@ -70,5 +71,4 @@ class BarPanelTemplate implements IBarPanel
 
         return $title . $warning . $content;
     }
-
 }

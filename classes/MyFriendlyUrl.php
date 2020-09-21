@@ -7,13 +7,13 @@ use Tracy\Debugger;
 
 class MyFriendlyUrl extends MyCommon
 {
+    use \Nette\SmartObject;
 
     const PAGE_NOT_FOUND = '404';
 
-    use \Nette\SmartObject;
-
     /**
-     * interestingPath pattern to match `language subpattern` and the `rest of the path` in the method friendlyIdentifyRedirect
+     * interestingPath pattern to match `language subpattern` and the `rest of the path`
+     * in the method friendlyIdentifyRedirect
      * It SHOULD be changed by the child class FriendlyUrl to use the languages used in the MyCMS application
      *
      * @var string
@@ -65,13 +65,25 @@ class MyFriendlyUrl extends MyCommon
     {
         parent::__construct($MyCMS, $options);
         Debugger::barDump($options, 'friendlyUrl instantiated');
-        $this->verboseBarDump($this->applicationDir = (pathinfo($_SERVER["SCRIPT_NAME"], PATHINFO_DIRNAME) === '/' ? '' : pathinfo($_SERVER["SCRIPT_NAME"], PATHINFO_DIRNAME)), 'applicationDir'); // so that URL relative to root may be constructed in latte (e.g. language selector) It never ends with `/'
+        $this->verboseBarDump(
+            $this->applicationDir = (
+            pathinfo(
+                $_SERVER["SCRIPT_NAME"],
+                PATHINFO_DIRNAME
+            ) === '/' ? '' : pathinfo(
+                $_SERVER["SCRIPT_NAME"],
+                PATHINFO_DIRNAME
+            )
+            ),
+            'applicationDir'
+        ); // so that URL relative to root may be constructed in latte (e.g. language selector) It never ends with `/'
     }
 
     /**
      * Wrapper for creating redir response
      *
-     * TODO: consider creating object redirWrapper that would be chacked as instanceof instead of checking for presence of field 'redir'. Only question is how to Debugger::getBar()->addPanel as done in MyController::redir
+     * TODO: consider creating object redirWrapper that would be checked as instanceof instead of checking for presence
+     * of field 'redir'. Only question is how to Debugger::getBar()->addPanel as done in MyController::redir
      *
      * @param string $url
      * @param string $barDumpTitle
@@ -80,7 +92,10 @@ class MyFriendlyUrl extends MyCommon
      */
     protected function redirWrapper($url, $barDumpTitle, $httpCode = 301)
     {
-        return ['redir' => $this->verboseBarDump($this->applicationDir . $url, 'redir identified: ' . $barDumpTitle), 'httpCode' => $httpCode];
+        return ['redir' => $this->verboseBarDump(
+                $this->applicationDir . $url,
+                'redir identified: ' . $barDumpTitle
+            ), 'httpCode' => $httpCode];
     }
 
     /**
@@ -98,32 +113,73 @@ class MyFriendlyUrl extends MyCommon
      * matchResult = (1=pattern matches `PARSE_PATH_PATTERN`, 0=it does not, or FALSE=error)
      *
      * @param array $options
-     * @return mixed `bool (true)` when `TEMPLATE_NOT_FOUND` || `array` with redir string field || `array` with token string field and matches array field (see above)
+     * @return mixed `bool (true)` when `TEMPLATE_NOT_FOUND` || `array` with redir string field
+     * || `array` with token string field and matches array field (see above)
+     * TODO - is PHPDoc complete?
      */
     protected function friendlyIdentifyRedirect(array $options = [])
     {
         $this->verboseBarDump($url = parse_url($options['REQUEST_URI']), 'friendlyIdentifyRedirect: parse_url');
-        $this->verboseBarDump($token = $this->MyCMS->escapeSQL(pathinfo($url['path'], PATHINFO_FILENAME)), 'friendlyIdentifyRedirect: token');
+        $this->verboseBarDump($token = $this->MyCMS->escapeSQL(
+            pathinfo(
+                $url['path'],
+                PATHINFO_FILENAME
+            )
+            ), 'friendlyIdentifyRedirect: token');
         //PAGE NOT FOUND
         if ($token === self::PAGE_NOT_FOUND) {
             $this->MyCMS->template = self::TEMPLATE_NOT_FOUND;
             return true;
         }
-        $this->verboseBarDump(['FORCE_301' => FORCE_301, 'FRIENDLY_URL' => FRIENDLY_URL, 'REDIRECTOR_ENABLED' => REDIRECTOR_ENABLED,], 'Constants');
+        $this->verboseBarDump(
+            ['FORCE_301' => FORCE_301, 'FRIENDLY_URL' => FRIENDLY_URL, 'REDIRECTOR_ENABLED' => REDIRECTOR_ENABLED,],
+            'Constants'
+        );
         //part of PATH beyond applicationDir
-        $this->verboseBarDump($interestingPath = (substr($url['path'], 0, strlen($this->applicationDir)) === $this->applicationDir) ? (substr($url['path'], strlen($this->applicationDir))) : $url['path'], 'friendlyIdentifyRedirect: interestingPath');
+        $this->verboseBarDump($interestingPath = (substr(
+                $url['path'],
+                0,
+                strlen(
+                    $this->applicationDir
+                )
+            ) === $this->applicationDir) ? (substr(
+                $url['path'],
+                strlen($this->applicationDir)
+            )) : $url['path'], 'friendlyIdentifyRedirect: interestingPath');
 
-        //if FORCE_301 set as true and it is possible, redir to Friendly URLs (if FRIENDLY_URL and set) to Friendly URLs or to simple parametric URLs (type=id) //TODO: explain better
-        if (FORCE_301 && !empty($this->verboseBarDump($friendlyUrl = $this->friendlyfyUrl(isset($url['query']) ? '?' . $url['query'] : ''), 'friendlyIdentifyRedirect: friendlyUrl'))) {
+        //if FORCE_301 set as true and it is possible, redir to Friendly URLs (if FRIENDLY_URL and set)
+        //to Friendly URLs or to simple parametric URLs (type=id) //TODO: explain better
+        if (FORCE_301 && !empty($this->verboseBarDump(
+                    $friendlyUrl = $this->friendlyfyUrl(
+                    isset($url['query']) ? '?' . $url['query'] : ''
+                    ),
+                    'friendlyIdentifyRedirect: friendlyUrl'
+            ))) {
             if (($friendlyUrl != ('?' . $url['query']))) {
-                $this->verboseBarDump($addLanguageDirectory = ($this->language != DEFAULT_LANGUAGE) // other than default language should have its directory
-                    && !preg_match("~^{$this->language}/~", $friendlyUrl), 'friendlyIdentifyRedirect: addLanguageDirectory 301 friendly'); // unless the friendlyURL already has it
-                return $this->redirWrapper(($addLanguageDirectory ? '/' . $this->language : '') . '/' . $friendlyUrl, 'SEO Force 301 friendly');
+                // other than default language should have its directory
+                $this->verboseBarDump(
+                    $addLanguageDirectory = ($this->language != DEFAULT_LANGUAGE)
+                    // unless the friendlyURL already has it
+                    && !preg_match("~^{$this->language}/~", $friendlyUrl),
+                    'friendlyIdentifyRedirect: addLanguageDirectory 301 friendly'
+                );
+                return $this->redirWrapper(
+                        ($addLanguageDirectory ? '/' . $this->language : '') . '/' . $friendlyUrl,
+                        'SEO Force 301 friendly'
+                );
             } elseif ($interestingPath != '/' && $interestingPath != "/{$this->language}/"
             ) {
-                $this->verboseBarDump($addLanguageDirectory = ($this->language != DEFAULT_LANGUAGE) // other than default language should have its directory
-                    && !preg_match("~^language={$this->language}~", $friendlyUrl), 'friendlyIdentifyRedirect: addLanguageDirectory 301 parametric'); // unless the friendlyURL already has it
-                return $this->redirWrapper('/' . $friendlyUrl . ($addLanguageDirectory ? "&language={$this->language}" : ''), 'SEO Force 301 parametric');
+                // other than default language should have its directory
+                $this->verboseBarDump(
+                    $addLanguageDirectory = ($this->language != DEFAULT_LANGUAGE)
+                    // unless the friendlyURL already has it
+                    && !preg_match("~^language={$this->language}~", $friendlyUrl),
+                    'friendlyIdentifyRedirect: addLanguageDirectory 301 parametric'
+                );
+                return $this->redirWrapper(
+                        '/' . $friendlyUrl . ($addLanguageDirectory ? "&language={$this->language}" : ''),
+                        'SEO Force 301 parametric'
+                );
             }
         }
 
@@ -203,7 +259,10 @@ class MyFriendlyUrl extends MyCommon
      */
     public function determineTemplate(array $options = [])
     {
-        $this->verboseBarDump(['options' => $options, 'get' => $this->get], 'FriendlyURL: determineTemplate options and HTTP request parameters');
+        $this->verboseBarDump(
+            ['options' => $options, 'get' => $this->get],
+            'FriendlyURL: determineTemplate options and HTTP request parameters'
+        );
 
         //FRIENDLY URL & Redirect variables
         $friendlyUrlRedirectVariables = $this->friendlyIdentifyRedirect($options);
@@ -335,7 +394,9 @@ class MyFriendlyUrl extends MyCommon
             (isset($output['id']) ? (int) ($output['id']) : (string) Tools::ifset($output['code'], '')) : $output2[$outputKey];
 
         $result = $this->switchParametric($outputKey, $outputValue);
-        $this->MyCMS->logger->info($this->verboseBarDump("{$params} friendlyfyUrl to " . print_r($result, true), 'friendlyfyUrl result'));
+        $this->MyCMS->logger->info(
+            $this->verboseBarDump("{$params} friendlyfyUrl to " . print_r($result, true), 'friendlyfyUrl result')
+        );
         return is_null($result) ? $params : $result;
     }
 
@@ -358,5 +419,4 @@ class MyFriendlyUrl extends MyCommon
     {
         return $this->language;
     }
-
 }

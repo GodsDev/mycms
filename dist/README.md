@@ -84,7 +84,7 @@ For this deployment scenarion only (because otherwise it would be a vulnerabilit
 
 ### `build.sh` runs the following commands
 1. `composer update`
-2. Note: All changes in database (structure) SHOULD be made by phinx migrations. Create your local `phinx.yml` as a copy of `phinx.dist.yml` to make it work, where you set your database connection into *development* section. 
+2. Note: All changes in database (structure) SHOULD be made by phinx migrations. Create your local `phinx.yml` as a copy of `phinx.dist.yml` to make it work, where you set your database connection into *development* section.
 ```bash
 vendor/bin/phinx migrate -e development # or production or testing
 ```
@@ -113,7 +113,7 @@ define('FRIENDLY_URL', false);
 ```
 
 Constant `FORCE_301` enforces [HTTP 301 redirect](https://en.wikipedia.org/wiki/HTTP_301) to the most friendly URL that is available
-(i.e. either friendly URL or parametric URL on application directory) which means 
+(i.e. either friendly URL or parametric URL on application directory) which means
 that each page is displayed with a unique URL. It is good for SEO.
 Therefore it is not necessary to translate URL within content (e.g. from the parametric to friendly) as they end up on the right unique URL, anyway.
 
@@ -244,7 +244,7 @@ $AGENDAS = [
     ],
 ];
 ```
-if path used: 'CONCAT(REPEAT("… ",LENGTH(' . $this->MyCMS->dbms->escapeDbIdentifier($options['path']) . ') / ' . PATH_MODULE . ' - 1),' . $options['table'] . '_' . DEFAULT_LANGUAGE . ')' 
+if path used: 'CONCAT(REPEAT("… ",LENGTH(' . $this->MyCMS->dbms->escapeDbIdentifier($options['path']) . ') / ' . PATH_MODULE . ' - 1),' . $options['table'] . '_' . DEFAULT_LANGUAGE . ')'
 
 (TODO: explain better with examples.)
 
@@ -312,7 +312,7 @@ super-linter uses PHPSTAN to identify PHPDoc errors
 * and where to look for present classes (scanDirectories), hence following files:
 * `.github/linters/phpstan.neon` - for super-linter on github
 * `phpstan.neon.dist` - for local PHPSTAN
- 
+
 * Note: PHPUnit 5.7.27 tests apparently is not possible to analyse with PHPSTAN
 * TODO: describe what phpstan.neon files are used in which scenario (mycms vs dist project)
 * TODO: .eslintrc.yml and dist/.eslintrc.yml - keep or delete?

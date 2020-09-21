@@ -40,14 +40,21 @@ class AdminTest extends \PHPUnit_Framework_TestCase
                 'cn' => '中文'
             ],
             'logger' => $backyard->BackyardError,
-            'dbms' => new \GodsDev\MyCMS\LogMysqli(DB_HOST . ":" . DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, $backyard->BackyardError), //@todo - use test db instead. Or use other TAB_PREFIX !
+            'dbms' => new \GodsDev\MyCMS\LogMysqli(
+                DB_HOST . ":" . DB_PORT,
+                DB_USERNAME,
+                DB_PASSWORD,
+                DB_DATABASE,
+                $backyard->BackyardError
+            ), //@todo - use test db instead. Or use other TAB_PREFIX !
         ];
         $this->myCms = new MyCMSProject($mycmsOptions);
         $_SESSION = [
             'language' => $this->myCms->getSessionLanguage([], [], false),
             'token' => rand((int) 1e8, (int) 1e9),
         ]; //because $_SESSION is not defined in the PHPUnit mode
-        //maybe according to what you test, change $this->myCms->context before invoking $this->object = new Admin; within Test methods
+        //maybe according to what you test, change $this->myCms->context before
+        //invoking $this->object = new Admin; within Test methods
         $this->object = new Admin($this->myCms, ['agendas' => [],
             'TableAdmin' => new TableAdmin($mycmsOptions['dbms'], '', [])
         ]);

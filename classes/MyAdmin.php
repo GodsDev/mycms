@@ -32,6 +32,7 @@ class MyAdmin extends MyCommon
             'styles/admin.css?v=' . PAGE_RESOURCE_VERSION,
         ],
     ];
+
     public $HTMLHeaders = [
         'viewport' => 'width=device-width, initial-scale=1',
         'X-XSS-Protection' => '0',
@@ -646,7 +647,8 @@ class MyAdmin extends MyCommon
                 'data-for' => $key
             ];
             switch ($value['basictype']) {
-                case 'integer': case 'rational':
+                case 'integer':
+                case 'rational':
                     $result .= Tools::htmlSelect(
                             "op[$key]",
                             $op + ['+' => '+', '-' => '-', '*' => '*', 'random' => 'random', 'uuid_short' => 'uuid_short'],
@@ -654,7 +656,8 @@ class MyAdmin extends MyCommon
                             $opOptions
                         ) . '</td><td>' . Tools::htmlInput("fields[$key]", '', '', ['type' => 'number', 'class' => 'form-control edit-selected text-right w-initial', 'data-size' => $value['size']]) . '</td>';
                     break;
-                case 'text': case 'binary':
+                case 'text':
+                case 'binary':
                     if (Tools::among($value['type'], 'date', 'datetime', 'time', 'timestamp')) {
                         $result .= Tools::htmlSelect(
                                 "op[$key]",
@@ -855,5 +858,4 @@ class MyAdmin extends MyCommon
             )
             );
     }
-
 }

@@ -40,9 +40,9 @@ class FriendlyUrl extends MyFriendlyUrl
         parent::__construct($MyCMS, $options);
         // construct a regexp rule from array_keys($MyCMS->TRANSLATIONS) without DEFAULT_LANGUAGE
         $this->parsePathPattern = '~/(' . implode(
-                '/|',
-                array_diff(array_keys($MyCMS->TRANSLATIONS), [DEFAULT_LANGUAGE])
-            ) . '/)?(.*/)?.*?~';
+            '/|',
+            array_diff(array_keys($MyCMS->TRANSLATIONS), [DEFAULT_LANGUAGE])
+        ) . '/)?(.*/)?.*?~';
         //TODO consider injecting projectSpecific from Controller instead of creating new instance
         $this->projectSpecific = new ProjectSpecific($this->MyCMS, [
             'language' => $this->language,

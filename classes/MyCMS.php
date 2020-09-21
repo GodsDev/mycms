@@ -14,7 +14,6 @@ namespace GodsDev\MyCMS;
  */
 class MyCMS extends MyCMSMonoLingual
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -107,5 +106,4 @@ class MyCMS extends MyCMSMonoLingual
         }
         return $result;
     }
-
 }

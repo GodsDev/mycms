@@ -7,7 +7,6 @@ use GodsDev\MyCMS\MyCMS;
 
 class Admin extends MyAdmin
 {
-
     use \Nette\SmartObject;
 
     /** @var array */
@@ -45,5 +44,4 @@ class Admin extends MyAdmin
     {
         return parent::getAdminCss() . PHP_EOL . file_get_contents(__DIR__ . '/../styles/admin.css') . PHP_EOL;
     }
-
 }

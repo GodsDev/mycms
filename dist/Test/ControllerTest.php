@@ -42,14 +42,21 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 'cn' => '中文'
             ],
             'logger' => $backyard->BackyardError,
-            'dbms' => new \GodsDev\MyCMS\LogMysqli(DB_HOST . ':' . DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, $backyard->BackyardError), //@todo - use test db instead. Or use other TAB_PREFIX !
+            'dbms' => new \GodsDev\MyCMS\LogMysqli(
+                DB_HOST . ':' . DB_PORT,
+                DB_USERNAME,
+                DB_PASSWORD,
+                DB_DATABASE,
+                $backyard->BackyardError
+            ), //@todo - use test db instead. Or use other TAB_PREFIX !
         ];
         $this->myCms = new MyCMSProject($mycmsOptions);
 
         $_SESSION = []; //because $_SESSION is not defined in the PHPUnit mode
         $this->language = $this->myCms->getSessionLanguage([], $_SESSION, false);
 
-        //according to what you test, change $this->myCms->context before invoking $this->object = new Controller; within Test methods
+        //according to what you test, change $this->myCms->context before invoking
+        //$this->object = new Controller; within Test methods
     }
 
     /**
@@ -78,7 +85,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     {
         $this->myCms->context = ['1' => '2', '3' => '4', 'c'];
         $this->object = new Controller($this->myCms);
-        $this->assertArraySubset(['template' => 'home', 'context' => $this->myCms->context], $this->object->controller());
+        $this->assertArraySubset(
+            ['template' => 'home', 'context' => $this->myCms->context],
+            $this->object->controller()
+        );
     }
 
     /**

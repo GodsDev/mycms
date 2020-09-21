@@ -2,14 +2,13 @@
 
 namespace GodsDev\mycmsprojectnamespace;
 
-//TODO check if beberlei/assert was successfully replaced by Webmozart, check 2 Assert::email below
-use Webmozart\Assert\Assert;
 use GodsDev\MyCMS\MyCMS;
 use GodsDev\MyCMS\MyCommon;
+//TODO check if beberlei/assert was successfully replaced by Webmozart, check 2 Assert::email below
+use Webmozart\Assert\Assert;
 
 class Mail extends MyCommon
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -119,5 +118,4 @@ class Mail extends MyCommon
         $this->logger->info("SENT {$to}/{$subject}/{$message} | count of recipients: [{$successfulRecipientCount}]");
         return $successfulRecipientCount;
     }
-
 }

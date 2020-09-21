@@ -207,7 +207,6 @@ class ProjectSpecific extends ProjectCommon
         }
         return '<div class="sitemap">' . $result . '</div>';
     }
-
     /**
      * If there is no function at all in this class, PHPSTAN would return errors that cannot be hidden:
      * Class WorkOfStan\Stockpiler\ProjectSpecific extends unknown class GodsDev\MyCMS\ProjectCommon.

@@ -1,7 +1,5 @@
 parameters:
     level: 5
-    scanFiles:
-      - vendor/phpunit/phpunit/src/Framework/TestCase.php
     bootstrapFiles:
       - ../../conf/config.php
       - conf/constants.php

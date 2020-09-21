@@ -108,5 +108,4 @@ class ProjectCommonTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('alfa Industry&nbsp;4.0 beta', $this->object->correctLineBreak('alfa Industry&nbsp;4.0 beta'));
         $this->assertEquals('alfa 3 % beta', $this->object->correctLineBreak('alfa 3 % beta'));
     }
-
 }

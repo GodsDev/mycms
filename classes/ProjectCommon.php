@@ -6,9 +6,6 @@ use Tracy\Debugger;
 
 class ProjectCommon extends MyCommon
 {
-
-    //TODO: order methods alphabetically
-
     use \Nette\SmartObject;
 
     /**
@@ -20,6 +17,8 @@ class ProjectCommon extends MyCommon
 
     /** @var string */
     protected $requestUri = ''; //default is homepage
+
+    //TODO: order methods alphabetically
 
     /**
      * Shortcut for echo'<pre>'; var_dump(); and exit;
@@ -48,12 +47,18 @@ class ProjectCommon extends MyCommon
     {
         $addLanguageDirectory = ($language != DEFAULT_LANGUAGE) // other than default language should have its directory
             && !preg_match("~/$language/~", $this->requestUri); // unless the page already has it
-        $this->verboseBarDump($addLanguageDirectory, 'addLanguageDirectory getLinkSql - other then default and page does not have it');
-        return ' IF(' . (FRIENDLY_URL ? 1 : 0) . ',' . ' if(' . (is_null($sourceTable) ? '' : $sourceTable . '.') . '`url_' . $language . "` <> '', "
+        $this->verboseBarDump(
+            $addLanguageDirectory,
+            'addLanguageDirectory getLinkSql - other then default and page does not have it'
+        );
+        return ' IF(' . (FRIENDLY_URL ? 1 : 0) . ','
+            . ' if(' . (is_null($sourceTable) ? '' : $sourceTable . '.') . '`url_' . $language . "` <> '', "
             . ($addLanguageDirectory ? "CONCAT(\"{$language}/\", " : '')
             . (is_null($sourceTable) ? '' : $sourceTable . '.') . "`url_" . $language . '`'
             . ($addLanguageDirectory ? ')' : '')
-            . ', CONCAT("' . $idPrefix . '", ' . (is_null($sourceTable) ? '' : $sourceTable . '.') . $sourceField . ')) ' . ',CONCAT("' . $idPrefix . '",' . (is_null($sourceTable) ? '' : $sourceTable . '.') . $sourceField . '))'
+            . ', CONCAT("' . $idPrefix . '", '
+            . (is_null($sourceTable) ? '' : $sourceTable . '.') . $sourceField . ')) '
+            . ',CONCAT("' . $idPrefix . '",' . (is_null($sourceTable) ? '' : $sourceTable . '.') . $sourceField . '))'
             . " AS {$fieldName} ";
     }
 
@@ -93,7 +98,8 @@ class ProjectCommon extends MyCommon
     public static function localDate($stringOfTime, $language)
     {
         switch ($language) {
-            case 'cs': return date('j.n.Y', strtotime($stringOfTime));
+            case 'cs':
+                return date('j.n.Y', strtotime($stringOfTime));
         }
         //en
         return date('D, j M Y', strtotime($stringOfTime));
@@ -126,5 +132,4 @@ class ProjectCommon extends MyCommon
             ], $addReplacePatterns);
         return preg_replace(array_keys($replacePatterns), array_values($replacePatterns), $text);
     }
-
 }

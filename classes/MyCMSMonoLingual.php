@@ -57,7 +57,7 @@ class MyCMSMonoLingual
         }
         // Logger is obligatory
         if (
-//            !is_object($this->logger) || 
+//            !is_object($this->logger) ||
             !($this->logger instanceof LoggerInterface)) {
             error_log("Error: MyCMS constructed without logger. (" . get_class($this->logger) . ")");
             die('Fatal error - project is not configured.'); //@todo nicely formatted error page
@@ -135,9 +135,13 @@ class MyCMSMonoLingual
      */
     public function renderLatte($dirTemplateCache, $customFilters, array $params)
     {
-        Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('Template: ' . $this->template, $this->context));
+        Debugger::getBar()->addPanel(
+            new \GodsDev\MyCMS\Tracy\BarPanelTemplate('Template: ' . $this->template, $this->context)
+        );
         if (isset($_SESSION['user'])) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION));
+            Debugger::getBar()->addPanel(
+                new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION)
+            );
         }
         $Latte = new \Latte\Engine;
         $Latte->setTempDirectory($dirTemplateCache);
@@ -147,7 +151,12 @@ class MyCMSMonoLingual
         $Latte->render('template/' . $this->template . '.latte', $params); //@todo make it configurable
         unset($_SESSION['messages']);
         if (!empty($this->dbms->getStatementsArray())) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('SQL: ' . count($this->dbms->getStatementsArray()), $this->dbms->getStatementsArray()));
+            Debugger::getBar()->addPanel(
+                new \GodsDev\MyCMS\Tracy\BarPanelTemplate(
+                    'SQL: ' . count($this->dbms->getStatementsArray()),
+                    $this->dbms->getStatementsArray()
+                )
+            );
         }
     }
 }

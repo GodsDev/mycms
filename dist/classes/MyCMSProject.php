@@ -9,7 +9,6 @@ namespace GodsDev\mycmsprojectnamespace;
  */
 class MyCMSProject extends \GodsDev\MyCMS\MyCMS
 {
-
     use \Nette\SmartObject;
 
     // attributes we need for this project
@@ -32,5 +31,4 @@ class MyCMSProject extends \GodsDev\MyCMS\MyCMS
     {
         parent::__construct($myCmsConf);
     }
-
 }

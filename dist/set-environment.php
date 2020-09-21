@@ -3,6 +3,7 @@
 /**
  * setting the environment may be different for each MyCMS deployment
  */
+
 error_reporting(E_ALL & ~E_NOTICE);
 ini_set('session.http_only', true); // TODO true as string?
 if (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') {

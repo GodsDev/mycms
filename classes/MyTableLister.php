@@ -105,7 +105,8 @@ class MyTableLister
     public function getTables()
     {
         $this->tables = [];
-        $query = $this->dbms->query('SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.TABLES ' //@todo database-specific
+        //@todo database-specific
+        $query = $this->dbms->query('SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.TABLES '
             . 'WHERE TABLE_SCHEMA = "' . $this->escapeSQL($this->database) . '"');
         while ($row = $query->fetch_row()) {
             $this->tables[$row[0]] = $row[1];
@@ -181,10 +182,12 @@ class MyTableLister
         } else {
             throw new \RunTimeException('Could not get columns from table ' . $this->table . '.');
         }
-        if ($query = $this->dbms->query('SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME 
-            FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def" 
+        if ($query = $this->dbms->query(
+            'SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME '
+            . 'FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def" 
             AND TABLE_SCHEMA = "' . $this->escapeSQL($this->database) . '" 
-            AND TABLE_NAME = "' . $this->escapeSQL($this->table) . '"')) {
+            AND TABLE_NAME = "' . $this->escapeSQL($this->table) . '"'
+            )) {
             while ($row = $query->fetch_assoc()) {
                 $this->fields[$row['COLUMN_NAME']]['foreign_table'] = $row['REFERENCED_TABLE_NAME'];
                 $this->fields[$row['COLUMN_NAME']]['foreign_column'] = $row['REFERENCED_COLUMN_NAME'];
@@ -318,7 +321,8 @@ class MyTableLister
                 case 'random':
                     $result .= ', ' . $this->escapeDbIdentifier($field) . ' = RAND() * ' . ($value == 0 ? 1 : (double) $value);
                     break;
-                case 'now': case 'uuid':
+                case 'now':
+                case 'uuid':
                     $result .= ', ' . $this->escapeDbIdentifier($field) . ' = ' . $vars['op'][$field] . '()';
                     break;
                 case 'append':
@@ -327,7 +331,8 @@ class MyTableLister
                 case 'prepend':
                     $result .= ', CONCAT("' . $this->escapeSQL($value) . '", ' . $this->escapeDbIdentifier($field) . ')';
                     break;
-                case 'addtime': case 'subtime':
+                case 'addtime':
+                case 'subtime':
                     $result .= ', ' . $vars['op'][$field] . '(' . $this->escapeDbIdentifier($field) . ', "' . $this->escapeSQL($value) . '")';
                     break;
 //                case 'original':

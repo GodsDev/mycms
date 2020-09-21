@@ -13,13 +13,12 @@ use Webmozart\Assert\Assert;
 
 class Controller extends MyController
 {
-
     use \Nette\SmartObject;
 
     //project specific accepted attributes:
 
     /** @var string */
-    protected $requestUri;// = ''; //default is homepage
+    protected $requestUri; // = ''; //default is homepage
 
     /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
     private $projectSpecific;
@@ -28,7 +27,7 @@ class Controller extends MyController
     protected $httpMethod;
 
     /** @var string */
-    protected $language;// = DEFAULT_LANGUAGE;
+    protected $language; // = DEFAULT_LANGUAGE;
 
     /**
      * Feature flags that bubble down to latte and controller
@@ -97,8 +96,10 @@ class Controller extends MyController
         Debugger::barDump($requestMethod = $this->httpMethod, 'REQUEST_METHOD');
         $this->projectSpecific = new ProjectSpecific($this->MyCMS, ['language' => $this->language]); // language is already properly set
         switch ($this->MyCMS->template) {
-            case self::TEMPLATE_DEFAULT: return true;
-            case self::TEMPLATE_NOT_FOUND: return true;
+            case self::TEMPLATE_DEFAULT:
+                return true;
+            case self::TEMPLATE_NOT_FOUND:
+                return true;
             case 'article':
                 if (array_key_exists('id', $this->get)) {
                     Assert::integer($this->get['id'], 'article MUST be identified by id');
@@ -217,5 +218,4 @@ class Controller extends MyController
             'session' => $this->session,
         ];
     }
-
 }

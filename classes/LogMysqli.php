@@ -10,7 +10,6 @@ use GodsDev\Backyard\BackyardMysqli;
  */
 class LogMysqli extends BackyardMysqli
 {
-
     use \Nette\SmartObject;
 
     /** @var array keywords in current DBMS */
@@ -64,7 +63,12 @@ class LogMysqli extends BackyardMysqli
     {
         if ($logQuery && !preg_match('/^SELECT |^SET |^SHOW /i', $sql)) {
             //mb_eregi_replace does not destroy e.g. character Š
-            error_log(trim(mb_eregi_replace('/\s+/', ' ', $sql)) . '; -- [' . date("d-M-Y H:i:s") . ']' . (isset($_SESSION['user']) ? " by ({$_SESSION['user']})" : '') . PHP_EOL, 3, 'log/sql' . date("Y-m-d") . '.log.sql');
+            error_log(
+                trim(mb_eregi_replace('/\s+/', ' ', $sql)) . '; -- [' . date("d-M-Y H:i:s") . ']'
+                . (isset($_SESSION['user']) ? " by ({$_SESSION['user']})" : '') . PHP_EOL,
+                3,
+                'log/sql' . date("Y-m-d") . '.log.sql'
+            );
         }
         $this->sqlStatementsArray[] = $sql;
         return parent::query($sql, $ERROR_LOG_OUTPUT);
@@ -140,7 +144,8 @@ class LogMysqli extends BackyardMysqli
     }
 
     /**
-     * Check wheter given interval matches the format for expression used after MySQL's keyword 'INTERVAL' - specific to MySQL/MariaDb
+     * Check wheter given interval matches the format for expression used after MySQL's keyword 'INTERVAL'
+     * - specific to MySQL/MariaDb
      *
      * @param string $interval
      * @result int 1=yes, 0=no, false=error
@@ -312,5 +317,4 @@ class LogMysqli extends BackyardMysqli
         }
         return substr($result, 2 /* length of the initial ", " */);
     }
-
 }

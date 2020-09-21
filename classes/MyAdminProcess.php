@@ -269,7 +269,7 @@ class MyAdminProcess extends MyCommon
                 $result['messages'] = $this->tableAdmin->translate('This function is not supported.');
             } elseif (is_dir(DIR_ASSETS . $post['subfolder']) && is_array($post['pack-files']) && count($post['pack-files'])) {
                 $path = DIR_ASSETS . $post['subfolder'] . '/';
-                $ZipArchive = new \ZipArchive;
+                $ZipArchive = new \ZipArchive();
                 if ($open = $ZipArchive->open($path . $post['archive'], \ZipArchive::CREATE) === true) {
                     foreach ($post['pack-files'] as $file) {
                         if (file_exists($path . $file)) {

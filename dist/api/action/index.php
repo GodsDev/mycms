@@ -4,13 +4,17 @@
  * This template
  * API returns static number
  */
+
 require './../../set-environment.php';
 
-// Under construction section // Note: if condition changes, pls change also $developmentEnvironment assignement in prepare.php
+// Under construction section
+// Note: if condition changes, pls change also $developmentEnvironment assignement in prepare.php
 if (UNDER_CONSTRUCTION && !(
-    //isset($_SERVER['HTTP_CLIENT_IP']) ? in_array($_SERVER['HTTP_CLIENT_IP'], $debugIpArray) : // to be used only if behind firewall and the original REMOTE_ADDR present in HTTP_CLIENT_IP - otherwise should not be used as it would be a vulnerability
+    // line below to be used only if behind firewall and the original REMOTE_ADDR present in HTTP_CLIENT_IP
+    //  - otherwise it should not be used as it would be a vulnerability
+    //isset($_SERVER['HTTP_CLIENT_IP']) ? in_array($_SERVER['HTTP_CLIENT_IP'], $debugIpArray) :
     in_array($_SERVER['REMOTE_ADDR'], $debugIpArray)
-)) {
+    )) {
     include './../../under-construction.html';
     exit;
 }
@@ -25,7 +29,7 @@ Debugger::enable(Debugger::PRODUCTION, DIR_TEMPLATE . '/../log');
 $backyard->Json->outputJSON('{"action":"3-' . $_SESSION['language'] . '"}', true);
 
 // The code below is a real example
-
+//
 // $this->get['article']) && (isset($this->get['id']
 //Debugger::barDump($MyCMS, 'MyCMS before controller');
 $controller = new GodsDev\mycmsprojectnamespace\Controller($MyCMS, array(

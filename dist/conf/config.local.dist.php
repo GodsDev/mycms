@@ -3,6 +3,7 @@
 /**
  * This is a specimen content of config.local.php:
  */
+
 /**
  * Debugging
  */

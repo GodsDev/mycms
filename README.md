@@ -77,13 +77,13 @@ Columns of tables displayed in admin can use various features set in the comment
 | {"display":"layout-row"} | ?? |
 | {"display":"option"} | Existing values are offered in select box |
 | {"display":"option","display-own":1} | ... and an input box for adding previously unused values |
-| {"display":"path"} |	??  |
+| {"display":"path"} | ?? |
 | {"display":"texyla"} | ?? Texyla editor |
 | {"edit": "input"} | zatím nic: todo: natáhnout string z prvního pole na stránce a webalize |
 | {"edit":"json"} | rozpadne interní json do příslušných polí --- ovšem pokud prázdné, je potřeba vložit JSON (proto je default '{}') |
 | {"foreign-table":"category","foreign-column":"category_en"} | odkaz do jiné tabulky ke snadnému výběru |
 | {"foreign-table":"category","foreign-column":"category_en","foreign-path":"path"} | ?? |
-| {"required":true} |  ??   |
+| {"required":true} | ?? |
 
 TODO: active=0/1 display as on/off button
 
@@ -112,14 +112,14 @@ In `class/Admin.php` you can redefine the `clientSideResources` variable with re
     ];
 ```
 
-`admin.css` may be inherited to a child project, however as vendor folder SHOULD have denied access from browser, 
+`admin.css` may be inherited to a child project, however as vendor folder SHOULD have denied access from browser,
 the content of that standard `admin.css` MUST be available through method MyAdmin::getAdminCss.
 
 ## Testing
 
 Run from a command line:
 ```sh
-$ ./vendor/bin/phpunit
+./vendor/bin/phpunit
 ```
 
 Note that `dist` folder contains the starting MyCMS based project deployment and testing runs through `dist` as well,
@@ -127,11 +127,12 @@ so for development, the environment has to be set up for `dist` as well.
 
 Note: running `vendor/bin/phpunit` from root will result in using MyCMS classes from the root Classes even from `mycms/dist/Test`.
 While running `vendor/bin/phpunit` from `dist` will result in using MyCMS classes from the `dist/vendor/godsdev/mycms/classes`.
-# How does Friendly URL works within Controller
+
+## How does Friendly URL works within Controller
 
 [SEO settings details including language management in `dist` folder](dist/README.md#seo)
 
-```
+```php
 new Controller(['requestUri' => $_SERVER['REQUEST_URI']])
 │   // request URI is set in multiple places
 │   ->requestUri
@@ -152,24 +153,24 @@ new Controller(['requestUri' => $_SERVER['REQUEST_URI']])
 │                 ├──FORCE_301
 │                 │    ├── ->friendlyfyUrl(URL query) // returns string query key of parse_url, e.g  var1=12&var2=b
 │                 │    │   └── ->switchParametric(`type`, `value`) // project specific request to database returns mixed null (do not change the output) or string (URL - friendly or parametric)
-│                 │    │        └──If something new calculated, then 
+│                 │    │        └──If something new calculated, then
 │             <────────────── @return redirWrapper(URL - friendly or parametric)
 │                 │    └── if !isset($matches[1]) && ($this->language != DEFAULT_LANGUAGE) // no language subpatern and the language isn't default
 │             <─────────── @return 302 redirWrapper(languageFolder . interestingPath) // interestingPath is part of PATH beyond applicationDir
 │                 ├──REDIRECTOR_ENABLED
 │                 │    └──if old_url == interestingPath (=part of PATH beyond applicationDir)
 │             <─────────── @return redirWrapper(new_path)
-│                 └──If there are more (non language) folders, the base of relative URLs would be incorrect, therefore 
+│                 └──If there are more (non language) folders, the base of relative URLs would be incorrect, therefore
 │             <──────── @return **redirect** either to a base URL with query parameters or to a 404 Page not found
 │             <──── @return [token, matches]
 │         <──── @return array with redir field when redirect || bool when default template SHOULD be used
 │            │
 │            ├──[token, matches]
-│            ├──loop through $myCmsConf['templateAssignementParametricRules'] and if $this->get[`type`] found: 
+│            ├──loop through $myCmsConf['templateAssignementParametricRules'] and if $this->get[`type`] found:
 │         <────── @return template || `TEMPLATE_NOT_FOUND` (if invalid `value`)
 │            │
 │            └── ->pureFriendlyUrl(['REQUEST_URI' => $this->requestUri], $token, $matches); //FRIENDLY URL & Redirect calculation where $token, $matches are expected from above
-│                       ├──default scripts and language directories all result into the default template 
+│                       ├──default scripts and language directories all result into the default template
 │             <─────────── @return self::TEMPLATE_DEFAULT
 │         <──── @return self::TEMPLATE_DEFAULT
 │                       │
@@ -200,6 +201,7 @@ new Controller(['requestUri' => $_SERVER['REQUEST_URI']])
 * 200608: replace all `array(` by `[`
 * 200622: once FriendlyUrl incl tests is part of develop - add github actions lint
 * 200819: refactor FORCE_301, FRIENDLY_URL and REDIRECTOR_ENABLED to a variable, so that all scenarios can be PHPUnit tested
-* 200819: consider REQUEST_URI query vs _GET - shouldn't just one source of truth be used?
+* 200819: consider REQUEST_URI query vs \_GET - shouldn't just one source of truth be used?
 * 181228 <https://symfony.com/doc/current/components/yaml.html> -- pro načítání db spojení rovnou z yml namísto duplicitního zadávání do private.conf.php
 * 200314 v Admin.php mít příslušnou editační sekci FriendlyURL (dle F4T) .. pokud lze opravdu zobecnit
+* 200921: for PHP/7.1.0+ version use protected for const in MyCommon, MyFriendlyUrl, MyAdminProcess.php
