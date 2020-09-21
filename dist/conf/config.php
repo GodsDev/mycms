@@ -167,16 +167,15 @@ $WEBSITE = [
 
 include_once __DIR__ . '/config.local.php'; // use config.local.dist.php as specimen
 // constants not set in config.local.php
-// TODO $arrayOfConstants if in stockpiler ok
-foreach ([
+$arrayOfConstants = [
     'DEBUG_VERBOSE' => false,
     'DEFAULT_LANGUAGE' => 'cs',
     'EMAIL_ADMIN' => 'rejthar@gods.cz', // email used by Tracy\Debugger
     'FORCE_301' => true, // enforce 301 redirect to the most friendly URL available
     'FRIENDLY_URL' => false, // default = do not generate friendly URL
     'GA_UID' => 'UA-39642385-1',
-    'HOME_TOKEN' => '', // If the web runs in the root of the domain, then the default token `PATHINFO_FILENAME` 
-    //is an empty string; if the web does not run in the root directory, 
+    'HOME_TOKEN' => '', // If the web runs in the root of the domain, then the default token `PATHINFO_FILENAME`
+    //is an empty string; if the web does not run in the root directory,
     //set its parent folder name (not the whole path) here.
     'NOTIFY_FROM_ADDRESS' => 'notifier-MYCMSPROJECTSPECIFIC@godsapps.eu', // @todo založit příslušnou schránku
     'NOTIFY_FROM_NAME' => 'Notifikátor',
@@ -189,7 +188,8 @@ foreach ([
     'SMTP_PORT' => 25,
     'UNDER_CONSTRUCTION' => false,
     'USE_CAPTCHA' => false,
-] as $constant => $value) {
+];
+foreach ($arrayOfConstants as $constant => $value) {
     if (!defined($constant)) {
         define($constant, $value);
     }

@@ -64,7 +64,8 @@ class ProjectSpecific extends ProjectCommon
     public function getContent($id = null, $code = null, array $options = [])
     {
         $result = [];
-        if ((!is_null($id) || !is_null($code)) && ($result = $this->MyCMS->fetchSingle('SELECT co.id,'
+        if (
+            (!is_null($id) || !is_null($code)) && ($result = $this->MyCMS->fetchSingle('SELECT co.id,'
             . ' product_id,'
             . ' type,'
             . ' co.code,'
@@ -76,7 +77,8 @@ class ProjectSpecific extends ProjectCommon
             . ' co.perex_' . $options['language'] . ' AS perex,'
             . ' co.description_' . $options['language'] . ' AS description '
             . ' FROM ' . TAB_PREFIX . 'content co LEFT JOIN ' . TAB_PREFIX . 'category ca ON co.category_id=ca.id '
-            . ' WHERE co.active="1"' . Tools::wrap($this->MyCMS->escapeSQL($code), ' AND co.code="', '"') . Tools::wrap(intval($id), ' AND co.id=') . ' LIMIT 1'))) {
+            . ' WHERE co.active="1"' . Tools::wrap($this->MyCMS->escapeSQL($code), ' AND co.code="', '"') . Tools::wrap(intval($id), ' AND co.id=') . ' LIMIT 1'))
+        ) {
             $result['context'] = json_decode($result['context'], true) ?: array();
             $result['added'] = Tools::localeDate($result['added'], $options['language'], false);
         }
@@ -106,13 +108,15 @@ class ProjectSpecific extends ProjectCommon
     public function getCategory($id = null, $code = null, array $options = [])
     {
         $result = [];
-        if ((!is_null($id) || !is_null($code)) && ($result = $this->MyCMS->fetchSingle('SELECT id AS category_id, ' // . 'path,'
+        if (
+            (!is_null($id) || !is_null($code)) && ($result = $this->MyCMS->fetchSingle('SELECT id AS category_id, ' // . 'path,'
             . ' context,'
-//            . ' "page" AS type,'
+            // . ' "page" AS type,'
             . ' added,'
             . ' name_' . $options['language'] . ' AS title,'
             . ' content_' . $options['language'] . ' AS description'
-            . ' FROM ' . TAB_PREFIX . 'category WHERE active="1"' . Tools::wrap($this->MyCMS->escapeSQL($code), ' AND code="', '"') . Tools::wrap(intval($id), ' AND id=') . ' LIMIT 1'))) {
+            . ' FROM ' . TAB_PREFIX . 'category WHERE active="1"' . Tools::wrap($this->MyCMS->escapeSQL($code), ' AND code="', '"') . Tools::wrap(intval($id), ' AND id=') . ' LIMIT 1'))
+        ) {
             $result['context'] = json_decode($result['context'], true) ?: [];
             $result['added'] = Tools::localeDate($result['added'], $options['language'], false);
         }

@@ -182,12 +182,14 @@ class MyTableLister
         } else {
             throw new \RunTimeException('Could not get columns from table ' . $this->table . '.');
         }
-        if ($query = $this->dbms->query(
+        if (
+            $query = $this->dbms->query(
             'SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME '
             . 'FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def" 
             AND TABLE_SCHEMA = "' . $this->escapeSQL($this->database) . '" 
             AND TABLE_NAME = "' . $this->escapeSQL($this->table) . '"'
-            )) {
+            )
+        ) {
             while ($row = $query->fetch_assoc()) {
                 $this->fields[$row['COLUMN_NAME']]['foreign_table'] = $row['REFERENCED_TABLE_NAME'];
                 $this->fields[$row['COLUMN_NAME']]['foreign_column'] = $row['REFERENCED_COLUMN_NAME'];
@@ -315,7 +317,9 @@ class MyTableLister
                 case 'value':
                     $result .= ', ' . $this->escapeDbIdentifier($field) . ' = "' . $this->escapeSQL($value) . '"';
                     break;
-                case '+': case '-': case '*':
+                case '+':
+                case '-':
+                case '*':
                     $result .= ', ' . $this->escapeDbIdentifier($field) . ' = ' . $this->escapeDbIdentifier($field) . $vars['op'][$field] . ' ' . ($vars['op'][$field] == '*' ? (double) $value : (int) $value);
                     break;
                 case 'random':

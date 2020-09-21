@@ -420,7 +420,7 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
             return true;
         }
         // TODO prozkoumat
-        return  false;
+        return false;
     }
 
     /**
@@ -430,7 +430,7 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
      */
     public function customSearch()
     {
-        
+        // no action
     }
 
     /**
@@ -440,7 +440,7 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
      */
     public function customCondition()
     {
-        
+        // no action
     }
 
     /**

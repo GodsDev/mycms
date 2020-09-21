@@ -2,16 +2,16 @@
 
 namespace GodsDev\MyCMS;
 
+use GodsDev\Tools\Tools;
+use GodsDev\MyCMS\MyCommon;
+use Tracy\Debugger;
+
 /**
  * Class to process standard operations in MyCMS
  * dependencies:
  *   ZipArchive
  *   TableAdmin.php
  */
-use GodsDev\Tools\Tools;
-use GodsDev\MyCMS\MyCommon;
-use Tracy\Debugger;
-
 class MyAdminProcess extends MyCommon
 {
 
@@ -360,7 +360,7 @@ class MyAdminProcess extends MyCommon
             if (class_exists('\ZipArchive')) {
                 $post['file_unpack'] = pathinfo($post['file_unpack'], PATHINFO_BASENAME);
                 $path = DIR_ASSETS . $post['subfolder'] . '/';
-                $ZipArchive = new \ZipArchive;
+                $ZipArchive = new \ZipArchive();
                 if ($ZipArchive->open($path . $post['file_unpack']) === true) {
                     // extract it to the path we determined above
                     $result['success'] = $ZipArchive->extractTo(DIR_ASSETS . $post['new_folder'] . '/');

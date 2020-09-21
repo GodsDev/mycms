@@ -92,10 +92,12 @@ class MyFriendlyUrl extends MyCommon
      */
     protected function redirWrapper($url, $barDumpTitle, $httpCode = 301)
     {
-        return ['redir' => $this->verboseBarDump(
+        return [
+            'redir' => $this->verboseBarDump(
                 $this->applicationDir . $url,
                 'redir identified: ' . $barDumpTitle
-            ), 'httpCode' => $httpCode];
+            ), 'httpCode' => $httpCode
+        ];
     }
 
     /**

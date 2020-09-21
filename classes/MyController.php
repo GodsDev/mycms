@@ -140,12 +140,18 @@ class MyController extends MyCommon
             Debugger::getBar()->addPanel(new BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION));
         }
         if (!empty($this->MyCMS->dbms->getStatementsArray())) {
-            Debugger::getBar()->addPanel(new BarPanelTemplate('SQL: ' . count($this->MyCMS->dbms->getStatementsArray()), $this->MyCMS->dbms->getStatementsArray()));
+            Debugger::getBar()->addPanel(
+                new BarPanelTemplate(
+                    'SQL: ' . count($this->MyCMS->dbms->getStatementsArray()),
+                    $this->MyCMS->dbms->getStatementsArray()
+                )
+            );
         }
         $this->MyCMS->logger->info("Redir to {$redir} with SESSION[language]={$_SESSION['language']}");
         header("Location: {$redir}", true, $httpCode); // Note: for SEO 301 is much better than 303
         header('Connection: close');
-        die('<script type="text/javascript">window.location=' . json_encode($redir) . ";</script>\n"
+        die(
+            '<script type="text/javascript">window.location=' . json_encode($redir) . ";</script>\n"
             . '<a href=' . urlencode($redir) . '>&rarr;</a>'
         );
     }

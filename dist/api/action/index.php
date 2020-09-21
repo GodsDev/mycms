@@ -9,12 +9,14 @@ require './../../set-environment.php';
 
 // Under construction section
 // Note: if condition changes, pls change also $developmentEnvironment assignement in prepare.php
-if (UNDER_CONSTRUCTION && !(
+if (
+    UNDER_CONSTRUCTION && !(
     // line below to be used only if behind firewall and the original REMOTE_ADDR present in HTTP_CLIENT_IP
     //  - otherwise it should not be used as it would be a vulnerability
     //isset($_SERVER['HTTP_CLIENT_IP']) ? in_array($_SERVER['HTTP_CLIENT_IP'], $debugIpArray) :
     in_array($_SERVER['REMOTE_ADDR'], $debugIpArray)
-    )) {
+    )
+) {
     include './../../under-construction.html';
     exit;
 }

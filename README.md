@@ -56,7 +56,7 @@ Replace the string `MYCMSPROJECTNAMESPACE` with your project namespace.
 Replace the string `MYCMSPROJECTSPECIFIC` with other website specific information (Brand, Twitter address, phone number, database table_prefix in phinx.yml...).
 If you want to use your own table name prefix, it is recommanded to change database related strings before first running [`./build.sh`](dist/build.sh).
 
-To adapt the content and its structure either adapt migrations [content_table](dist/db/migrations/20200607204634_content_table.php) and [content_example](dist/db/migrations/20200703213436_content_example.php) 
+To adapt the content and its structure either adapt migrations [content_table](dist/db/migrations/20200607204634_content_table.php) and [content_example](dist/db/migrations/20200703213436_content_example.php)
 before first running build
 or adapt the database content after running build
 or run build, see for yourself how it works, then adapt migrations, drop tables and run build again.

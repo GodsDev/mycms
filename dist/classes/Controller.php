@@ -112,14 +112,14 @@ class Controller extends MyController
                 $this->MyCMS->context['content'] = $this->MyCMS->fetchSingle(
                     'SELECT id,'
                     . 'context,'
-//                . 'category_id,'
+                    // . 'category_id,'
                     . ' name_' . $this->language . ' AS title,'
                     . ' content_' . $this->language . ' AS description '
                     // TODO: Note: takto se do pole context[product] přidá field [link], který obsahuje potenciálně friendly URL, ovšem relativní, tedy bez jazyka. Je to příprava pro forced 301 SEO a pro hreflang funkcionalitu.
                     . ',' . $this->projectSpecific->getLinkSql('?article&id=', $this->language)
                     . ' FROM ' . TAB_PREFIX . 'content WHERE active="1" AND'
                     . ' type LIKE "article" AND'
-//                . ' name_' . $this->language . ' NOT LIKE "" AND' // hide product language variants with empty title
+                    // . ' name_' . $this->language . ' NOT LIKE "" AND' // hide product language variants with empty title
                     . $articleIdentifier
                     . ' LIMIT 1'
                 );

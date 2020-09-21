@@ -112,7 +112,8 @@ class LogMysqli extends BackyardMysqli
      * @return array
      */
     public function decodeChoiceOptions($list)
-    { //e.g. value: '0','a''b','c"d','e\\f','','g`h' should be ['0', "a'b", 'c"d', 'e\f', '', 'g`h'
+    {
+        //e.g. value: '0','a''b','c"d','e\\f','','g`h' should be ['0', "a'b", 'c"d', 'e\f', '', 'g`h'
         if (($result = substr($list, 0, 5) == 'enum(') || substr($list, 0, 4) == 'set(') {
             $list = substr($list, $result ? 5 : 4, -1);
         }

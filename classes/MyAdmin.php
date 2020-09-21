@@ -821,9 +821,8 @@ class MyAdmin extends MyCommon
         // user operations (logout, change password, create user, delete user)
         elseif (isset($_GET['user'])) {
             $output .= $this->outputUser();
-        }
-        // project-specific admin sections
-        elseif ($this->projectSpecificSectionsCondition()) {
+        } elseif ($this->projectSpecificSectionsCondition()) {
+            // project-specific admin sections // TODO did this comment move removed 824 | ERROR | [ ] Expected 1 space after closing brace; newline|       |     found ??
             $output .= $this->projectSpecificSections($TableAdmin);
         } else {
             // no agenda selected, showing "dashboard"

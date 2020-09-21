@@ -143,7 +143,7 @@ class MyCMSMonoLingual
                 new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION)
             );
         }
-        $Latte = new \Latte\Engine;
+        $Latte = new \Latte\Engine();
         $Latte->setTempDirectory($dirTemplateCache);
         $Latte->addFilter(null, $customFilters);
         Debugger::barDump($params, 'Params');
