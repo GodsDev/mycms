@@ -4,7 +4,8 @@
 require_once './set-environment.php';
 require_once './prepare.php';
 
-//$AGENDAS is used in AdminProcess.php. If $_SESSION['language'] is used in it, set it after prepare.php, where $_SESSION['language'] is fixed. For reference see README.md.
+//$AGENDAS is used in AdminProcess.php. If $_SESSION['language'] is used in it, set it after prepare.php,
+//where $_SESSION['language'] is fixed. For reference see README.md.
 $AGENDAS = [
     'category' => [
         'column' => "name_{$_SESSION['language']}",

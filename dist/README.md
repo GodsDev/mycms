@@ -30,8 +30,6 @@ in the `/etc/apache2/apache2.conf`, there has to be this setting:
 
 ## Content
 
-
-
 ## Web analytics
 
 Gtag version may be used only after <https://github.com/googleanalytics/autotrack> is updated to work with it.
@@ -250,7 +248,6 @@ if path used: 'CONCAT(REPEAT("… ",LENGTH(' . $this->MyCMS->dbms->escapeDbIdent
 
 (TODO: explain better with examples.)
 
-
 ### Asset folder structure
 * `assets/career/` - pro média spojené s pracovními příležitostmi
 * `assets/news/` - pro obrázky novinek
@@ -364,7 +361,7 @@ When changing index.css, index.js or admin.js, update `PAGE_RESOURCE_VERSION` in
 
 ### TODO other
 * 190611: add article and search page types including controller tests
-* 190611: Make SASS to CSS conversion automatic (e.g. gulp)
+* 190611: Make SASS to CSS conversion automatic (e.g. gulp or Github Action?)
 * 200609: admin table (with salt etc.) SHOULD NOT be available through admin.php
 * 200712: migrate popper <https://popper.js.org/docs/v2/migration-guide/> incl. map --> admin.php expects section
 * 200712: update bootstrap <https://getbootstrap.com/> incl. map --> admin.php expects section
@@ -376,3 +373,4 @@ When changing index.css, index.js or admin.js, update `PAGE_RESOURCE_VERSION` in
 * 200802: image for product and category in assets
 * 200828: content_XX HTML field (for article) doesn't automatically uncheck null checkbox, therefore the UX is that you fill-in new text and it is not saved
 * 200826: <http://localhost:8080/godsdev/mycms/dist/admin.php?language=fr> nastaví jazyk položek do fr, ale v Settings se to nedá: ať se dá
+* 200921: (MyCMS) properly fix         message: '#Parameter #2 $newvalue of function ini_set expects string, true given.#'    path: /github/workspace/set-environment.php

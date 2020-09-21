@@ -42,11 +42,12 @@ Debugger::barDump($controllerResult, 'ControllerResult', [Tracy\Dumper::DEPTH =>
 $Texy = null;
 \GodsDev\mycmsprojectnamespace\ProjectSpecific::prepareTexy();
 
-use \GodsDev\Tools\Tools;
+use GodsDev\Tools\Tools;
 
 $customFilters = new \GodsDev\mycmsprojectnamespace\Latte\CustomFilters($MyCMS);
 
-$MyCMS->renderLatte(DIR_TEMPLATE_CACHE, [$customFilters, 'common'], array_merge(
+$MyCMS->renderLatte(DIR_TEMPLATE_CACHE, [$customFilters, 'common'],
+    array_merge(
         [
             'WEBSITE' => $MyCMS->WEBSITE,
             'SETTINGS' => $MyCMS->SETTINGS,
@@ -64,4 +65,5 @@ $MyCMS->renderLatte(DIR_TEMPLATE_CACHE, [$customFilters, 'common'], array_merge(
             'featureFlags' => $featureFlags,
         ],
         $MyCMS->context
-));
+    )
+);

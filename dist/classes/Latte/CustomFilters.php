@@ -52,7 +52,7 @@ class CustomFilters
         return mb_strtolower(mb_substr($s, 0, 1)) . mb_substr($s, 1);
     }
 
-    public static function webalize_($s)
+    public static function webalize($s)
     {
         return Tools::webalize($s);
     }

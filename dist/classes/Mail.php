@@ -106,7 +106,7 @@ class Mail extends MyCommon
             ->setBody(
 //                        file_get_contents($filenameTxt)
 //                "Test sender at {$timestamp} "
-            $messageTxt
+                $messageTxt
             )
         // And optionally an alternative body
         //              ->addPart(file_get_contents($filename), 'text/html')

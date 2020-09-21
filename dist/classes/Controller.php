@@ -108,7 +108,7 @@ class Controller extends MyController
                     Assert::string($this->get['code'], 'article code MUST be string');
                     $articleIdentifier = ' code LIKE "' . $this->MyCMS->escapeSQL($this->get['code']) . '"';
                 }
-                $this->MyCMS->context['article'] = $this->MyCMS->fetchSingle(
+                $this->MyCMS->context['content'] = $this->MyCMS->fetchSingle(
                     'SELECT id,'
                     . 'context,'
 //                . 'category_id,'
@@ -122,13 +122,13 @@ class Controller extends MyController
                     . $articleIdentifier
                     . ' LIMIT 1'
                 );
-                if (is_null($this->MyCMS->context['article'])) {
+                if (is_null($this->MyCMS->context['content'])) {
                     $this->MyCMS->template = self::TEMPLATE_NOT_FOUND;
                     return true;
                 }
-                $this->MyCMS->context['article']['context'] = json_decode($this->MyCMS->context['article']['context'], true); //decodes json so that article context may be used within template
-                $this->MyCMS->context['pageTitle'] = $this->MyCMS->context['article']['title'];
-                $this->MyCMS->context['article']['image'] = array_key_exists('image', $this->MyCMS->context['article']['context']) ? (string) $this->MyCMS->context['article']['context']['image'] : '';
+                $this->MyCMS->context['content']['context'] = json_decode($this->MyCMS->context['content']['context'], true); //decodes json so that article context may be used within template
+                $this->MyCMS->context['pageTitle'] = $this->MyCMS->context['content']['title'];
+                $this->MyCMS->context['content']['image'] = array_key_exists('image', $this->MyCMS->context['content']['context']) ? (string) $this->MyCMS->context['content']['context']['image'] : '';
                 return true;
             case 'category':
                 if (!Tools::ifset($this->get['category'])) {

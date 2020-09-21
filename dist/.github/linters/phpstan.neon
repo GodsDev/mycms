@@ -2,8 +2,6 @@ parameters:
     level: 5
     bootstrapFiles:
       - conf/constants.php
-    excludes_analyse:
-      - ../../Test/
     scanDirectories:
       - ../../classes
 # TODO check all rules!

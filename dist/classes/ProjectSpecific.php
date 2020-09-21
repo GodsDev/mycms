@@ -11,7 +11,6 @@ use Webmozart\Assert\Assert;
  */
 class ProjectSpecific extends ProjectCommon
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -209,4 +208,21 @@ class ProjectSpecific extends ProjectCommon
         return '<div class="sitemap">' . $result . '</div>';
     }
 
+    /**
+     * If there is no function at all in this class, PHPSTAN would return errors that cannot be hidden:
+     * Class WorkOfStan\Stockpiler\ProjectSpecific extends unknown class GodsDev\MyCMS\ProjectCommon.
+     * Class WorkOfStan\Stockpiler\ProjectSpecific uses unknown trait Nette\SmartObject.
+     *
+     * If any function exists it returns an error that can be put in ignoreErrors section of phpstan.neon:
+     * Reflection error: GodsDev\MyCMS\ProjectCommon not found.
+     *
+     * TODO: consider PR for phpstan project
+     *
+     * @param string $param
+     * @return string
+     */
+//    private function mockFunc($param)
+//    {
+//        return $param;
+//    }
 }

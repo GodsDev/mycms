@@ -4,6 +4,7 @@
  * Actions to be taken for a form processing.
  * Many of these below are project specific.
  */
+
 use GodsDev\Tools\Tools;
 
 // Protection against a wrong include from a function
