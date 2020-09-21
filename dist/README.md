@@ -61,7 +61,7 @@ Under construction mode may be turned on (for non admin IP adresses i.e. not in 
 ```php
 define('UNDER_CONSTRUCTION', true);
 ```
-to `conf/config.local.php`. 
+to `conf/config.local.php`.
 
 Best practice: Management often uses iPhone or Mac, therefore don't forget to test on Apple devices as well!
 

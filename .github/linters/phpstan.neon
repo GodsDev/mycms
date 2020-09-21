@@ -3,3 +3,19 @@ parameters:
     bootstrapFiles:
       - ../../conf/config.php
       - conf/constants.php
+    scanDirectories:
+      - ../../classes
+    ignoreErrors:
+      -
+        message: '#Reflection error: Tracy\\IBarPanel not found.#'
+        path: /github/workspace/classes/Tracy/BarPanelTemplate.php
+      -
+        message: '#Reflection error: Phinx\\Migration\\AbstractMigration not found.#' 
+        path: /github/workspace/dist/db/migrations/*.php
+      - 
+        message: '#Reflection error: PHPUnit_Framework_TestCase not found.#'
+        path: /github/workspace/dist/Test/*.php
+      -
+        message: '#Parameter \#2 \$newvalue of function ini_set expects string, true given.#'
+        path: /github/workspace/dist/set-environment.php 
+      - '#Reflection error: Nette\\SmartObject not found\.#'

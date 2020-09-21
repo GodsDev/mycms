@@ -23,10 +23,10 @@
         <exclude-pattern>dist/classes/AdminProcess.php</exclude-pattern>
         <exclude-pattern>dist/classes/TableAdmin.php</exclude-pattern>
     </rule>
-    <rule ref="PSR2.Classes.PropertyDeclaration"/>
+    <rule ref="PSR2.Classes.PropertyDeclaration">
         <!-- TODO for PHP/7.1.0+ version remove this exception -->
         <exclude-pattern>classes/MyCommon.php</exclude-pattern>
         <exclude-pattern>classes/MyFriendlyUrl.php</exclude-pattern>
         <exclude-pattern>classes/MyAdminProcess.php</exclude-pattern>
-    </rule>    
+    </rule>
 </ruleset>
