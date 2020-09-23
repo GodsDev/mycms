@@ -189,7 +189,8 @@ class MyTableAdmin extends MyTableLister
             }
             $input .= '</select>';
             if (Tools::nonzero($comment['display-own'])) {
-                $input .= ' ' . Tools::htmlInput(
+                $input .= ' '
+                    . Tools::htmlInput(
                         "fields-own[$key]",
                         $this->translate('Own value:'),
                         $ownValue,
@@ -259,7 +260,9 @@ class MyTableAdmin extends MyTableLister
             case 'time':
                 $input += [/* 'type' => 'time', */ 'step' => 1, 'class' => 'form-control input-time'];
                 break;
-            case 'decimal': case 'float': case 'double':
+            case 'decimal':
+            case 'float':
+            case 'double':
                 $value = +$value;
                 $input += ['class' => 'form-control text-right'];
                 break;
@@ -330,7 +333,8 @@ class MyTableAdmin extends MyTableLister
                 if (Tools::among($field['type'], 'char', 'varchar') && ($field['size'] < 256 || Tools::set($comment['edit'], false) == 'input') && Tools::set($comment['edit'], false) != 'textarea') {
                     break;
                 }
-                $input = '<div class="TableAdminTextarea">' . Tools::htmlTextarea(
+                $input = '<div class="TableAdminTextarea">'
+                    . Tools::htmlTextarea(
                         "fields[$key]",
                         $value,
                         false,
@@ -505,7 +509,9 @@ class MyTableAdmin extends MyTableLister
                     continue;
                 }
                 switch ($field['basictype']) {
-                    case 'integer': case 'rational': case 'choice':
+                    case 'integer':
+                    case 'rational':
+                    case 'choice':
                         if (Tools::among($field['key'], 'PRI', 'UNI') && $original === $value && $value === '') {
                             $value = null;
                         }

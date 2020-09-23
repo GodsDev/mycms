@@ -56,7 +56,8 @@ class LogMysqli extends BackyardMysqli
      *
      * @param string $sql SQL to execute
      * @param bool $ERROR_LOG_OUTPUT optional
-     * @param bool $logQuery optional default logging of database changing statement can be (for security reasons) turned off by value false
+     * @param bool $logQuery optional default logging of database changing statement can be (for security reasons)
+     *     turned off by value false
      * @return mixed \mysqli_result|false
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true, $logQuery = true)
@@ -108,7 +109,8 @@ class LogMysqli extends BackyardMysqli
     /**
      * Decode options in 'set' and 'enum' columns - specific to MySQL/MariaDb
      *
-     * @param string $list list of options (e.g. "enum('single','married','divorced')" or just "'single','married','divorced'")
+     * @param string $list list of options (e.g. "enum('single','married','divorced')"
+     *     or just "'single','married','divorced'")
      * @return array
      */
     public function decodeChoiceOptions($list)
@@ -155,6 +157,7 @@ class LogMysqli extends BackyardMysqli
     {
         $first = '\s*\-?\d+\s*';
         $int = '\s*\d+\s*';
+        // phpcs:ignore
         return preg_match("~^\s*((?:\-?\s*(?:\d*\.?\d+|\d+\.?\d*)(?:e[\+\-]?\d+)?)\s+(MICROSECOND|SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|QUARTER|YEAR)"
             . "|\'$first.$int\'\s*(SECOND|MINUTE|HOUR|DAY)_MICROSECOND"
             . "|\'$first:$int\'\s*(MINUTE_SECOND|HOUR_SECOND)"

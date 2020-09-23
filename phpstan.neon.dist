@@ -1,3 +1,5 @@
 parameters:
     bootstrapFiles:
       - .github/linters/conf/constants.php
+      - dist/conf/config.php
+      - conf/config.php

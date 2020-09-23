@@ -2,6 +2,7 @@ parameters:
     level: 5
     bootstrapFiles:
       - ../../conf/config.php
+      - ../../dist/conf/config.php
       - conf/constants.php
     scanDirectories:
       - ../../classes

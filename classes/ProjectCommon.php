@@ -39,8 +39,10 @@ class ProjectCommon extends MyCommon
      * @param string $idPrefix e.g. ?article=
      * @param string $language
      * @param string $fieldName OPTIONAL field name with URL of the resulting array - default is 'link'
-     * @param string $sourceTable OPTIONAL name of the source table where default is null, i.e. there is no risk of ambiguous column url_XX
-     * @param string $sourceField OPTIONAL name of the source field where default is 'id', i.e. use where 'code' is needed
+     * @param string $sourceTable OPTIONAL name of the source table where default is null,
+     *     i.e. there is no risk of ambiguous column url_XX
+     * @param string $sourceField OPTIONAL name of the source field where default is 'id',
+     *     i.e. use where 'code' is needed
      * @return string
      */
     public function getLinkSql($idPrefix, $language, $fieldName = 'link', $sourceTable = null, $sourceField = 'id')

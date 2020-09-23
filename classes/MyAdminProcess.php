@@ -120,7 +120,12 @@ class MyAdminProcess extends MyCommon
                 $tabs = array_values($tabs);
                 if ($admin['admin'] == $_SESSION['user']) {
                     if ($new) {
-                        $tabs [] = ['table' => $post['table'], 'id' => (int) $post['id'], 'token' => $post['token'], 'time' => time()];
+                        $tabs [] = [
+                            'table' => $post['table'],
+                            'id' => (int) $post['id'],
+                            'token' => $post['token'],
+                            'time' => time()
+                        ];
                     }
                 } elseif ($tabs) {
                     $online += $admin['admin'];
@@ -134,7 +139,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "clone" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processClone(&$post)
@@ -151,6 +156,7 @@ class MyAdminProcess extends MyCommon
                     Tools::dump($post, $sql);
                     exit; //@todo
                 }
+                // TODO nedosažitelný kód - ask CRS2
                 if ($sql) {
                     $this->MyCMS->dbms->query('SELECT ');
                 } else {

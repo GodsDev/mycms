@@ -58,7 +58,8 @@ class MyCMSMonoLingual
         // Logger is obligatory
         if (
 //            !is_object($this->logger) ||
-            !($this->logger instanceof LoggerInterface)) {
+            !($this->logger instanceof LoggerInterface)
+        ) {
             error_log("Error: MyCMS constructed without logger. (" . get_class($this->logger) . ")");
             die('Fatal error - project is not configured.'); //@todo nicely formatted error page
         }
@@ -109,7 +110,8 @@ class MyCMSMonoLingual
     /**
      *
      * @param string $sql
-     * @return mixed first selected row (or its first column if only one column is selected), null on empty SELECT, or false on error
+     * @return mixed first selected row (or its first column if only one column is selected),
+     *     null on empty SELECT, or false on error
      */
     public function fetchSingle($sql)
     {
