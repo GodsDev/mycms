@@ -18,7 +18,7 @@ class Controller extends MyController
     //project specific accepted attributes:
 
     /** @var string */
-    protected $requestUri; // = ''; //default is homepage
+    protected $requestUri; // = ''; // default is homepage
 
     /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
     private $projectSpecific;
