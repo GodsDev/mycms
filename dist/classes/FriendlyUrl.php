@@ -20,13 +20,13 @@ class FriendlyUrl extends MyFriendlyUrl
     protected $get;
 
     /** @var string */
-    protected $requestUri = ''; //default is homepage
+    protected $requestUri = ''; // default is homepage
 
     /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
     private $projectSpecific;
 
     /** @var string */
-    protected $language = DEFAULT_LANGUAGE; //default is Czech
+    protected $language = DEFAULT_LANGUAGE; // default is Czech
 
     /** @var string */
     protected $userAgent = '';
@@ -43,7 +43,7 @@ class FriendlyUrl extends MyFriendlyUrl
             '/|',
             array_diff(array_keys($MyCMS->TRANSLATIONS), [DEFAULT_LANGUAGE])
         ) . '/)?(.*/)?.*?~';
-        //TODO consider injecting projectSpecific from Controller instead of creating new instance
+        // TODO consider injecting projectSpecific from Controller instead of creating new instance
         $this->projectSpecific = new ProjectSpecific($this->MyCMS, [
             'language' => $this->language,
             'requestUri' => $this->requestUri,
