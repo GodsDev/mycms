@@ -2,8 +2,10 @@
 
 namespace GodsDev\MyCMS;
 
+use GodsDev\MyCMS\Tracy\BarPanelTemplate;
 use GodsDev\Tools\Tools;
 use Tracy\Debugger;
+use Tracy\ILogger;
 
 /**
  * Parent for deployed Admin instance
@@ -13,7 +15,10 @@ class MyAdmin extends MyCommon
 {
 
     /** @var MyTableAdmin */
-    protected $TableAdmin;
+    protected $TableAdmin; // todo obsolete as of 2020/10/25
+
+    /** @var MyTableAdmin */
+    protected $tableAdmin;
 
     /** @var array client-side resources - css, js, fonts etc. */
     protected $clientSideResources = [
@@ -53,6 +58,13 @@ class MyAdmin extends MyCommon
     public function __construct(MyCMS $MyCMS, array $options = [])
     {
         parent::__construct($MyCMS, $options);
+        // Todo to be obsoleted in next version
+        if(!empty($this->TableAdmin)) {
+            Debugger::log('Deprecated: TableAdmin. Replace by tableAdmin', ILogger:: WARNING);
+            if(!empty($this-tableAdmin)) {
+                $this->tableAdmin = $this->TableAdmin;
+            }
+        }
     }
 
     /**
@@ -61,11 +73,11 @@ class MyAdmin extends MyCommon
     public function endAdmin()
     {
         if (isset($_SESSION['user'])) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION));
+            Debugger::getBar()->addPanel(new BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION));
         }
         $sqlStatementsArray = $this->MyCMS->dbms->getStatementsArray();
         if (!empty($sqlStatementsArray)) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('SQL: ' . count($sqlStatementsArray), $sqlStatementsArray));
+            Debugger::getBar()->addPanel(new BarPanelTemplate('SQL: ' . count($sqlStatementsArray), $sqlStatementsArray));
         }
     }
 
@@ -111,43 +123,43 @@ class MyAdmin extends MyCommon
      */
     protected function outputNavigation()
     {
-        $TableAdmin = $this->TableAdmin;
+        $tableAdmin = $this->tableAdmin;
         $result = '<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="nav-item mr-2" href="' . Tools::h($_SERVER['SCRIPT_NAME']) . '" title="' . $TableAdmin->translate('Dashboard') . '"><i class="fa fa-tachometer-alt"></i></a>
-                <button class="btn btn-secondary btn-sm" title="' . $TableAdmin->translate('Search') . '" type="submit" id="nav-search-button"><i class="fa fa-search"></i></button>
+                <a class="nav-item mr-2" href="' . Tools::h($_SERVER['SCRIPT_NAME']) . '" title="' . $tableAdmin->translate('Dashboard') . '"><i class="fa fa-tachometer-alt"></i></a>
+                <button class="btn btn-secondary btn-sm" title="' . $tableAdmin->translate('Search') . '" type="submit" id="nav-search-button"><i class="fa fa-search"></i></button>
                 <a data-toggle="popover" data-trigger="focus" title="" data-content="" id="realtime-message" data-placement="bottom" tabindex="0"></a>
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" aria-expanded="false" data-target="#navbar-content" aria-controls="navbar-content"><span class="navbar-toggler-icon mr-1"></span></button>
                 <div class="collapse navbar-collapse" id="navbar-content">
                     <ul class="navbar-nav mr-auto">';
         if (Tools::nonempty($_SESSION['user'])) {
             $result .= $this->outputSpecialMenuLinks()
-                . '<li class="nav-item' . (isset($_GET['media']) ? ' active' : '') . '"><a href="?media" class="nav-link"><i class="fa fa-video"></i> ' . $TableAdmin->translate('Media') . '</a></li>
+                . '<li class="nav-item' . (isset($_GET['media']) ? ' active' : '') . '"><a href="?media" class="nav-link"><i class="fa fa-video"></i> ' . $tableAdmin->translate('Media') . '</a></li>
                 <li class="nav-item dropdown' . (isset($_GET['user']) ? ' active' : '') . '">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $TableAdmin->translate('User') . '"><i class="fa fa-user"></i> ' . $TableAdmin->translate('User') . '</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $TableAdmin->translate('User') . '"><i class="fa fa-user"></i> ' . $tableAdmin->translate('User') . '</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="user-dropdown-menu">
                   <a href="" class="dropdown-item disabled"><i class="fa fa-user"></i> ' . Tools::h($_SESSION['user']) . '</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item' . (isset($_GET['logout']) ? ' active' : '') . '" href="?user&amp;logout"><i class="fa fa-sign-out-alt mr-1"></i> ' . $TableAdmin->translate('Logout') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['change-password']) ? ' active' : '') . '" href="?user&amp;change-password"><i class="fa fa-id-card mr-1"></i> ' . $TableAdmin->translate('Change password') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['create-user']) ? ' active' : '') . '" href="?user&amp;create-user"><i class="fa fa-user-plus mr-1"></i> ' . $TableAdmin->translate('Create user') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['delete-user']) ? ' active' : '') . '" href="?user&amp;delete-user"><i class="fa fa-user-times mr-1"></i> ' . $TableAdmin->translate('Delete user') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['logout']) ? ' active' : '') . '" href="?user&amp;logout"><i class="fa fa-sign-out-alt mr-1"></i> ' . $tableAdmin->translate('Logout') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['change-password']) ? ' active' : '') . '" href="?user&amp;change-password"><i class="fa fa-id-card mr-1"></i> ' . $tableAdmin->translate('Change password') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['create-user']) ? ' active' : '') . '" href="?user&amp;create-user"><i class="fa fa-user-plus mr-1"></i> ' . $tableAdmin->translate('Create user') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['delete-user']) ? ' active' : '') . '" href="?user&amp;delete-user"><i class="fa fa-user-times mr-1"></i> ' . $tableAdmin->translate('Delete user') . '</a>
                 </div>
               </li>';
         }
         $result .= '<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $TableAdmin->translate('Settings') . '"><i class="fa fa-cog"></i> ' . $TableAdmin->translate('Settings') . '</a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $tableAdmin->translate('Settings') . '"><i class="fa fa-cog"></i> ' . $tableAdmin->translate('Settings') . '</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">';
-        foreach ($TableAdmin->TRANSLATIONS as $key => $value) {
+        foreach ($tableAdmin->TRANSLATIONS as $key => $value) {
             $result .= '<a class="dropdown-item' . ($key == $_SESSION['language'] ? ' active' : '') . '" href="?' . Tools::urlChange(['language' => $key]) . '"><i class="fa fa-language mr-1"></i> ' . Tools::h($value) . '</a>' . PHP_EOL;
         }
         if (isset($_SESSION['user'])) {
-            $result .= //'<div class="dropdown-divider"></div><a class="dropdown-item" href="" id="toggle-nav" title="' . Tools::h($TableAdmin->translate('Toggle sidebar')) . '"><i class="fa fa-columns mr-1"></i> ' . $TableAdmin->translate('Sidebar') . '</a>' .
+            $result .= //'<div class="dropdown-divider"></div><a class="dropdown-item" href="" id="toggle-nav" title="' . Tools::h($tableAdmin->translate('Toggle sidebar')) . '"><i class="fa fa-columns mr-1"></i> ' . $tableAdmin->translate('Sidebar') . '</a>' .
                 $this->outputSpecialSettingsLinks();
         }
         $result .= '</div></li></ul></div>';
         if (isset($_SESSION['user'])) {
             $result .= '<form class="collapse mt-md-0" id="nav-search-form">'
-                . Tools::htmlInput('search', '', Tools::set($_GET['search'], ''), ['class' => 'form-control', 'placeholder' => $TableAdmin->translate('Search'), 'required' => true, 'id' => 'nav-search-input'])
+                . Tools::htmlInput('search', '', Tools::set($_GET['search'], ''), ['class' => 'form-control', 'placeholder' => $tableAdmin->translate('Search'), 'required' => true, 'id' => 'nav-search-input'])
                 . '</form>';
         }
         $result .= '
@@ -182,12 +194,12 @@ class MyAdmin extends MyCommon
      */
     protected function outputMedia()
     {
-        $TableAdmin = $this->TableAdmin;
-        $result = '<h1 class="page-header">' . $TableAdmin->translate('Media') . '</h1>
+        $tableAdmin = $this->tableAdmin;
+        $result = '<h1 class="page-header">' . $tableAdmin->translate('Media') . '</h1>
             <form action="" method="post" enctype="multipart/form-data">
                 <fieldset>
-                    <legend>' . $TableAdmin->translate('Upload') . '</legend>
-                    <label for="subfolder">' . $TableAdmin->translate('Folder') . ':</label>
+                    <legend>' . $tableAdmin->translate('Upload') . '</legend>
+                    <label for="subfolder">' . $tableAdmin->translate('Folder') . ':</label>
                     <select name="subfolder" id="subfolder" class="form-control">'
             . Tools::htmlOption('', DIR_ASSETS);
         Tools::setifnull($_SESSION['assetsSubfolder'], '');
@@ -198,27 +210,27 @@ class MyAdmin extends MyCommon
             $result .= Tools::htmlOption($value, DIR_ASSETS . $value, $_SESSION['assetsSubfolder']);
         }
         $result .= '</select>
-                    <label>' . $TableAdmin->translate('Files') . ':</label>
+                    <label>' . $tableAdmin->translate('Files') . ':</label>
                     <div id="files-div">
                         <input type="file" name="files[]" class="form-control" onchange="if($(this).val()){$(\'#files-div\').append($(this).prop(\'outerHTML\'));}" />
                     </div>
                     ' . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '
-                    <button type="submit" name="upload-media" value="1" class="btn btb-lg btn-primary"><i class="fa fa-upload"></i> ' . $TableAdmin->translate('Upload') . '</button>
+                    <button type="submit" name="upload-media" value="1" class="btn btb-lg btn-primary"><i class="fa fa-upload"></i> ' . $tableAdmin->translate('Upload') . '</button>
                 </fieldset>
             </form><hr />
             <details class="uploaded-files" open><summary>' . $TableAdmin->translate('Uploaded files') . ' <small class="badge badge-secondary"></small></summary>
             <div id="media-files"></div>
             <div id="media-ops mt-3">
-                <button class="btn btn-secondary" title="' . $TableAdmin->translate('Delete') . '" id="delete-media-files"><i class="fa fa-check-square"></i> <i class="fa fa-trash"></i></button>
+                <button class="btn btn-secondary" title="' . $tableAdmin->translate('Delete') . '" id="delete-media-files"><i class="fa fa-check-square"></i> <i class="fa fa-trash"></i></button>
                 <fieldset class="d-inline-block position-relative" id="rename-fieldset">
                     <div class="input-group input-group-sm">
-                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $TableAdmin->translate('filename') . '" disabled><i class="fa fa-dot-circle"></i></button></div>'
+                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $tableAdmin->translate('filename') . '" disabled><i class="fa fa-dot-circle"></i></button></div>'
             . Tools::htmlInput('', '', '', ['class' => 'form-control form-control-sm', 'id' => 'media-file-name']) . '
                     </div>
                 </fieldset>
                 <fieldset class="d-inline-block position-relative">
                     <div class="input-group input-group-sm form-control-inline">
-                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $TableAdmin->translate('folder') . '" disabled><i class="fa fa-folder"></i></button></div>
+                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $tableAdmin->translate('folder') . '" disabled><i class="fa fa-folder"></i></button></div>
                         <select id="file-rename-folder" name="file-rename-folder" class="form-control d-inline-block"></select>
                     </div>
                 </fieldset>
@@ -237,19 +249,19 @@ class MyAdmin extends MyCommon
      */
     protected function outputUser()
     {
-        $TableAdmin = $this->TableAdmin;
-        $result = '<h1>' . $TableAdmin->translate('User') . '</h1>';
+        $tableAdmin = $this->tableAdmin;
+        $result = '<h1>' . $tableAdmin->translate('User') . '</h1>';
         // logout
         if (isset($_GET['logout'])) {
-            $result .= '<h2><small>' . $TableAdmin->translate('Logout') . '</small></h2>
+            $result .= '<h2><small>' . $tableAdmin->translate('Logout') . '</small></h2>
                 <form action="" method="post" id="logout-form" class="panel d-inline-block"><fieldset class="card p-2">
-                <button type="submit" name="logout" class="form-control btn-primary text-left"><i class="fa fa-sign-out-alt"></i> ' . $TableAdmin->translate('Logout') . '</button>'
+                <button type="submit" name="logout" class="form-control btn-primary text-left"><i class="fa fa-sign-out-alt"></i> ' . $tableAdmin->translate('Logout') . '</button>'
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '
                 </fieldset></form>';
         }
         // change password
         if (isset($_GET['change-password'])) {
-            $result .= '<h2><small>' . $TableAdmin->translate('Change password') . '</small></h2>
+            $result .= '<h2><small>' . $tableAdmin->translate('Change password') . '</small></h2>
                 <form action="" method="post" id="change-password-form" onsubmit="return changePasswordSubmit()"><fieldset class="card p-3">';
             $options = [
                 'type' => 'password',
@@ -259,9 +271,9 @@ class MyAdmin extends MyCommon
                 'class' => 'form-control mycms-password',
                 'label-class' => 'mt-1',
             ];
-            $result .= Tools::htmlInput('old-password', $TableAdmin->translate('Old password', false) . ':', '', $options + ['id' => 'old-password', 'autocomplete' => 'off'])
-                . Tools::htmlInput('new-password', $TableAdmin->translate('New password', false) . ':', '', $options + ['id' => 'new-password', 'autocomplete' => 'new-password'])
-                . Tools::htmlInput('retype-password', $TableAdmin->translate('Retype password', false) . ':', '', $options + ['id' => 'retype-password', 'autocomplete' => 'new-password'])
+            $result .= Tools::htmlInput('old-password', $tableAdmin->translate('Old password', false) . ':', '', $options + ['id' => 'old-password', 'autocomplete' => 'off'])
+                . Tools::htmlInput('new-password', $tableAdmin->translate('New password', false) . ':', '', $options + ['id' => 'new-password', 'autocomplete' => 'new-password'])
+                . Tools::htmlInput('retype-password', $tableAdmin->translate('Retype password', false) . ':', '', $options + ['id' => 'retype-password', 'autocomplete' => 'new-password'])
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
                 . '<div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="change-password-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
                 <button type="submit" name="change-password" class="btn btn-primary mt-3"><i class="fa fa-id-card mr-1"></i> ' . $TableAdmin->translate('Change password') . '</button>
@@ -269,36 +281,36 @@ class MyAdmin extends MyCommon
         }
         // create user
         if (isset($_GET['create-user'])) {
-            $result .= '<h2><small>' . $TableAdmin->translate('Create user') . '</small></h2>
+            $result .= '<h2><small>' . $tableAdmin->translate('Create user') . '</small></h2>
                 <form action="" method="post" class="panel create-user-form" onsubmit="return createUserSubmit()"><fieldset class="card p-3">'
-                . Tools::htmlInput('user', $TableAdmin->translate('User', false) . ':', '', ['class' => 'form-control', 'id' => 'create-user'])
-                . Tools::htmlInput('password', $TableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-password'])
-                . Tools::htmlInput('retype-password', $TableAdmin->translate('Retype password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-retype-password'])
+                . Tools::htmlInput('user', $tableAdmin->translate('User', false) . ':', '', ['class' => 'form-control', 'id' => 'create-user'])
+                . Tools::htmlInput('password', $tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-password'])
+                . Tools::htmlInput('retype-password', $tableAdmin->translate('Retype password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-retype-password'])
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
                 . '<div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="create-user-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-                  <button type="submit" name="create-user" class="btn btn-primary my-3"><i class="fa fa-user-plus"></i> ' . $TableAdmin->translate('Create user') . '</button>
+                  <button type="submit" name="create-user" class="btn btn-primary my-3"><i class="fa fa-user-plus"></i> ' . $tableAdmin->translate('Create user') . '</button>
                 </fieldset></form>';
         }
         // delete user
         if (isset($_GET['delete-user'])) {
-            $result .= '<h2><small>' . $TableAdmin->translate('Delete user') . '</small></h2>
+            $result .= '<h2><small>' . $tableAdmin->translate('Delete user') . '</small></h2>
                 <div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="activate-user-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
             if ($users = $this->MyCMS->fetchAll('SELECT id,admin,active FROM ' . TAB_PREFIX . 'admin')) {
                 $result .= '<ul class="list-group list-group-flush">';
                 foreach ($users as $user) {
                     $result .= '<li class="list-group-item">
-                        <form action="" method="post" class="form-inline d-inline-block delete-user-form' . ($user['active'] == 1 ? '' : ' inactive-item') . '" onsubmit="return confirm(\'' . $TableAdmin->translate('Really delete?') . '\')">'
+                        <form action="" method="post" class="form-inline d-inline-block delete-user-form' . ($user['active'] == 1 ? '' : ' inactive-item') . '" onsubmit="return confirm(\'' . $tableAdmin->translate('Really delete?') . '\')">'
                         . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
-                        . '<button type="submit" name="delete-user" value="' . Tools::h($user['admin']) . '"' . ($user['admin'] == $_SESSION['user'] ? ' disabled' : '') . ' class="btn btn-primary" title="' . $TableAdmin->translate('Delete user') . '?">'
+                        . '<button type="submit" name="delete-user" value="' . Tools::h($user['admin']) . '"' . ($user['admin'] == $_SESSION['user'] ? ' disabled' : '') . ' class="btn btn-primary" title="' . $tableAdmin->translate('Delete user') . '?">'
                         . '<i class="fa fa-user-times"></i></button> '
-                        . Tools::htmlInput('', '', $user['id'], ['type' => 'checkbox', 'checked' => ($user['active'] ? 1 : null), 'class' => 'user-activate', 'title' => $TableAdmin->translate('Activate/deactivate')]) . ' '
+                        . Tools::htmlInput('', '', $user['id'], ['type' => 'checkbox', 'checked' => ($user['active'] ? 1 : null), 'class' => 'user-activate', 'title' => $tableAdmin->translate('Activate/deactivate')]) . ' '
                         . '<tt>' . Tools::h($user['admin']) . '</tt>
                         </form>
                         </li>' . PHP_EOL;
                 }
                 $result .= '</ul>';
             } else {
-                $result .= '<p class="alert alert-warning">' . $TableAdmin->translate('No records found.') . '</p>';
+                $result .= '<p class="alert alert-warning">' . $tableAdmin->translate('No records found.') . '</p>';
             }
         }
         return $result;
@@ -311,7 +323,7 @@ class MyAdmin extends MyCommon
      */
     protected function outputLogin()
     {
-        $TableAdmin = $this->TableAdmin;
+        $tableAdmin = $this->tableAdmin;
         $options = [
             'before' => '<div class="col-sm-3 mt-3">',
             'between' => '</div><div class="col-sm-9">',
@@ -319,13 +331,13 @@ class MyAdmin extends MyCommon
             'class' => 'form-control',
             'label-html' => 1,
         ];
-        return '<h1>' . $TableAdmin->translate('Login') . '</h1>
+        return '<h1>' . $tableAdmin->translate('Login') . '</h1>
             <form action="" method="post" class="form" id="login-form">
             <div>'
-            . Tools::htmlInput('user', '<i class="fa fa-user"></i> ' . $TableAdmin->translate('User', false) . ':', Tools::setifnull($_SESSION['user']), $options)
-            . Tools::htmlInput('password', '<i class="fa fa-key"></i> ' . $TableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'login-password'] + $options)
+            . Tools::htmlInput('user', '<i class="fa fa-user"></i> ' . $tableAdmin->translate('User', false) . ':', Tools::setifnull($_SESSION['user']), $options)
+            . Tools::htmlInput('password', '<i class="fa fa-key"></i> ' . $tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'login-password'] + $options)
             . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '</div>
-            <div class="col-sm-9 col-sm-offset-3 my-3"><button type="submit" name="login" class="btn btn-primary"><i class="fa fa-sign-in fa-sign-in-alt"></i> ' . $TableAdmin->translate('Login') . '</button>
+            <div class="col-sm-9 col-sm-offset-3 my-3"><button type="submit" name="login" class="btn btn-primary"><i class="fa fa-sign-in fa-sign-in-alt"></i> ' . $tableAdmin->translate('Login') . '</button>
             </div>
             </form>';
     }
@@ -337,19 +349,19 @@ class MyAdmin extends MyCommon
      */
     protected function outputDashboard()
     {
-        $TableAdmin = $this->TableAdmin;
+        $tableAdmin = $this->tableAdmin;
         $result = '<br class="m-3"/><br class="m-3"/><hr />
-            <div><small>' . $TableAdmin->translate('For more detailed browsing with filtering etc. you may select one of the following tables…') . '</small></div>
+            <div><small>' . $tableAdmin->translate('For more detailed browsing with filtering etc. you may select one of the following tables…') . '</small></div>
             <div class="detailed-tables">';
-        foreach (array_keys($TableAdmin->tables) as $table) {
+        foreach (array_keys($tableAdmin->tables) as $table) {
             if (substr($table, 0, strlen(TAB_PREFIX)) != TAB_PREFIX) {
                 continue;
             }
-            $result .= '<a href="?table=' . urlencode($table) . '&amp;where[id]="><i class="fa fa-plus-square" title="' . $TableAdmin->translate('New record') . '"></i></a> '
+            $result .= '<a href="?table=' . urlencode($table) . '&amp;where[id]="><i class="fa fa-plus-square" title="' . $tableAdmin->translate('New record') . '"></i></a> '
                 . '<a href="?table=' . urlencode($table) . '" class="d-inline' . ($_GET['table'] == $table ? ' active' : '') . '">'
                 . '<i class="fa fa-table"></i> '
                 . Tools::h(substr($table, strlen(TAB_PREFIX)))
-                . ($table == $_GET['table'] ? ' <span class="sr-only">(' . $TableAdmin->translate('current') . ')</span>' : '')
+                . ($table == $_GET['table'] ? ' <span class="sr-only">(' . $tableAdmin->translate('current') . ')</span>' : '')
                 . '</a> &nbsp; ' . PHP_EOL;
         }
         $result .= '</div>';
@@ -364,10 +376,10 @@ class MyAdmin extends MyCommon
      */
     protected function outputAgendas()
     {
-        $TableAdmin = $this->TableAdmin;
+        $tableAdmin = $this->tableAdmin;
         // show agendas in the sidebar
-        $result = '<details id="agendas"><summary class="page-header">' . $TableAdmin->translate('Agendas') . '<br />'
-            . $TableAdmin->translate('Select your agenda, then particular row.') . '</summary><div class="ml-3">' . PHP_EOL;
+        $result = '<details id="agendas"><summary class="page-header">' . $tableAdmin->translate('Agendas') . '<br />'
+            . $tableAdmin->translate('Select your agenda, then particular row.') . '</summary><div class="ml-3">' . PHP_EOL;
         foreach ($this->agendas as $agenda => $option) {
             Tools::setifempty($option['table'], $agenda);
             $result .= '<details class="my-1" id="details-' . $agenda . '">
@@ -383,10 +395,10 @@ class MyAdmin extends MyCommon
             } else {
                 $tmpBadge = '';
             }
-            $TableAdmin->script .= 'getAgenda(' . json_encode($agenda) . ',{table:' . json_encode($option['table'] ?: $agenda) . $tmpBadge . '});' . PHP_EOL;
+            $tableAdmin->script .= 'getAgenda(' . json_encode($agenda) . ',{table:' . json_encode($option['table'] ?: $agenda) . $tmpBadge . '});' . PHP_EOL;
         }
         $result .= '</div></details>';
-        $TableAdmin->script .= '$("#agendas > summary").click();';
+        $tableAdmin->script .= '$("#agendas > summary").click();';
         return $result;
     }
 
