@@ -91,10 +91,14 @@ class Controller extends MyController
      */
     protected function prepareTemplate(array $options = [])
     {
-        $this->verboseBarDump(['template' => $this->MyCMS->template, 'language' => $this->language], 'template used to prepareTemplate switch');
+        $this->verboseBarDump(
+            ['template' => $this->MyCMS->template, 'language' => $this->language],
+            'template used to prepareTemplate switch'
+        );
         Assert::inArray($this->httpMethod, ['GET', 'POST',], 'Unauthorized HTTP method %s');
         Debugger::barDump($requestMethod = $this->httpMethod, 'REQUEST_METHOD');
-        $this->projectSpecific = new ProjectSpecific($this->MyCMS, ['language' => $this->language]); // language is already properly set
+        // language is already properly set, so set it to ProjectSpecific object
+        $this->projectSpecific = new ProjectSpecific($this->MyCMS, ['language' => $this->language]);
         switch ($this->MyCMS->template) {
             case self::TEMPLATE_DEFAULT:
                 return true;
@@ -115,11 +119,12 @@ class Controller extends MyController
                     // . 'category_id,'
                     . ' name_' . $this->language . ' AS title,'
                     . ' content_' . $this->language . ' AS description '
-                    // TODO: Note: takto se do pole context[product] přidá field [link], který obsahuje potenciálně friendly URL, ovšem relativní, tedy bez jazyka. Je to příprava pro forced 301 SEO a pro hreflang funkcionalitu.
+                    // TODO: Note: takto se do pole context[product] přidá field [link],
+                    // který obsahuje potenciálně friendly URL, ovšem relativní, tedy bez jazyka.
+                    // Je to příprava pro forced 301 SEO a pro hreflang funkcionalitu.
                     . ',' . $this->projectSpecific->getLinkSql('?article&id=', $this->language)
                     . ' FROM ' . TAB_PREFIX . 'content WHERE active="1" AND'
                     . ' type LIKE "article" AND'
-                    // . ' name_' . $this->language . ' NOT LIKE "" AND' // hide product language variants with empty title
                     . $articleIdentifier
                     . ' LIMIT 1'
                 );
@@ -127,15 +132,24 @@ class Controller extends MyController
                     $this->MyCMS->template = self::TEMPLATE_NOT_FOUND;
                     return true;
                 }
-                $this->MyCMS->context['content']['context'] = json_decode($this->MyCMS->context['content']['context'], true); //decodes json so that article context may be used within template
+                $this->MyCMS->context['content']['context'] = json_decode(
+                    $this->MyCMS->context['content']['context'],
+                    true
+                ); //decodes json so that article context may be used within template
                 $this->MyCMS->context['pageTitle'] = $this->MyCMS->context['content']['title'];
-                $this->MyCMS->context['content']['image'] = array_key_exists('image', $this->MyCMS->context['content']['context']) ? (string) $this->MyCMS->context['content']['context']['image'] : '';
+                $this->MyCMS->context['content']['image'] = array_key_exists(
+                    'image',
+                    $this->MyCMS->context['content']['context']
+                )
+                    ? (string) $this->MyCMS->context['content']['context']['image'] : '';
                 return true;
             case 'category':
                 if (!Tools::ifset($this->get['category'])) {
                     $categoryId = null;
-                    $this->MyCMS->context['pageTitle'] = 'Categories'; // TODO localize // TODO content element
-                    $this->MyCMS->context['content']['description'] = 'About all categories'; // TODO localize perex for all categories // TODO content element
+                    // TODO localize // TODO content element
+                    $this->MyCMS->context['pageTitle'] = 'Categories';
+                    // TODO localize perex for all categories // TODO content element
+                    $this->MyCMS->context['content']['description'] = 'About all categories';
                 } else {
                     $this->MyCMS->context['content'] = $this->projectSpecific->getCategory(
                         Tools::ifset($this->get['category']),
@@ -195,8 +209,17 @@ class Controller extends MyController
                 return true;
             case 'search-results': //search _GET[search] contains the search phrase
                 $this->MyCMS->context['limit'] = PAGINATION_LIMIT;
-                $this->MyCMS->context['offset'] = isset($this->get['offset']) ? filter_var($this->get['offset'], FILTER_VALIDATE_INT, ['default' => 0, 'min_range' => 0, 'max_range' => 1e9]) : 0;
-                $this->MyCMS->context['results'] = $this->projectSpecific->searchResults($this->get['search'], $this->MyCMS->context['offset'], $this->MyCMS->context['totalRows']);
+                $this->MyCMS->context['offset'] = isset($this->get['offset'])
+                    ? filter_var(
+                        $this->get['offset'],
+                        FILTER_VALIDATE_INT,
+                        ['default' => 0, 'min_range' => 0, 'max_range' => 1e9]
+                    ) : 0;
+                $this->MyCMS->context['results'] = $this->projectSpecific->searchResults(
+                    $this->get['search'],
+                    $this->MyCMS->context['offset'],
+                    $this->MyCMS->context['totalRows']
+                );
                 //@todo ošetřit empty result
                 $this->MyCMS->context['pageTitle'] = $this->MyCMS->translate('Výsledky hledání');
                 return true;

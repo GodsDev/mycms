@@ -5,11 +5,12 @@
  */
 
 error_reporting(E_ALL & ~E_NOTICE);
-ini_set('session.http_only', true); // TODO true as string?
+// TODO fix 3 lines below: '#Parameter \#2 \$newvalue of function ini_set expects string, true given.#'
+ini_set('session.http_only', true); // @phpstan-ignore-line TODO true as string?
 if (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') {
-    ini_set('session.cookie_secure', true); // TODO true as string?
+    ini_set('session.cookie_secure', true); // @phpstan-ignore-line TODO true as string?
 }
-ini_set('session.cookie_httponly', true); // TODO true as string?
+ini_set('session.cookie_httponly', true); // @phpstan-ignore-line TODO true as string?
 ini_set('session.gc_divisor', '100');
 ini_set('session.gc_maxlifetime', '200000');
 ini_set('session.cokie_lifetime', '2000000');

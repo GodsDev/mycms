@@ -308,12 +308,15 @@ Note: `header("Content-type: application/json");` in outputJSON hides Tracy
 
 super-linter uses PHPSTAN to identify PHPDoc errors
 * but github-action doesn't have access to libraries declared in composer (ignoreErrors)
-* and it needs to know which global constants are used (`.github/linters/conf/constants.php`)
+* and it needs to know which global constants are used (`.github/linters/conf/constants.php`) on top of standard config files
 * and where to look for present classes (scanDirectories), hence following files:
 * `.github/linters/phpstan.neon` - for super-linter on github
 * `phpstan.neon.dist` - for local PHPSTAN
+* `phpstan.common.neon` - both for local and super-linter on github PHPSTAN
+* Note: if your DEFAULT_BRANCH is not `develop`, change `.github/linters/phpstan.neon` accordingly
+* Note: when code becomes stable, change VALIDATE_ALL_CODEBASE to `false`
 
-* Note: PHPUnit 5.7.27 tests apparently is not possible to analyse with PHPSTAN
+* Note: PHPUnit 5.7.27 tests apparently are not possible to analyse with PHPSTAN
 * TODO: describe what phpstan.neon files are used in which scenario (mycms vs dist project)
 * TODO: .eslintrc.yml and dist/.eslintrc.yml - keep or delete?
 
@@ -331,7 +334,6 @@ Logs are in folder `log`:
 ## Templating
 
 [`latte` templates](https://latte.nette.org/) are used.
-
 
 ## Visual style
 
@@ -352,6 +354,8 @@ When changing index.css, index.js or admin.js, update `PAGE_RESOURCE_VERSION` in
 
 ### TODO CMS
 * 200610: bool field show as on/off 1/0 true/false or something else more reasonable than int input box
+* 200712: when adding new Content automatically uncheck the NULL checkbox so that something is saved!
+* 200828: content_XX HTML field (for article) doesn't automatically uncheck null checkbox, therefore the UX is that you fill-in new text and it is not saved
 
 ### TODO SEO
 
@@ -359,18 +363,18 @@ When changing index.css, index.js or admin.js, update `PAGE_RESOURCE_VERSION` in
 ### TODO vizualizace
 
 
+### TODO security
+* 200609: admin table (with salt etc.) SHOULD NOT be available through admin.php
+
 ### TODO other
 * 190611: add article and search page types including controller tests
 * 190611: Make SASS to CSS conversion automatic (e.g. gulp or Github Action?)
-* 200609: admin table (with salt etc.) SHOULD NOT be available through admin.php
 * 200712: migrate popper <https://popper.js.org/docs/v2/migration-guide/> incl. map --> admin.php expects section
 * 200712: update bootstrap <https://getbootstrap.com/> incl. map --> admin.php expects section
 * 200712: update jquery <https://jquery.com/> incl. map --> admin.php expects section
 * 200712: update fontawesome --> admin.php expects section
-* 200712: when adding new Content automatically uncheck the NULL checkbox so that something is saved!
 * 200712: remove unnecessary `sql =` constructs
 * 200802: test with 2 categories
 * 200802: image for product and category in assets
-* 200828: content_XX HTML field (for article) doesn't automatically uncheck null checkbox, therefore the UX is that you fill-in new text and it is not saved
 * 200826: <http://localhost:8080/godsdev/mycms/dist/admin.php?language=fr> nastaví jazyk položek do fr, ale v Settings se to nedá: ať se dá
 * 200921: (MyCMS) properly fix         message: '#Parameter #2 $newvalue of function ini_set expects string, true given.#'    path: /github/workspace/set-environment.php

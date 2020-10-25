@@ -17,6 +17,7 @@ on:
   push:
     branches-ignore:
       - 'master'
+      - 'main'
 
 ###############
 # Set the Job #
@@ -44,10 +45,11 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter@master
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: develop
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.yml
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_ANSIBLE: false
+          VALIDATE_CSS: false
           VALIDATE_PHP_PSALM: false

@@ -3,9 +3,10 @@
 namespace GodsDev\mycmsprojectnamespace;
 
 use GodsDev\MyCMS\LogMysqli;
+use GodsDev\MyCMS\MyTableAdmin;
 use GodsDev\Tools\Tools;
 
-class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
+class TableAdmin extends MyTableAdmin
 {
     use \Nette\SmartObject;
 
@@ -18,11 +19,7 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
     public function __construct(LogMysqli $dbms, $table, array $options = [])
     {
         parent::__construct($dbms, $table, $options);
-        // TODO uses all example languages
-        $this->TRANSLATIONS = [
-            'cs' => 'Česky',
-            'en' => 'English',
-        ];
+        $this->TRANSLATIONS = $options['TRANSLATIONS'];
         if (Tools::setifempty($_SESSION['language'], 'en') == 'cs') {
             $this->TRANSLATION += [
                 'Activate/deactivate' => 'Aktivovat/deaktivovat',
@@ -76,7 +73,8 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
                 'Files' => 'Soubory',
                 'Filter records' => 'Vyfiltrovat záznamy',
                 'Folder' => 'Složka',
-                'For more detailed browsing with filtering etc. you may select one of the following tables…' => 'Pro detailnější procházení tabulek s filtrováním, řazením atd. klikněte na jednu z následujících…',
+                'For more detailed browsing with filtering etc. you may select one of the following tables…' =>
+                'Pro detailnější procházení tabulek s filtrováním, řazením atd. klikněte na jednu z následujících…', // phpcs:ignore
                 'go back' => 'jít zpět',
                 'go to page' => 'Jít na stránku',
                 'Change password' => 'Změnit heslo',
@@ -134,7 +132,8 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
                 'Save' => 'Uložit',
                 'Search' => 'Hledat',
                 'Select' => 'Vyberte',
-                'Select at least one file and try again.' => 'Označte alespoň jeden soubor a zkuste to ještě jednou.',
+                'Select at least one file and try again.' =>
+                'Označte alespoň jeden soubor a zkuste to ještě jednou.',
                 'Selected records' => 'Vybrané záznamy',
                 'Settings' => 'Nastavení',
                 'Sidebar' => 'Postranní panel',
@@ -296,6 +295,10 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
                 'column:url_cs' => 'URL (Czech)',
                 'column:url_en' => 'URL (English)',
             ];
+        } elseif ($_SESSION['language'] == 'fr') {
+            $this->TRANSLATION += [
+                'Select your agenda, then particular row.' => 'Sélectionnez votre agenda, puis une ligne particulière.', // phpcs:ignore
+            ];
         }
     }
 
@@ -310,28 +313,35 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
     public function customInput($field, $value, array $record = [])
     {
         $result = false;
-        //TODO: explain code below
-//        /*        $fieldLang = $field;
-//          foreach ($this->TRANSLATIONS as $key => $value) {
-//          if (substr($field, -3) == '_' . $key) {
-//          $fieldLang = substr($field, -3) . '_##';
-//          }
-//          } */
-        switch (mb_substr($this->table, mb_strlen(TAB_PREFIX)) . "\\" . $field) {
+        $fieldLang = '##';
+        $fieldName = $field;
+        if (substr($field, -3, 1) === '_' && in_array(substr($field, -2), array_keys($this->TRANSLATIONS))) {
+            // Localised fields may have language independant behaviour
+            $fieldLang = substr($field, -2); // language of the field
+            $fieldName = substr($field, 0, -2) . '##';
+        }
+        switch (mb_substr($this->table, mb_strlen(TAB_PREFIX)) . "\\" . $fieldName) {
             //case "tableName\\fieldName": $result = ""; break; // SPECIMEN
             // URL fields have btn-webalize button
-            case "content\\url_cs":
-            case "content\\url_de":
-            case "content\\url_en":
-            case "content\\url_fr":
+            case "content\\url_##":
                 $result = '<div class="input-group">'
-                    . Tools::htmlInput("fields[$field]", '', $value, array('class' => 'form-control input-url', 'id' => $field . $this->rand))
+                    . Tools::htmlInput(
+                        "fields[$field]",
+                        '',
+                        $value,
+                        ['class' => 'form-control input-url', 'id' => $field . $this->rand]
+                    )
                     . '<span class="input-group-btn">'
-                    . '<button type="button" class="btn btn-secondary btn-webalize"' // btn-webalize referes to listener in admin.js // TODO webalize according to the first row on the page (i.e. name, not description)
+                    // btn-webalize referes to listener in admin.js
+                    // TODO webalize according to the first row on the page (i.e. name, not description)
+                    . '<button type="button" class="btn btn-secondary btn-webalize"'
                     . ' data-url="' . Tools::h($field . $this->rand) . '"'
-                    . ' data-name="' . Tools::h(mb_substr($this->table, mb_strlen(TAB_PREFIX)) . '_' . mb_substr($field, -2) . $this->rand) . '"'
+                    . ' data-name="' . Tools::h(
+                        mb_substr($this->table, mb_strlen(TAB_PREFIX)) . '_' . mb_substr($field, -2) . $this->rand
+                    ) . '"'
                     . ' data-table="' . Tools::h($this->table) . '"'
-                    . ' title="' . $this->translate('Convert') . '"><i class="fa fa-adjust" aria-hidden="true"></i></button>'
+                    . ' title="' . $this->translate('Convert') . '">'
+                    . '<i class="fa fa-adjust" aria-hidden="true"></i></button>'
                     . '</span></div>';
                 break;
         }
@@ -352,38 +362,55 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
         // @todo insert this into TableAdmin.php
         if (
             isset($_POST['table'], $_POST['path-original'], $_POST['path-parent'], $_POST['fields']['id']) &&
-            $_POST['table'] == TAB_PREFIX . 'category' && (!Tools::begins($_POST['path-original'], $_POST['path-parent']) || Tools::set($_POST['fields-null']['path']))
+            $_POST['table'] == TAB_PREFIX . 'category' && (!Tools::begins(
+                $_POST['path-original'],
+                $_POST['path-parent']
+            ) || Tools::set($_POST['fields-null']['path']))
         ) {
             $length = [strlen($_POST['path-parent']), strlen($_POST['path-original'])];
-            if ($_POST['path-original'] && $_POST['fields']['id'] != '') { // existing record whose parent category changed - we need to shift its sibblings that follow after it to fill the gap
-                $this->dbms->query('LOCK TABLES ' . Tools::escapeDbIdentifier($_POST['table']) . ' WRITE'); // we can't allow for other admin to write into categories during this op
-                $this->dbms->query($sql = 'UPDATE ' . Tools::escapeDbIdentifier($_POST['table']) . ' SET path = NULL WHERE id=' . (int) $_POST['fields']['id'] . ' LIMIT 1'); //category.path is a unique key so to allow for the following change we need to set this path to NULL
+            // existing record whose parent category changed - we need to shift its sibblings
+            // that follow after it to fill the gap
+            if ($_POST['path-original'] && $_POST['fields']['id'] != '') {
+                // we can't allow for other admin to write into categories during this op
+                $this->dbms->query('LOCK TABLES ' . Tools::escapeDbIdentifier($_POST['table']) . ' WRITE');
+                //category.path is a unique key so to allow for the following change we need to set this path to NULL
+                $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table'])
+                    . ' SET path = NULL WHERE id=' . (int) $_POST['fields']['id'] . ' LIMIT 1');
                 if (Tools::set($_POST['fields-null']['path'])) {
                     $this->dbms->query('UNLOCK TABLES');
                     return false;
                 }
                 $_POST['original']['path'] = null;
-                $update = $this->dbms->fetchAndReindex('SELECT id, CONCAT(LEFT(path, ' . ($length[1] - PATH_MODULE) . '), 
-                        LPAD(MID(path, ' . ($length[1] - PATH_MODULE + 1) . ', ' . PATH_MODULE . ') - 1, ' . PATH_MODULE . ', "0"), 
+                $update = $this->dbms->fetchAndReindex('SELECT id, CONCAT(LEFT(path, '
+                    . ($length[1] - PATH_MODULE) . '), 
+                        LPAD(MID(path, ' . ($length[1] - PATH_MODULE + 1) . ', ' . PATH_MODULE . ') - 1, '
+                    . PATH_MODULE . ', "0"), 
                         MID(path, ' . ($length[1] + PATH_MODULE + 1) . '))
                     FROM ' . Tools::escapeDbIdentifier($_POST['table']) . '
-                    WHERE LEFT(path, ' . ($length[1] - PATH_MODULE) . ') = "' . $this->dbms->escapeSQL(substr($_POST['path-original'], 0, -PATH_MODULE)) . '" 
-                    AND LENGTH(path) >= ' . $length[1] . ' AND path > "' . $this->dbms->escapeSQL($_POST['path-original']) . '"');
+                    WHERE LEFT(path, ' . ($length[1] - PATH_MODULE) . ') = "'
+                    . $this->dbms->escapeSQL(substr($_POST['path-original'], 0, -PATH_MODULE)) . '" 
+                    AND LENGTH(path) >= ' . $length[1] . ' AND path > "'
+                    . $this->dbms->escapeSQL($_POST['path-original']) . '"');
                 if ($update) {
-                    $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table']) . ' SET path = NULL WHERE id IN (' . implode(', ', array_keys($update)) . ')');
+                    $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table'])
+                        . ' SET path = NULL WHERE id IN (' . implode(', ', array_keys($update)) . ')');
                     foreach ($update as $key => $value) {
-                        $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table']) . ' SET path = "' . $this->dbms->escapeSQL($value) . '" WHERE id = ' . (int) $key);
+                        $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table'])
+                            . ' SET path = "' . $this->dbms->escapeSQL($value) . '" WHERE id = ' . (int) $key);
                     }
                 }
             }
             // get path of the "last" child of given parent category, add +1
-            $tmp = $this->dbms->fetchSingle('SELECT MAX(MID(path, ' . ($length[0] + PATH_MODULE) . ')) FROM ' . Tools::escapeDbIdentifier($_POST['table'])
-                . ' WHERE LEFT(path, ' . $length[0] . ')="' . $this->dbms->escapeSQL($_POST['path-parent']) . '" AND LENGTH(path)=' . ($length[0] + PATH_MODULE));
-            $_POST['fields']['path'] = $_POST['path-parent'] . str_pad((string) (intval($tmp) + 1), PATH_MODULE, '0', STR_PAD_LEFT);
+            $tmp = $this->dbms->fetchSingle('SELECT MAX(MID(path, ' . ($length[0] + PATH_MODULE) . ')) FROM '
+                . Tools::escapeDbIdentifier($_POST['table'])
+                . ' WHERE LEFT(path, ' . $length[0] . ')="' . $this->dbms->escapeSQL($_POST['path-parent'])
+                . '" AND LENGTH(path)=' . ($length[0] + PATH_MODULE));
+            $_POST['fields']['path'] = $_POST['path-parent']
+                . str_pad((string) (intval($tmp) + 1), PATH_MODULE, '0', STR_PAD_LEFT);
             $this->dbms->query('UNLOCK TABLES');
             return false;
         }
-        // todo prozkoumat, co to udělá, když to dojde až sem
+        // todo prozkoumat, co to udělá, když to dojde až sem, zda return false je správná odpověď
         return false;
     }
 
@@ -403,23 +430,28 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
         // After a category is deleted, shift categories after it accordingly.
         if ($_POST['table'] == TAB_PREFIX . 'category' && isset($_POST['path-original']) && $_POST['path-original']) {
             $length = strlen($_POST['path-original']);
-            $update = $this->dbms->fetchAndReindex($sql = 'SELECT id, CONCAT(LEFT(path, ' . ($length - PATH_MODULE) . '), 
-                    LPAD(MID(path, ' . ($length - PATH_MODULE + 1) . ', ' . PATH_MODULE . ') - 1, ' . PATH_MODULE . ', "0"), 
+            $update = $this->dbms->fetchAndReindex('SELECT id, CONCAT(LEFT(path, ' . ($length - PATH_MODULE) . '), 
+                    LPAD(MID(path, ' . ($length - PATH_MODULE + 1) . ', ' . PATH_MODULE . ') - 1, '
+                . PATH_MODULE . ', "0"), 
                     MID(path, ' . ($length + PATH_MODULE + 1) . '))
                 FROM ' . Tools::escapeDbIdentifier($_POST['table']) . '
-                WHERE LEFT(path, ' . ($length - PATH_MODULE) . ') = "' . $this->dbms->escapeSQL(substr($_POST['path-original'], 0, -PATH_MODULE)) . '" 
-                AND LENGTH(path) >= ' . $length . ' AND path > "' . $this->dbms->escapeSQL($_POST['path-original']) . '"');
+                WHERE LEFT(path, ' . ($length - PATH_MODULE) . ') = "'
+                . $this->dbms->escapeSQL(substr($_POST['path-original'], 0, -PATH_MODULE)) . '" 
+                AND LENGTH(path) >= ' . $length . ' AND path > "'
+                . $this->dbms->escapeSQL($_POST['path-original']) . '"');
             if ($update) {
                 $this->dbms->query('LOCK TABLES ' . Tools::escapeDbIdentifier($_POST['table']) . ' WRITE');
-                $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table']) . ' SET path = NULL WHERE id IN (' . implode(', ', array_keys($update)) . ')');
+                $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table'])
+                    . ' SET path = NULL WHERE id IN (' . implode(', ', array_keys($update)) . ')');
                 foreach ($update as $key => $value) {
-                    $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table']) . ' SET path = "' . $this->dbms->escapeSQL($value) . '" WHERE id = ' . (int) $key);
+                    $this->dbms->query('UPDATE ' . Tools::escapeDbIdentifier($_POST['table'])
+                        . ' SET path = "' . $this->dbms->escapeSQL($value) . '" WHERE id = ' . (int) $key);
                 }
                 $this->dbms->query('UNLOCK TABLES');
             }
             return true;
         }
-        // TODO prozkoumat
+        // TODO prozkoumat, co to udělá, když to dojde až sem, zda return false je správná odpověď
         return false;
     }
 
@@ -434,7 +466,8 @@ class TableAdmin extends \GodsDev\MyCMS\MyTableAdmin
     }
 
     /**
-     * Custom condition for filtering. Called to optionally fill conditions to WHERE clause of the SQL statement selecting given table
+     * Custom condition for filtering.
+     * Called to optionally fill conditions to WHERE clause of the SQL statement selecting given table
      *
      * @return void
      */

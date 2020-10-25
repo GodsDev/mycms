@@ -30,6 +30,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
+     *
+     * @global array $backyardConf
+     * @return void
      */
     protected function setUp()
     {
@@ -62,6 +65,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
+     *
+     * @return void
      */
     protected function tearDown()
     {
@@ -70,6 +75,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\mycmsprojectnamespace\Controller::controller
+     *
+     * @return void
      */
     public function testControllerNoContext()
     {
@@ -80,6 +87,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\mycmsprojectnamespace\Controller::controller
+     *
+     * @return void
      */
     public function testControllerContext()
     {
@@ -93,6 +102,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\mycmsprojectnamespace\Controller::controller
+     *
+     * @return void
      */
     public function testControllerAbout()
     {
@@ -111,6 +122,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\mycmsprojectnamespace\Controller::getVars
+     *
+     * @return void
      */
     public function testGetVars()
     {

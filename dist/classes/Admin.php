@@ -24,14 +24,13 @@ class Admin extends MyAdmin
 
     /**
      *
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
+     * @param MyCMS $MyCMS
      * @param array $options overrides default values of properties
      */
     public function __construct(MyCMS $MyCMS, array $options = [])
     {
         $this->clientSideResources['js'][] = 'scripts/Cookies.js';
         parent::__construct($MyCMS, $options);
-        //Debugger::barDump($this->get, 'GET');
     }
 
     /**

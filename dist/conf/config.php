@@ -31,6 +31,7 @@ $backyardConf = [
     'logging_level' => 3,
     'error_log_message_type' => 3,
     'logging_file' => __DIR__ . '/../log/backyard-error.log',
+    'mail_for_admin_enabled' => false,
 ];
 
 $debugIpArray = [
@@ -165,7 +166,9 @@ $WEBSITE = [
     ],
 ];
 
-include_once __DIR__ . '/config.local.php'; // use config.local.dist.php as specimen
+if (file_exists(__DIR__ . '/config.local.php')) {
+    include_once __DIR__ . '/config.local.php'; // use config.local.dist.php as specimen
+}
 // constants not set in config.local.php
 $arrayOfConstants = [
     'DEBUG_VERBOSE' => false,

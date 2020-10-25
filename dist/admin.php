@@ -1,5 +1,9 @@
 <?php
 
+use GodsDev\mycmsprojectnamespace\Admin;
+use GodsDev\mycmsprojectnamespace\AdminProcess;
+use GodsDev\mycmsprojectnamespace\TableAdmin;
+
 // Admin
 require_once './set-environment.php';
 require_once './prepare.php';
@@ -53,24 +57,28 @@ $AGENDAS = [
     ],
 ];
 
-$TableAdmin = new \GodsDev\mycmsprojectnamespace\TableAdmin(
+$tableAdmin = new TableAdmin(
     $MyCMS->dbms,
     (isset($_GET['table']) ? $_GET['table'] : ''),
-    ['SETTINGS' => $MyCMS->SETTINGS, 'language' => $_SESSION['language']]
+    [
+        'SETTINGS' => $MyCMS->SETTINGS,
+        'language' => $_SESSION['language'],
+        'TRANSLATIONS' => $MyCMS->TRANSLATIONS,
+    ]
 );
 
 
 $MyCMS->csrfStart();
 if (isset($_POST) && is_array($_POST) && !empty($_POST)) {
-    $adminProcess = new \GodsDev\mycmsprojectnamespace\AdminProcess($MyCMS, [
-        'tableAdmin' => $TableAdmin,
+    $adminProcess = new AdminProcess($MyCMS, [
+        'tableAdmin' => $tableAdmin,
         'agendas' => $AGENDAS
     ]);
     $adminProcess->adminProcess($_POST);
 }
-$admin = new \GodsDev\mycmsprojectnamespace\Admin($MyCMS, [
+$admin = new Admin($MyCMS, [
     'agendas' => $AGENDAS,
-    'TableAdmin' => $TableAdmin,
+    'tableAdmin' => $tableAdmin,
 //        'clientSideResources' => array(
 //            'css' => array(
 //            ),
