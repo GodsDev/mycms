@@ -1,9 +1,12 @@
+includes:
+      - ../../phpstan.neon.dist
+
 parameters:
-    level: 5
-    bootstrapFiles:
-      - conf/constants.php
-    scanDirectories:
-      - ../../classes
+#    level: 5
+#    bootstrapFiles:
+#      - conf/constants.php
+#    scanDirectories:
+#      - ../../classes
 # TODO check all rules!
     ignoreErrors:
       -

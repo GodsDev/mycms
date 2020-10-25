@@ -1,5 +1,9 @@
+includes:
+      - dist/phpstan.neon.dist
+
 parameters:
+#    level: 5
     bootstrapFiles:
-      - .github/linters/conf/constants.php
-      - dist/conf/config.php
+#      - dist/conf/config.php
       - conf/config.php
+      - .github/linters/conf/constants.php

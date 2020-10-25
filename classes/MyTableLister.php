@@ -630,7 +630,7 @@ class MyTableLister
         }
         $rowsPerPage = max($rowsPerPage, 1);
         $pages = ceil($totalRows / $rowsPerPage);
-        $currentPage = floor($offset / $rowsPerPage) + 1;
+        $currentPage = (int) floor($offset / $rowsPerPage) + 1;
         if ($pages <= 1) {
             return;
         }
@@ -640,6 +640,7 @@ class MyTableLister
                 $output .= $this->addPage($currentPage - 1, $currentPage, $rowsPerPage, $this->translate('Previous'), $title);
             }
             for ($page = 1; $page <= $pages; $page++) {
+                // TODO ask CRS2 Method GodsDev\MyCMS\MyTableLister::addPage() invoked with 6 parameters, 3-5 required.
                 $output .= $this->addPage($page, $currentPage, $rowsPerPage, null, $this->translate('Go to page'), $title);
             }
             if ($currentPage < $pages) {
@@ -956,6 +957,7 @@ class MyTableLister
             . ' FROM ' . Tools::escapeDbIdentifier(TAB_PREFIX . $options['table'])
             . ' GROUP BY ' . Tools::escapeDbIdentifier($options['type']) . ' WITH ROLLUP LIMIT 100');
         if (!$query) {
+            // TODO fix Method GodsDev\MyCMS\MyTableLister::contentByType() should return string but empty return statement found.
             return;
         }
         $typeIndex = 0;
@@ -978,6 +980,7 @@ class MyTableLister
             return $output;
         }
         echo $output;
+        // TODO fix Method GodsDev\MyCMS\MyTableLister::contentByType() should return string but return statement is missing.
     }
 
     public function decodeChoiceOptions($list)
