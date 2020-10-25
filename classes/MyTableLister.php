@@ -94,7 +94,7 @@ class MyTableLister
         $this->database = $this->dbms->fetchSingle('SELECT DATABASE()');
         $this->getTables();
         $this->setTable($table);
-        $this->rand = rand(1e5, 1e6 - 1);
+        $this->rand = rand((int) 1e5, (int) (1e6 - 1));
     }
 
     /**
@@ -346,6 +346,7 @@ class MyTableLister
                     break;
             }
         }
+        // todo fix Method GodsDev\MyCMS\MyTableLister::bulkUpdateSQL() should return string but return statement is missing.
     }
 
     /**
@@ -437,8 +438,7 @@ class MyTableLister
     protected function viewInputs($options)
     {
         $output = '<form action="" method="get" class="table-controls" data-rand="' . $this->rand . '">' . PHP_EOL;
-        // TODO nemá náhodou být $options ? Ask crs2
-        if (!Tools::set($option['no-toggle'])) {
+        if (!Tools::set($options['no-toggle'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#toggle-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-search fa fa-list-alt"></span> ' . $this->translate('Columns') . '</a></legend>
                 <div class="toggle-div" id="toggle-div' . $this->rand . '" data-rand="' . $this->rand . '">
@@ -450,14 +450,12 @@ class MyTableLister
             }
             $output .= '</div></div></fieldset>' . PHP_EOL;
         }
-        // TODO nemá náhodou být $options ? Ask crs2
-        if (!Tools::set($option['no-search'])) {
+        if (!Tools::set($options['no-search'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#search-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-search fa fa-search"></span> ' . $this->translate('Search') . '</a></legend>
                 <div class="search-div" id="search-div' . $this->rand . '"></div></fieldset>' . PHP_EOL;
         }
-        // TODO nemá náhodou být $options ? Ask crs2
-        if (!Tools::set($option['no-sort'])) {
+        if (!Tools::set($options['no-sort'])) {
             $output .= '<fieldset><legend><a href="javascript:;" onclick="$(\'#sort-div' . $this->rand . '\').toggle()">
                 <span class="glyphicon glyphicon-sort fa fa-sort mx-1"></span> ' . $this->translate('Sort') . '</a></legend>
                 <div class="sort-div" id="sort-div' . $this->rand . '"></div></fieldset>' . PHP_EOL;
@@ -1020,8 +1018,10 @@ class MyTableLister
     public function rowLink($row)
     {
         $result = [];
+        // todo fix Parameter #1 $types of method GodsDev\MyCMS\MyTableLister::filterKeys() expects array, string given.
         if ($keys = $this->filterKeys('PRI')) {
             $result [] = 'where[' . urlencode(array_keys($keys)[0]) . ']=' . urlencode(Tools::set($row[array_keys($keys)[0]]));
+        // todo fix Parameter #1 $types of method GodsDev\MyCMS\MyTableLister::filterKeys() expects array, string given.
         } elseif ($keys = $this->filterKeys('UNI')) {
             foreach ($keys as $key => $value) {
                 if (isset($row[$key]) && $row[$key] !== null) {
@@ -1037,6 +1037,7 @@ class MyTableLister
                 if (!isset($row[$key])) {
                     continue;
                 }
+                // todo fix Strict comparison using === between mixed and null will always evaluate to false.
                 if ($row[$key] === null) {
                     $result [] = 'null[' . urlencode($key) . ']=';
                 } else {

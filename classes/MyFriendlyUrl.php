@@ -65,18 +65,10 @@ class MyFriendlyUrl extends MyCommon
     {
         parent::__construct($MyCMS, $options);
         Debugger::barDump($options, 'friendlyUrl instantiated');
-        $this->verboseBarDump(
-            $this->applicationDir = (
-                pathinfo(
-                    $_SERVER["SCRIPT_NAME"],
-                    PATHINFO_DIRNAME
-                ) === '/' ? '' : pathinfo(
-                $_SERVER["SCRIPT_NAME"],
-                PATHINFO_DIRNAME
-            )
-            ),
-            'applicationDir'
-        ); // so that URL relative to root may be constructed in latte (e.g. language selector) It never ends with `/'
+        // so that URL relative to root may be constructed in latte (e.g. language selector) It never ends with `/'
+        $this->applicationDir = pathinfo($_SERVER["SCRIPT_NAME"], PATHINFO_DIRNAME) === '/'
+            ? '' : pathinfo($_SERVER["SCRIPT_NAME"], PATHINFO_DIRNAME);
+        $this->verboseBarDump($this->applicationDir, 'applicationDir');
     }
 
     /**
@@ -150,12 +142,12 @@ class MyFriendlyUrl extends MyCommon
 
         //if FORCE_301 set as true and it is possible, redir to Friendly URLs (if FRIENDLY_URL and set)
         //to Friendly URLs or to simple parametric URLs (type=id) //TODO: explain better
-        if (FORCE_301 && !empty($this->verboseBarDump(
-            $friendlyUrl = $this->friendlyfyUrl(
-                isset($url['query']) ? '?' . $url['query'] : ''
-            ),
-            'friendlyIdentifyRedirect: friendlyUrl'
-        ))) {
+        if (
+            FORCE_301 && !empty($this->verboseBarDump(
+                $friendlyUrl = $this->friendlyfyUrl(isset($url['query']) ? '?' . $url['query'] : ''),
+                'friendlyIdentifyRedirect: friendlyUrl'
+            ))
+        ) {
             if (($friendlyUrl != ('?' . $url['query']))) {
                 // other than default language should have its directory
                 $this->verboseBarDump(
@@ -168,8 +160,7 @@ class MyFriendlyUrl extends MyCommon
                     ($addLanguageDirectory ? '/' . $this->language : '') . '/' . $friendlyUrl,
                     'SEO Force 301 friendly'
                 );
-            } elseif ($interestingPath != '/' && $interestingPath != "/{$this->language}/"
-            ) {
+            } elseif ($interestingPath != '/' && $interestingPath != "/{$this->language}/") {
                 // other than default language should have its directory
                 $this->verboseBarDump(
                     $addLanguageDirectory = ($this->language != DEFAULT_LANGUAGE)
@@ -204,8 +195,8 @@ class MyFriendlyUrl extends MyCommon
                 'friendlyIdentifyRedirect: Language reset according to path'
             );
         } elseif (
-            !isset($matches[1]) && FORCE_301
-            && ($this->language != DEFAULT_LANGUAGE) && (!isset($this->get['language']))
+            !isset($matches[1]) && FORCE_301 && ($this->language != DEFAULT_LANGUAGE)
+            && (!isset($this->get['language']))
         ) {
             return $this->redirWrapper(
                 $interestingPath . '?' . http_build_query(array_merge(['language' => DEFAULT_LANGUAGE], $this->get)),
@@ -214,16 +205,17 @@ class MyFriendlyUrl extends MyCommon
             );
         }
         // If there is a redirect specified
-        if (REDIRECTOR_ENABLED && $this->verboseBarDump(
-            (
-                $found = $this->MyCMS->fetchSingle(
-                'SELECT `new_url` FROM ' . TAB_PREFIX . 'redirector WHERE `old_url`="' . $interestingPath
+        if (
+            REDIRECTOR_ENABLED && $this->verboseBarDump(
+                (
+                    $found = $this->MyCMS->fetchSingle(
+                    'SELECT `new_url` FROM ' . TAB_PREFIX . 'redirector WHERE `old_url`="' . $interestingPath
                 . '" AND `active` = "1"'
+                )
+                ),
+                'friendlyIdentifyRedirect: found redirect'
             )
-            ),
-            'friendlyIdentifyRedirect: found redirect'
-        )
-            ) {
+        ) {
             // Multiple directories,
             // such as /spolecnost/tiskove-centrum/logo-ke-stazeni.html -> /index.php?category&id=14
             return $this->redirWrapper($found, 'old to new redirector');
@@ -238,8 +230,7 @@ class MyFriendlyUrl extends MyCommon
                 && !preg_match("~/{$this->language}/~", $this->requestUri),
                 'friendlyIdentifyRedirect: addLanguageDirectory many folders'
             ); // unless the page already has it
-            return isset($url['query'])
-                ? $this->redirWrapper('/?' . $url['query'], 'complex URL with params')
+            return isset($url['query']) ? $this->redirWrapper('/?' . $url['query'], 'complex URL with params')
                 : $this->redirWrapper(($addLanguageDirectory ? "/{$this->language}/" : '/')
                     . self::PAGE_NOT_FOUND . '?url=' . $interestingPath, '404 for complex unknown URL');
         }

@@ -14,6 +14,7 @@ use Tracy\Debugger;
  */
 class MyAdminProcess extends MyCommon
 {
+    use \Nette\SmartObject;
 
     /** @const int general limit of selected rows and repeated fields in export */
     const PROCESS_LIMIT = 100;
@@ -70,6 +71,7 @@ class MyAdminProcess extends MyCommon
             foreach (explode('&', $check) as $condition) {
                 $condition = explode('=', $condition, 2);
                 if (Tools::begins($condition[0], 'where[') && Tools::ends($condition[0], ']')) { //@todo doesn't work for nulls
+                    // TODO fix: Call to function is_null() with string will always evaluate to false.
                     $condition[1] = is_null($condition[1]) ? ' IS NULL' : (is_numeric($condition[1]) ? ' = ' . $condition[1] : ' = "' . $this->tableAdmin->escapeSQL($condition[1]) . '"');
                     $partial .= ' AND ' . $this->tableAdmin->escapeDbIdentifier(substr($condition[0], 5, -1)) . $condition[1];
                 } else {
@@ -184,6 +186,7 @@ class MyAdminProcess extends MyCommon
                     $sql = $this->tableAdmin->selectSQL($columns, $_GET);
                     $sql = $sql['select'];
                 } else { //export only checked rows
+                    // TODO ask CRS2 - filterToSql doesn't exists. $errors isn't defined. $sql isn't defined.
                     $this->filterToSQL($get, $sql, $errors);
                     if ($errors) {
                         Tools::addMessage('warning', $this->tableAdmin->translate('Wrong input parameter') . ': ' . implode(', ', $errors));
@@ -372,7 +375,7 @@ class MyAdminProcess extends MyCommon
                     $result['success'] = $ZipArchive->extractTo(DIR_ASSETS . $post['new_folder'] . '/');
                     $result['processed-files'] = $ZipArchive->numFiles;
                     $result['messages'] = $result['success'] ? $this->tableAdmin->translate('Archive unpacked.') . ' ' . $this->tableAdmin->translate('Affected files: ') . $ZipArchive->numFiles . '.' : $this->tableAdmin->translate('Error occured unpacking the archive.');
-                    Tools::addMessage($result['success'], $result['message']);
+                    Tools::addMessage($result['success'], $result['messages']);
                     $ZipArchive->close();
                 } else {
                     $result['messages'] = $this->tableAdmin->translate('Error occured unpacking the archive.');
@@ -495,6 +498,7 @@ class MyAdminProcess extends MyCommon
                 Tools::setifnotset($post['info'], null);
                 if ($post['info'] && class_exists('\ZipArchive')) {
                     $ZipArchive = new \ZipArchive();
+                    // todo ask CRS2 if this block should encapsulate also the following foreach or if otherwise it should fail with exception
                 }
                 foreach (glob(DIR_ASSETS . $post['subfolder'] . '/' . (isset($post['wildcard']) ? $post['wildcard'] : '*.*'), isset($post['wildcard']) ? GLOB_BRACE : 0) as $file) {
                     if (is_file($file)) {
@@ -566,6 +570,7 @@ class MyAdminProcess extends MyCommon
             } else {
                 if ($row = $this->MyCMS->fetchSingle('SELECT * FROM ' . TAB_PREFIX . 'admin WHERE admin="' . $this->MyCMS->escapeSQL($_SESSION['user']) . '"')) {
                     if ($row['active'] == '1' && $row['password_hashed'] == sha1($post['old-password'] . $row['salt'])) {
+                        // TODO ask CRS2 Static method GodsDev\Tools\Tools::resolve() invoked with 5 parameters, 3 required.
                         Tools::resolve($this->MyCMS->dbms->query('UPDATE ' . TAB_PREFIX . 'admin
                     SET password_hashed="' . $this->MyCMS->escapeSQL(sha1($post['new-password'] . $row['salt'])) . '"
                     WHERE admin="' . $this->MyCMS->escapeSQL($_SESSION['user']) . '"'), $this->tableAdmin->translate('Password was changed.'), $this->tableAdmin->translate('Error occured changing password.'), true, false); // this statement MUST NOT be logged by LogMysqli mechanism
@@ -587,7 +592,7 @@ class MyAdminProcess extends MyCommon
     public function processUserCreate(&$post)
     {
         if (isset($post['create-user'], $post['user'], $post['password'], $post['retype-password']) && $post['user'] && $post['password'] && $post['retype-password']) {
-            $salt = mt_rand(1e8, 1e9);
+            $salt = mt_rand((int) 1e8, (int) 1e9);
             Tools::resolve(
                 $this->MyCMS->dbms->query('INSERT INTO ' . TAB_PREFIX . 'admin SET admin="' . $this->MyCMS->escapeSQL($post['user']) . '", password_hashed="' . $this->MyCMS->escapeSQL(sha1($post['password'] . $salt)) . '", salt=' . $salt . ', rights=2'),
                 $this->tableAdmin->translate('User added.'),

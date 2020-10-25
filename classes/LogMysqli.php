@@ -55,12 +55,14 @@ class LogMysqli extends BackyardMysqli
      * Logs SQL statement not starting with SELECT or SET
      *
      * @param string $sql SQL to execute
-     * @param bool $ERROR_LOG_OUTPUT optional
+     * @param int $errorLogOutput optional default=1 turn-off=0
+     *   It is int in order to be compatible with
+     *   parameter $resultmode (int) of method mysqli::query()
      * @param bool $logQuery optional default logging of database changing statement can be (for security reasons)
      *     turned off by value false
      * @return mixed \mysqli_result|false
      */
-    public function query($sql, $ERROR_LOG_OUTPUT = true, $logQuery = true)
+    public function query($sql, $errorLogOutput = 1, $logQuery = true)
     {
         if ($logQuery && !preg_match('/^SELECT |^SET |^SHOW /i', $sql)) {
             //mb_eregi_replace does not destroy e.g. character Š
@@ -72,7 +74,7 @@ class LogMysqli extends BackyardMysqli
             );
         }
         $this->sqlStatementsArray[] = $sql;
-        return parent::query($sql, $ERROR_LOG_OUTPUT);
+        return parent::query($sql, $errorLogOutput);
     }
 
     public function getStatementsArray()

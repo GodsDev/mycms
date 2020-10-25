@@ -14,12 +14,13 @@ use Tracy\ILogger;
  */
 class MyAdmin extends MyCommon
 {
+    use \Nette\SmartObject;
 
-    /** @var MyTableAdmin */
-    protected $TableAdmin; // todo obsolete as of 2020/10/25
+    /** @var array */
+    protected $agendas = [];
 
-    /** @var MyTableAdmin */
-    protected $tableAdmin;
+    /** @var array */
+    protected $ASSETS_SUBFOLDERS = [];
 
     /** @var array client-side resources - css, js, fonts etc. */
     protected $clientSideResources = [
@@ -50,6 +51,12 @@ class MyAdmin extends MyCommon
 
     /** @var array tables and columns to search in admin */
     protected $searchColumns = [];
+
+    /** @var MyTableAdmin */
+    protected $TableAdmin; // todo remove as obsolete as of 2020/10/25
+
+    /** @var MyTableAdmin */
+    protected $tableAdmin;
 
     /**
      *
@@ -424,6 +431,7 @@ class MyAdmin extends MyCommon
             . 'TAB_PREFIX = "' . TAB_PREFIX . '";' . PHP_EOL
             . 'EXPAND_INFIX = "' . EXPAND_INFIX . '";' . PHP_EOL
             . 'TOKEN = ' . end($_SESSION['token']) . ';' . PHP_EOL
+            // todo CRS2 fix Parameter #2 $options of function json_encode expects int, true given.
             . 'ASSETS_SUBFOLDERS = ' . json_encode($this->ASSETS_SUBFOLDERS, true) . ';' . PHP_EOL
             . 'DIR_ASSETS = ' . json_encode(DIR_ASSETS, true) . ';' . PHP_EOL
             . '$(document).ready(function(){' . PHP_EOL
@@ -687,6 +695,7 @@ class MyAdmin extends MyCommon
                     }
                     $result .= '</td><td>';
                     if (Tools::ends($value['type'], 'text') || Tools::ends($value['type'], 'blob')) {
+                        // todo ask CRS2 Parameter #3 $cols of static method GodsDev\Tools\Tools::htmlTextarea() expects int, null given.
                         $result .= Tools::htmlTextarea("fields[$key]", '', null, 3, ['class' => 'form-control edit-selected', 'data-size' => $value['size']]) . '</td>';
                     } else {
                         $result .= Tools::htmlInput("fields[$key]", '', '', ['type' => 'text', 'class' => 'form-control edit-selected', 'data-size' => $value['size']]) . '</td>';
@@ -797,9 +806,11 @@ class MyAdmin extends MyCommon
             . '</header>' . PHP_EOL . '<div class="container-fluid row">' . PHP_EOL;
         if (isset($_SESSION['user']) && $_SESSION['user']) {
             $output .= '<a href="#" id="v-divider"></a>';
-            $output .= '<nav class="col-md-3 bg-light sidebar order-last" id="admin-sidebar">' . $this->outputAgendas() . '</nav>' . PHP_EOL;
+            $output .= '<nav class="col-md-3 bg-light sidebar order-last" id="admin-sidebar">'
+                . $this->outputAgendas() . '</nav>' . PHP_EOL;
         }
         $output .= '<main class="ml-3 ml-sm-auto col-md-9 pt-3" role="main" id="admin-main">'
+            // TODO fix Tools::showMessages void or array to always return string
             . Tools::showMessages(false);
         foreach (glob(DIR_ASSETS . '*', GLOB_ONLYDIR) as $value) {
             $this->ASSETS_SUBFOLDERS [] = substr($value, strlen(DIR_ASSETS));
@@ -814,17 +825,12 @@ class MyAdmin extends MyCommon
         // table listing/editing
         if ($_GET['table']) {
             $output .= $this->outputTable();
-        }
-        // media upload etc.
-        elseif (isset($_GET['media'])) {
+        } elseif (isset($_GET['media'])) { // media upload etc.
             $output .= $this->outputMedia();
-        }
-        // user operations (logout, change password, create user, delete user)
-        elseif (isset($_GET['user'])) {
+        } elseif (isset($_GET['user'])) { // user operations (logout, change password, create user, delete user)
             $output .= $this->outputUser();
-        } elseif ($this->projectSpecificSectionsCondition()) {
-            // project-specific admin sections // TODO did this comment move removed 824 | ERROR | [ ] Expected 1 space after closing brace; newline|       |     found ??
-            $output .= $this->projectSpecificSections($this->tableAdmin);
+        } elseif ($this->projectSpecificSectionsCondition()) { // project-specific admin sections
+            $output .= $this->projectSpecificSections();
         } else {
             // no agenda selected, showing "dashboard"
         }

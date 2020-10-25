@@ -9,12 +9,6 @@ class Admin extends MyAdmin
 {
     use \Nette\SmartObject;
 
-    /** @var array */
-    protected $agendas = [];
-
-    /** @var array */
-    protected $ASSETS_SUBFOLDERS = [];
-
     /** @var array tables and columns to search in admin */
     protected $searchColumns = [
         'category' => ['id', 'category_#', 'description_#'], // "#" will be replaced by current language

@@ -2,8 +2,6 @@
 
 namespace GodsDev\MyCMS;
 
-use Tracy\Debugger;
-
 class ProjectCommon extends MyCommon
 {
     use \Nette\SmartObject;
