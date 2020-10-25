@@ -2,6 +2,7 @@
 
 namespace GodsDev\MyCMS;
 
+use GodsDev\MyCMS\MyCMS;
 use GodsDev\MyCMS\Tracy\BarPanelTemplate;
 use GodsDev\Tools\Tools;
 use Tracy\Debugger;
@@ -52,16 +53,16 @@ class MyAdmin extends MyCommon
 
     /**
      *
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
+     * @param MyCMS $MyCMS
      * @param array $options that overrides default values within constructor
      */
     public function __construct(MyCMS $MyCMS, array $options = [])
     {
         parent::__construct($MyCMS, $options);
-        // Todo to be obsoleted in next version
-        if(!empty($this->TableAdmin)) {
-            Debugger::log('Deprecated: TableAdmin. Replace by tableAdmin', ILogger:: WARNING);
-            if(!empty($this-tableAdmin)) {
+        // Todo to be obsoleted in next version (after 2020-10-25)
+        if (!empty($this->TableAdmin)) {
+            Debugger::log('Deprecated: TableAdmin. Replace by tableAdmin', ILogger::WARNING);
+            if (!empty($this->tableAdmin)) {
                 $this->tableAdmin = $this->TableAdmin;
             }
         }
@@ -123,43 +124,42 @@ class MyAdmin extends MyCommon
      */
     protected function outputNavigation()
     {
-        $tableAdmin = $this->tableAdmin;
         $result = '<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="nav-item mr-2" href="' . Tools::h($_SERVER['SCRIPT_NAME']) . '" title="' . $tableAdmin->translate('Dashboard') . '"><i class="fa fa-tachometer-alt"></i></a>
-                <button class="btn btn-secondary btn-sm" title="' . $tableAdmin->translate('Search') . '" type="submit" id="nav-search-button"><i class="fa fa-search"></i></button>
+                <a class="nav-item mr-2" href="' . Tools::h($_SERVER['SCRIPT_NAME']) . '" title="' . $this->tableAdmin->translate('Dashboard') . '"><i class="fa fa-tachometer-alt"></i></a>
+                <button class="btn btn-secondary btn-sm" title="' . $this->tableAdmin->translate('Search') . '" type="submit" id="nav-search-button"><i class="fa fa-search"></i></button>
                 <a data-toggle="popover" data-trigger="focus" title="" data-content="" id="realtime-message" data-placement="bottom" tabindex="0"></a>
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" aria-expanded="false" data-target="#navbar-content" aria-controls="navbar-content"><span class="navbar-toggler-icon mr-1"></span></button>
                 <div class="collapse navbar-collapse" id="navbar-content">
                     <ul class="navbar-nav mr-auto">';
         if (Tools::nonempty($_SESSION['user'])) {
             $result .= $this->outputSpecialMenuLinks()
-                . '<li class="nav-item' . (isset($_GET['media']) ? ' active' : '') . '"><a href="?media" class="nav-link"><i class="fa fa-video"></i> ' . $tableAdmin->translate('Media') . '</a></li>
+                . '<li class="nav-item' . (isset($_GET['media']) ? ' active' : '') . '"><a href="?media" class="nav-link"><i class="fa fa-video"></i> ' . $this->tableAdmin->translate('Media') . '</a></li>
                 <li class="nav-item dropdown' . (isset($_GET['user']) ? ' active' : '') . '">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $TableAdmin->translate('User') . '"><i class="fa fa-user"></i> ' . $tableAdmin->translate('User') . '</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $this->tableAdmin->translate('User') . '"><i class="fa fa-user"></i> ' . $this->tableAdmin->translate('User') . '</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="user-dropdown-menu">
                   <a href="" class="dropdown-item disabled"><i class="fa fa-user"></i> ' . Tools::h($_SESSION['user']) . '</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item' . (isset($_GET['logout']) ? ' active' : '') . '" href="?user&amp;logout"><i class="fa fa-sign-out-alt mr-1"></i> ' . $tableAdmin->translate('Logout') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['change-password']) ? ' active' : '') . '" href="?user&amp;change-password"><i class="fa fa-id-card mr-1"></i> ' . $tableAdmin->translate('Change password') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['create-user']) ? ' active' : '') . '" href="?user&amp;create-user"><i class="fa fa-user-plus mr-1"></i> ' . $tableAdmin->translate('Create user') . '</a>
-                  <a class="dropdown-item' . (isset($_GET['delete-user']) ? ' active' : '') . '" href="?user&amp;delete-user"><i class="fa fa-user-times mr-1"></i> ' . $tableAdmin->translate('Delete user') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['logout']) ? ' active' : '') . '" href="?user&amp;logout"><i class="fa fa-sign-out-alt mr-1"></i> ' . $this->tableAdmin->translate('Logout') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['change-password']) ? ' active' : '') . '" href="?user&amp;change-password"><i class="fa fa-id-card mr-1"></i> ' . $this->tableAdmin->translate('Change password') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['create-user']) ? ' active' : '') . '" href="?user&amp;create-user"><i class="fa fa-user-plus mr-1"></i> ' . $this->tableAdmin->translate('Create user') . '</a>
+                  <a class="dropdown-item' . (isset($_GET['delete-user']) ? ' active' : '') . '" href="?user&amp;delete-user"><i class="fa fa-user-times mr-1"></i> ' . $this->tableAdmin->translate('Delete user') . '</a>
                 </div>
               </li>';
         }
         $result .= '<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $tableAdmin->translate('Settings') . '"><i class="fa fa-cog"></i> ' . $tableAdmin->translate('Settings') . '</a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' . $this->tableAdmin->translate('Settings') . '"><i class="fa fa-cog"></i> ' . $this->tableAdmin->translate('Settings') . '</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">';
-        foreach ($tableAdmin->TRANSLATIONS as $key => $value) {
+        foreach ($this->tableAdmin->TRANSLATIONS as $key => $value) {
             $result .= '<a class="dropdown-item' . ($key == $_SESSION['language'] ? ' active' : '') . '" href="?' . Tools::urlChange(['language' => $key]) . '"><i class="fa fa-language mr-1"></i> ' . Tools::h($value) . '</a>' . PHP_EOL;
         }
         if (isset($_SESSION['user'])) {
-            $result .= //'<div class="dropdown-divider"></div><a class="dropdown-item" href="" id="toggle-nav" title="' . Tools::h($tableAdmin->translate('Toggle sidebar')) . '"><i class="fa fa-columns mr-1"></i> ' . $tableAdmin->translate('Sidebar') . '</a>' .
+            $result .= //'<div class="dropdown-divider"></div><a class="dropdown-item" href="" id="toggle-nav" title="' . Tools::h($this->tableAdmin->translate('Toggle sidebar')) . '"><i class="fa fa-columns mr-1"></i> ' . $this->tableAdmin->translate('Sidebar') . '</a>' .
                 $this->outputSpecialSettingsLinks();
         }
         $result .= '</div></li></ul></div>';
         if (isset($_SESSION['user'])) {
             $result .= '<form class="collapse mt-md-0" id="nav-search-form">'
-                . Tools::htmlInput('search', '', Tools::set($_GET['search'], ''), ['class' => 'form-control', 'placeholder' => $tableAdmin->translate('Search'), 'required' => true, 'id' => 'nav-search-input'])
+                . Tools::htmlInput('search', '', Tools::set($_GET['search'], ''), ['class' => 'form-control', 'placeholder' => $this->tableAdmin->translate('Search'), 'required' => true, 'id' => 'nav-search-input'])
                 . '</form>';
         }
         $result .= '
@@ -194,12 +194,11 @@ class MyAdmin extends MyCommon
      */
     protected function outputMedia()
     {
-        $tableAdmin = $this->tableAdmin;
-        $result = '<h1 class="page-header">' . $tableAdmin->translate('Media') . '</h1>
+        $result = '<h1 class="page-header">' . $this->tableAdmin->translate('Media') . '</h1>
             <form action="" method="post" enctype="multipart/form-data">
                 <fieldset>
-                    <legend>' . $tableAdmin->translate('Upload') . '</legend>
-                    <label for="subfolder">' . $tableAdmin->translate('Folder') . ':</label>
+                    <legend>' . $this->tableAdmin->translate('Upload') . '</legend>
+                    <label for="subfolder">' . $this->tableAdmin->translate('Folder') . ':</label>
                     <select name="subfolder" id="subfolder" class="form-control">'
             . Tools::htmlOption('', DIR_ASSETS);
         Tools::setifnull($_SESSION['assetsSubfolder'], '');
@@ -210,32 +209,32 @@ class MyAdmin extends MyCommon
             $result .= Tools::htmlOption($value, DIR_ASSETS . $value, $_SESSION['assetsSubfolder']);
         }
         $result .= '</select>
-                    <label>' . $tableAdmin->translate('Files') . ':</label>
+                    <label>' . $this->tableAdmin->translate('Files') . ':</label>
                     <div id="files-div">
                         <input type="file" name="files[]" class="form-control" onchange="if($(this).val()){$(\'#files-div\').append($(this).prop(\'outerHTML\'));}" />
                     </div>
                     ' . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '
-                    <button type="submit" name="upload-media" value="1" class="btn btb-lg btn-primary"><i class="fa fa-upload"></i> ' . $tableAdmin->translate('Upload') . '</button>
+                    <button type="submit" name="upload-media" value="1" class="btn btb-lg btn-primary"><i class="fa fa-upload"></i> ' . $this->tableAdmin->translate('Upload') . '</button>
                 </fieldset>
             </form><hr />
-            <details class="uploaded-files" open><summary>' . $TableAdmin->translate('Uploaded files') . ' <small class="badge badge-secondary"></small></summary>
+            <details class="uploaded-files" open><summary>' . $this->tableAdmin->translate('Uploaded files') . ' <small class="badge badge-secondary"></small></summary>
             <div id="media-files"></div>
             <div id="media-ops mt-3">
-                <button class="btn btn-secondary" title="' . $tableAdmin->translate('Delete') . '" id="delete-media-files"><i class="fa fa-check-square"></i> <i class="fa fa-trash"></i></button>
+                <button class="btn btn-secondary" title="' . $this->tableAdmin->translate('Delete') . '" id="delete-media-files"><i class="fa fa-check-square"></i> <i class="fa fa-trash"></i></button>
                 <fieldset class="d-inline-block position-relative" id="rename-fieldset">
                     <div class="input-group input-group-sm">
-                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $tableAdmin->translate('filename') . '" disabled><i class="fa fa-dot-circle"></i></button></div>'
+                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $this->tableAdmin->translate('filename') . '" disabled><i class="fa fa-dot-circle"></i></button></div>'
             . Tools::htmlInput('', '', '', ['class' => 'form-control form-control-sm', 'id' => 'media-file-name']) . '
                     </div>
                 </fieldset>
                 <fieldset class="d-inline-block position-relative">
                     <div class="input-group input-group-sm form-control-inline">
-                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $tableAdmin->translate('folder') . '" disabled><i class="fa fa-folder"></i></button></div>
+                        <div class="input-group-prepend"><button class="btn btn-secondary disabled" type="button" title="' . $this->tableAdmin->translate('folder') . '" disabled><i class="fa fa-folder"></i></button></div>
                         <select id="file-rename-folder" name="file-rename-folder" class="form-control d-inline-block"></select>
                     </div>
                 </fieldset>
-                <button class="btn btn-secondary" type="submit" title="' . $TableAdmin->translate('Rename') . '" id="rename-media-file"><i class="fa fa-dot-circle"></i> <i class="fa fa-i-cursor"></i></button>
-                <button class="btn btn-secondary" type="submit" title="' . $TableAdmin->translate('Unpack') . '" id="unpack-media-file"><i class="fa fa-dot-circle"></i> <i class="fa fa-file-archive"></i></button>
+                <button class="btn btn-secondary" type="submit" title="' . $this->tableAdmin->translate('Rename') . '" id="rename-media-file"><i class="fa fa-dot-circle"></i> <i class="fa fa-i-cursor"></i></button>
+                <button class="btn btn-secondary" type="submit" title="' . $this->tableAdmin->translate('Unpack') . '" id="unpack-media-file"><i class="fa fa-dot-circle"></i> <i class="fa fa-file-archive"></i></button>
                 <div id="media-file-feedback" class="alert alert-warning mt-1" style="display:none;"><i class="mr-2 fa fa-info-circle"></i> <span></span> <button type="button" class="close" onclick="$(this).parent().hide();"><span aria-hidden="true">×</span></button></div>
             </div>
             </details>';
@@ -249,19 +248,18 @@ class MyAdmin extends MyCommon
      */
     protected function outputUser()
     {
-        $tableAdmin = $this->tableAdmin;
-        $result = '<h1>' . $tableAdmin->translate('User') . '</h1>';
+        $result = '<h1>' . $this->tableAdmin->translate('User') . '</h1>';
         // logout
         if (isset($_GET['logout'])) {
-            $result .= '<h2><small>' . $tableAdmin->translate('Logout') . '</small></h2>
+            $result .= '<h2><small>' . $this->tableAdmin->translate('Logout') . '</small></h2>
                 <form action="" method="post" id="logout-form" class="panel d-inline-block"><fieldset class="card p-2">
-                <button type="submit" name="logout" class="form-control btn-primary text-left"><i class="fa fa-sign-out-alt"></i> ' . $tableAdmin->translate('Logout') . '</button>'
+                <button type="submit" name="logout" class="form-control btn-primary text-left"><i class="fa fa-sign-out-alt"></i> ' . $this->tableAdmin->translate('Logout') . '</button>'
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '
                 </fieldset></form>';
         }
         // change password
         if (isset($_GET['change-password'])) {
-            $result .= '<h2><small>' . $tableAdmin->translate('Change password') . '</small></h2>
+            $result .= '<h2><small>' . $this->tableAdmin->translate('Change password') . '</small></h2>
                 <form action="" method="post" id="change-password-form" onsubmit="return changePasswordSubmit()"><fieldset class="card p-3">';
             $options = [
                 'type' => 'password',
@@ -271,46 +269,46 @@ class MyAdmin extends MyCommon
                 'class' => 'form-control mycms-password',
                 'label-class' => 'mt-1',
             ];
-            $result .= Tools::htmlInput('old-password', $tableAdmin->translate('Old password', false) . ':', '', $options + ['id' => 'old-password', 'autocomplete' => 'off'])
-                . Tools::htmlInput('new-password', $tableAdmin->translate('New password', false) . ':', '', $options + ['id' => 'new-password', 'autocomplete' => 'new-password'])
-                . Tools::htmlInput('retype-password', $tableAdmin->translate('Retype password', false) . ':', '', $options + ['id' => 'retype-password', 'autocomplete' => 'new-password'])
+            $result .= Tools::htmlInput('old-password', $this->tableAdmin->translate('Old password', false) . ':', '', $options + ['id' => 'old-password', 'autocomplete' => 'off'])
+                . Tools::htmlInput('new-password', $this->tableAdmin->translate('New password', false) . ':', '', $options + ['id' => 'new-password', 'autocomplete' => 'new-password'])
+                . Tools::htmlInput('retype-password', $this->tableAdmin->translate('Retype password', false) . ':', '', $options + ['id' => 'retype-password', 'autocomplete' => 'new-password'])
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
                 . '<div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="change-password-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-                <button type="submit" name="change-password" class="btn btn-primary mt-3"><i class="fa fa-id-card mr-1"></i> ' . $TableAdmin->translate('Change password') . '</button>
+                <button type="submit" name="change-password" class="btn btn-primary mt-3"><i class="fa fa-id-card mr-1"></i> ' . $this->tableAdmin->translate('Change password') . '</button>
                 </fieldset></form>';
         }
         // create user
         if (isset($_GET['create-user'])) {
-            $result .= '<h2><small>' . $tableAdmin->translate('Create user') . '</small></h2>
+            $result .= '<h2><small>' . $this->tableAdmin->translate('Create user') . '</small></h2>
                 <form action="" method="post" class="panel create-user-form" onsubmit="return createUserSubmit()"><fieldset class="card p-3">'
-                . Tools::htmlInput('user', $tableAdmin->translate('User', false) . ':', '', ['class' => 'form-control', 'id' => 'create-user'])
-                . Tools::htmlInput('password', $tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-password'])
-                . Tools::htmlInput('retype-password', $tableAdmin->translate('Retype password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-retype-password'])
+                . Tools::htmlInput('user', $this->tableAdmin->translate('User', false) . ':', '', ['class' => 'form-control', 'id' => 'create-user'])
+                . Tools::htmlInput('password', $this->tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-password'])
+                . Tools::htmlInput('retype-password', $this->tableAdmin->translate('Retype password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'create-retype-password'])
                 . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
                 . '<div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="create-user-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-                  <button type="submit" name="create-user" class="btn btn-primary my-3"><i class="fa fa-user-plus"></i> ' . $tableAdmin->translate('Create user') . '</button>
+                  <button type="submit" name="create-user" class="btn btn-primary my-3"><i class="fa fa-user-plus"></i> ' . $this->tableAdmin->translate('Create user') . '</button>
                 </fieldset></form>';
         }
         // delete user
         if (isset($_GET['delete-user'])) {
-            $result .= '<h2><small>' . $tableAdmin->translate('Delete user') . '</small></h2>
+            $result .= '<h2><small>' . $this->tableAdmin->translate('Delete user') . '</small></h2>
                 <div class="alert alert-warning mt-3" style="display:none;"><i class="fas fa-exclamation-triangle"></i> <span id="activate-user-message"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
             if ($users = $this->MyCMS->fetchAll('SELECT id,admin,active FROM ' . TAB_PREFIX . 'admin')) {
                 $result .= '<ul class="list-group list-group-flush">';
                 foreach ($users as $user) {
                     $result .= '<li class="list-group-item">
-                        <form action="" method="post" class="form-inline d-inline-block delete-user-form' . ($user['active'] == 1 ? '' : ' inactive-item') . '" onsubmit="return confirm(\'' . $tableAdmin->translate('Really delete?') . '\')">'
+                        <form action="" method="post" class="form-inline d-inline-block delete-user-form' . ($user['active'] == 1 ? '' : ' inactive-item') . '" onsubmit="return confirm(\'' . $this->tableAdmin->translate('Really delete?') . '\')">'
                         . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden')
-                        . '<button type="submit" name="delete-user" value="' . Tools::h($user['admin']) . '"' . ($user['admin'] == $_SESSION['user'] ? ' disabled' : '') . ' class="btn btn-primary" title="' . $tableAdmin->translate('Delete user') . '?">'
+                        . '<button type="submit" name="delete-user" value="' . Tools::h($user['admin']) . '"' . ($user['admin'] == $_SESSION['user'] ? ' disabled' : '') . ' class="btn btn-primary" title="' . $this->tableAdmin->translate('Delete user') . '?">'
                         . '<i class="fa fa-user-times"></i></button> '
-                        . Tools::htmlInput('', '', $user['id'], ['type' => 'checkbox', 'checked' => ($user['active'] ? 1 : null), 'class' => 'user-activate', 'title' => $tableAdmin->translate('Activate/deactivate')]) . ' '
+                        . Tools::htmlInput('', '', $user['id'], ['type' => 'checkbox', 'checked' => ($user['active'] ? 1 : null), 'class' => 'user-activate', 'title' => $this->tableAdmin->translate('Activate/deactivate')]) . ' '
                         . '<tt>' . Tools::h($user['admin']) . '</tt>
                         </form>
                         </li>' . PHP_EOL;
                 }
                 $result .= '</ul>';
             } else {
-                $result .= '<p class="alert alert-warning">' . $tableAdmin->translate('No records found.') . '</p>';
+                $result .= '<p class="alert alert-warning">' . $this->tableAdmin->translate('No records found.') . '</p>';
             }
         }
         return $result;
@@ -323,7 +321,6 @@ class MyAdmin extends MyCommon
      */
     protected function outputLogin()
     {
-        $tableAdmin = $this->tableAdmin;
         $options = [
             'before' => '<div class="col-sm-3 mt-3">',
             'between' => '</div><div class="col-sm-9">',
@@ -331,13 +328,13 @@ class MyAdmin extends MyCommon
             'class' => 'form-control',
             'label-html' => 1,
         ];
-        return '<h1>' . $tableAdmin->translate('Login') . '</h1>
+        return '<h1>' . $this->tableAdmin->translate('Login') . '</h1>
             <form action="" method="post" class="form" id="login-form">
             <div>'
-            . Tools::htmlInput('user', '<i class="fa fa-user"></i> ' . $tableAdmin->translate('User', false) . ':', Tools::setifnull($_SESSION['user']), $options)
-            . Tools::htmlInput('password', '<i class="fa fa-key"></i> ' . $tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'login-password'] + $options)
+            . Tools::htmlInput('user', '<i class="fa fa-user"></i> ' . $this->tableAdmin->translate('User', false) . ':', Tools::setifnull($_SESSION['user']), $options)
+            . Tools::htmlInput('password', '<i class="fa fa-key"></i> ' . $this->tableAdmin->translate('Password', false) . ':', '', ['type' => 'password', 'class' => 'form-control mycms-password', 'id' => 'login-password'] + $options)
             . Tools::htmlInput('token', '', end($_SESSION['token']), 'hidden') . '</div>
-            <div class="col-sm-9 col-sm-offset-3 my-3"><button type="submit" name="login" class="btn btn-primary"><i class="fa fa-sign-in fa-sign-in-alt"></i> ' . $tableAdmin->translate('Login') . '</button>
+            <div class="col-sm-9 col-sm-offset-3 my-3"><button type="submit" name="login" class="btn btn-primary"><i class="fa fa-sign-in fa-sign-in-alt"></i> ' . $this->tableAdmin->translate('Login') . '</button>
             </div>
             </form>';
     }
@@ -349,19 +346,18 @@ class MyAdmin extends MyCommon
      */
     protected function outputDashboard()
     {
-        $tableAdmin = $this->tableAdmin;
         $result = '<br class="m-3"/><br class="m-3"/><hr />
-            <div><small>' . $tableAdmin->translate('For more detailed browsing with filtering etc. you may select one of the following tables…') . '</small></div>
+            <div><small>' . $this->tableAdmin->translate('For more detailed browsing with filtering etc. you may select one of the following tables…') . '</small></div>
             <div class="detailed-tables">';
-        foreach (array_keys($tableAdmin->tables) as $table) {
+        foreach (array_keys($this->tableAdmin->tables) as $table) {
             if (substr($table, 0, strlen(TAB_PREFIX)) != TAB_PREFIX) {
                 continue;
             }
-            $result .= '<a href="?table=' . urlencode($table) . '&amp;where[id]="><i class="fa fa-plus-square" title="' . $tableAdmin->translate('New record') . '"></i></a> '
+            $result .= '<a href="?table=' . urlencode($table) . '&amp;where[id]="><i class="fa fa-plus-square" title="' . $this->tableAdmin->translate('New record') . '"></i></a> '
                 . '<a href="?table=' . urlencode($table) . '" class="d-inline' . ($_GET['table'] == $table ? ' active' : '') . '">'
                 . '<i class="fa fa-table"></i> '
                 . Tools::h(substr($table, strlen(TAB_PREFIX)))
-                . ($table == $_GET['table'] ? ' <span class="sr-only">(' . $tableAdmin->translate('current') . ')</span>' : '')
+                . ($table == $_GET['table'] ? ' <span class="sr-only">(' . $this->tableAdmin->translate('current') . ')</span>' : '')
                 . '</a> &nbsp; ' . PHP_EOL;
         }
         $result .= '</div>';
@@ -376,10 +372,9 @@ class MyAdmin extends MyCommon
      */
     protected function outputAgendas()
     {
-        $tableAdmin = $this->tableAdmin;
         // show agendas in the sidebar
-        $result = '<details id="agendas"><summary class="page-header">' . $tableAdmin->translate('Agendas') . '<br />'
-            . $tableAdmin->translate('Select your agenda, then particular row.') . '</summary><div class="ml-3">' . PHP_EOL;
+        $result = '<details id="agendas"><summary class="page-header">' . $this->tableAdmin->translate('Agendas') . '<br />'
+            . $this->tableAdmin->translate('Select your agenda, then particular row.') . '</summary><div class="ml-3">' . PHP_EOL;
         foreach ($this->agendas as $agenda => $option) {
             Tools::setifempty($option['table'], $agenda);
             $result .= '<details class="my-1" id="details-' . $agenda . '">
@@ -395,10 +390,10 @@ class MyAdmin extends MyCommon
             } else {
                 $tmpBadge = '';
             }
-            $tableAdmin->script .= 'getAgenda(' . json_encode($agenda) . ',{table:' . json_encode($option['table'] ?: $agenda) . $tmpBadge . '});' . PHP_EOL;
+            $this->tableAdmin->script .= 'getAgenda(' . json_encode($agenda) . ',{table:' . json_encode($option['table'] ?: $agenda) . $tmpBadge . '});' . PHP_EOL;
         }
         $result .= '</div></details>';
-        $tableAdmin->script .= '$("#agendas > summary").click();';
+        $this->tableAdmin->script .= '$("#agendas > summary").click();';
         return $result;
     }
 
@@ -410,7 +405,6 @@ class MyAdmin extends MyCommon
      */
     protected function outputBodyEnd()
     {
-        $TableAdmin = $this->TableAdmin;
         $result = Tools::arrayListed(Tools::set($this->clientSideResources['js'], []), 0, '', '<script type="text/javascript" src="', '"></script>' . PHP_EOL)
 //            . (empty($this->javascripts) ? '' : ('<script type="text/javascript" src="' . implode('"></script><script type="text/javascript" src="', $this->javascripts) . '"></script>' ))
 //            <script type="text/javascript" src="scripts/bootstrap-datetimepicker.js"></script>
@@ -423,9 +417,9 @@ class MyAdmin extends MyCommon
                 . 'Select at least one file and try again.|Select at least one record and try again.|No files|Edit|'
                 . 'variable|value|name|size|modified|Select|No records found.|Please, choose a new name.|Wrong input'));
         foreach ($tmp as $key => $value) {
-            $tmp[$key] = $TableAdmin->translate($key, false);
+            $tmp[$key] = $this->tableAdmin->translate($key, false);
         }
-        $result .= 'WHERE_OPS = ' . json_encode($TableAdmin->WHERE_OPS) . ';' . PHP_EOL
+        $result .= 'WHERE_OPS = ' . json_encode($this->tableAdmin->WHERE_OPS) . ';' . PHP_EOL
             . 'TRANSLATE = ' . json_encode($tmp) . ';' . PHP_EOL
             . 'TAB_PREFIX = "' . TAB_PREFIX . '";' . PHP_EOL
             . 'EXPAND_INFIX = "' . EXPAND_INFIX . '";' . PHP_EOL
@@ -433,7 +427,7 @@ class MyAdmin extends MyCommon
             . 'ASSETS_SUBFOLDERS = ' . json_encode($this->ASSETS_SUBFOLDERS, true) . ';' . PHP_EOL
             . 'DIR_ASSETS = ' . json_encode(DIR_ASSETS, true) . ';' . PHP_EOL
             . '$(document).ready(function(){' . PHP_EOL
-            . $TableAdmin->script . PHP_EOL
+            . $this->tableAdmin->script . PHP_EOL
             . 'if (typeof(AdminRecordName) != "undefined") {' . PHP_EOL
             . '    $("h2 .AdminRecordName").text(AdminRecordName.replaceAll(/<\/?[a-z][^>]*>/i, "").substr(0, 50));' . PHP_EOL
             . '}' . PHP_EOL
@@ -449,24 +443,23 @@ class MyAdmin extends MyCommon
      */
     protected function outputImageSelector()
     {
-        $TableAdmin = $this->TableAdmin;
         return '<div class="modal" id="image-selector" tabindex="-1" role="dialog" data-type="modal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">' . $TableAdmin->translate('Reload') . '</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="' . $TableAdmin->translate('close') . '"><span aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title">' . $this->tableAdmin->translate('Reload') . '</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="' . $this->tableAdmin->translate('close') . '"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <select name="subfolder" id="modalImageFolder" class="form-control form-control-sm" onchange="updateImageSelector($(this), $(this).parent().find(\'.ImageFiles\'))">
                         </select>
                         <div id="modalImageFiles" class="ImageFiles"></div>
-                        <label class="note-form-label">' . $TableAdmin->translate('Image URL') . ':</label><br />
+                        <label class="note-form-label">' . $this->tableAdmin->translate('Image URL') . ':</label><br />
                         <input class="note-image-url form-control form-control-sm" type="text" id="modalImagePath" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary note-image-url pull-left" id="modalReloadImages"><i class="fa fa-refresh"></i> ' . $TableAdmin->translate('Reload') . '</button>
-                        <button type="button" class="btn btn-primary note-image-url" id="modalInsertImage"><i class="fa fa-image"></i> ' . $TableAdmin->translate('Insert') . '</button>
+                        <button type="button" class="btn btn-secondary note-image-url pull-left" id="modalReloadImages"><i class="fa fa-refresh"></i> ' . $this->tableAdmin->translate('Reload') . '</button>
+                        <button type="button" class="btn btn-primary note-image-url" id="modalInsertImage"><i class="fa fa-image"></i> ' . $this->tableAdmin->translate('Insert') . '</button>
                     </div>
                 </div>
             </div>
@@ -480,20 +473,19 @@ class MyAdmin extends MyCommon
      */
     protected function outputTable()
     {
-        $TableAdmin = $this->TableAdmin;
         $tablePrefixless = mb_substr($_GET['table'], mb_strlen(TAB_PREFIX));
         $result = '<h1 class="page-header">'
-            . '<a href="?table=' . Tools::h($_GET['table']) . '" title="' . $TableAdmin->translate('Back to listing') . '"><i class="fa fa-list-alt"></i></a> '
+            . '<a href="?table=' . Tools::h($_GET['table']) . '" title="' . $this->tableAdmin->translate('Back to listing') . '"><i class="fa fa-list-alt"></i></a> '
             . '<tt>' . Tools::h($tablePrefixless) . '</tt></h1>' . PHP_EOL;
         if (isset($_GET['where']) && is_array($_GET['where'])) {
             // table edit
-            $result .= '<h2 class="sub-header">' . $TableAdmin->translate('Edit') . ' <span class="AdminRecordName"></span></h2>';
+            $result .= '<h2 class="sub-header">' . $this->tableAdmin->translate('Edit') . ' <span class="AdminRecordName"></span></h2>';
             $tabs = [null];
-            foreach (Tools::set($this->TableAdmin->tableContext['language-versions'], $this->MyCMS->TRANSLATIONS) as $key => $value) {
+            foreach (Tools::set($this->tableAdmin->tableContext['language-versions'], $this->MyCMS->TRANSLATIONS) as $key => $value) {
                 $tabs[$value] = "~^.+_$key$~i";
             }
             $result .= $this->outputTableBeforeEdit()
-                . $TableAdmin->outputForm($_GET['where'], [
+                . $this->tableAdmin->outputForm($_GET['where'], [
                     'layout-row' => true,
                     'prefill' => isset($_GET['prefill']) && is_array($_GET['prefill']) ? $_GET['prefill'] : [],
                     'original' => true,
@@ -507,9 +499,9 @@ class MyAdmin extends MyCommon
             $result .= $this->outputTableEditSelected(true);
         } else {
             // table listing
-            $result .= '<h2 class="sub-header">' . $TableAdmin->translate('Listing') . '</h2>'
+            $result .= '<h2 class="sub-header">' . $this->tableAdmin->translate('Listing') . '</h2>'
                 . $this->outputTableBeforeListing()
-                . $TableAdmin->view(['return-output' => 1])
+                . $this->tableAdmin->view(['return-output' => 1])
                 . $this->outputTableAfterListing();
         }
         return $result;
@@ -522,7 +514,7 @@ class MyAdmin extends MyCommon
      */
     protected function outputFooter()
     {
-        return '<footer class="sticky-footer">&copy; GODS, s r.o. ' . $this->TableAdmin->translate('All rights reserved.') . '</footer>';
+        return '<footer class="sticky-footer">&copy; GODS, s r.o. ' . $this->tableAdmin->translate('All rights reserved.') . '</footer>';
     }
 
     /**
@@ -595,16 +587,16 @@ class MyAdmin extends MyCommon
      */
     protected function outputSearchResults($keyword)
     {
-        $keyword2 = $this->TableAdmin->escapeSQL($keyword);
+        $keyword2 = $this->tableAdmin->escapeSQL($keyword);
         $result = '';
         foreach ($this->searchColumns as $key => $value) {
             $id = array_shift($value);
-            $sql = 'SELECT ' . $this->TableAdmin->escapeDbIdentifier($id) . ','
-                . $this->TableAdmin->escapeDbIdentifier(strtr(reset($value), ['_#' => '_' . $_SESSION['language']]))
-                . ' FROM ' . $this->TableAdmin->escapeDbIdentifier(TAB_PREFIX . $key);
+            $sql = 'SELECT ' . $this->tableAdmin->escapeDbIdentifier($id) . ','
+                . $this->tableAdmin->escapeDbIdentifier(strtr(reset($value), ['_#' => '_' . $_SESSION['language']]))
+                . ' FROM ' . $this->tableAdmin->escapeDbIdentifier(TAB_PREFIX . $key);
             $where = '';
             foreach ($value as $item) {
-                $where .= ' OR LCASE(' . $this->TableAdmin->escapeDbIdentifier(strtr($item, ['_#' => '_' . $_SESSION['language']]))
+                $where .= ' OR LCASE(' . $this->tableAdmin->escapeDbIdentifier(strtr($item, ['_#' => '_' . $_SESSION['language']]))
                     . ') LIKE LCASE("%' . $keyword2 . '%")';
             }
             $sql .= ' WHERE ' . substr($where, 4) . ' LIMIT 100';
@@ -627,9 +619,9 @@ class MyAdmin extends MyCommon
                 $result .= '</ul>';
             }
         }
-        return '<h2>' . $this->TableAdmin->translate('Search results') . '</h2>' . PHP_EOL
-            . '<div>' . $this->TableAdmin->translate('Search') . ': <tt>' . Tools::h($keyword) . '</tt></div>' . PHP_EOL
-            . $result ?: $this->TableAdmin->translate('No records found.');
+        return '<h2>' . $this->tableAdmin->translate('Search results') . '</h2>' . PHP_EOL
+            . '<div>' . $this->tableAdmin->translate('Search') . ': <tt>' . Tools::h($keyword) . '</tt></div>' . PHP_EOL
+            . $result ?: $this->tableAdmin->translate('No records found.');
     }
 
     /**
@@ -642,16 +634,16 @@ class MyAdmin extends MyCommon
     {
         Tools::setifnull($_POST['check'], []);
         $result = '<form action="" method="post" enctype="multipart/form-data" class="selected-records-form">'
-            . '<p class="lead">' . $this->TableAdmin->translate($clone ? 'Clone' : 'Edit selected') . ' (' . (isset($_POST['total-rows']) ? $_POST['total-rows'] : count($_POST['check'])) . ')</p>'
+            . '<p class="lead">' . $this->tableAdmin->translate($clone ? 'Clone' : 'Edit selected') . ' (' . (isset($_POST['total-rows']) ? $_POST['total-rows'] : count($_POST['check'])) . ')</p>'
             . Tools::htmlInput('database-table', '', $_POST['database-table'], 'hidden')
             . Tools::htmlInput('token', '', $_POST['token'], 'hidden')
             . Tools::htmlInput('total-rows', '', Tools::ifset($_POST['total-rows']), 'hidden')
             . '<table class="table table-striped table-edit-selected">';
-        foreach ($this->TableAdmin->fields as $key => $value) {
-            $result .= '<tr><th>' . $this->TableAdmin->translateColumn($key) . '</th>' . PHP_EOL
+        foreach ($this->tableAdmin->fields as $key => $value) {
+            $result .= '<tr><th>' . $this->tableAdmin->translateColumn($key) . '</th>' . PHP_EOL
                 . '<td class="w-initial">';
-            $op = ['original' => $this->TableAdmin->translate('original'),
-                'value' => '=' //$this->TableAdmin->translate('value')
+            $op = ['original' => $this->tableAdmin->translate('original'),
+                'value' => '=' //$this->tableAdmin->translate('value')
                 ] + ($value['null'] ? ['null' => 'NULL'] : []);
             $opOptions = [
                 'class' => 'form-control w-initial p-1',
@@ -662,35 +654,35 @@ class MyAdmin extends MyCommon
                 case 'integer':
                 case 'rational':
                     $result .= Tools::htmlSelect(
-                            "op[$key]",
-                            $op + ['+' => '+', '-' => '-', '*' => '*', 'random' => 'random', 'uuid_short' => 'uuid_short'],
-                            '',
-                            $opOptions
-                        ) . '</td><td>' . Tools::htmlInput("fields[$key]", '', '', ['type' => 'number', 'class' => 'form-control edit-selected text-right w-initial', 'data-size' => $value['size']]) . '</td>';
+                        "op[$key]",
+                        $op + ['+' => '+', '-' => '-', '*' => '*', 'random' => 'random', 'uuid_short' => 'uuid_short'],
+                        '',
+                        $opOptions
+                    ) . '</td><td>' . Tools::htmlInput("fields[$key]", '', '', ['type' => 'number', 'class' => 'form-control edit-selected text-right w-initial', 'data-size' => $value['size']]) . '</td>';
                     break;
                 case 'text':
                 case 'binary':
                     if (Tools::among($value['type'], 'date', 'datetime', 'time', 'timestamp')) {
                         $result .= Tools::htmlSelect(
-                                "op[$key]",
-                                $op + ['now' => 'now'] + (Tools::among($value['type'], 'date', 'datetime') ? ['+interval' => '+interval', '-interval' => '-interval'] : []) + (Tools::among($value['type'], 'datetime', 'time', 'timestamp') ? ['addtime' => 'addtime', 'subtime' => 'subtime'] : []),
-                                '',
-                                $opOptions
+                            "op[$key]",
+                            $op + ['now' => 'now'] + (Tools::among($value['type'], 'date', 'datetime') ? ['+interval' => '+interval', '-interval' => '-interval'] : []) + (Tools::among($value['type'], 'datetime', 'time', 'timestamp') ? ['addtime' => 'addtime', 'subtime' => 'subtime'] : []),
+                            '',
+                            $opOptions
                         );
                     } else {
                         $result .= Tools::htmlSelect(
-                                "op[$key]",
-                                $op + [
-                                'prepend' => $this->TableAdmin->translate('prepend'),
-                                'append' => $this->TableAdmin->translate('append'),
+                            "op[$key]",
+                            $op + [
+                                'prepend' => $this->tableAdmin->translate('prepend'),
+                                'append' => $this->tableAdmin->translate('append'),
                                 'md5' => 'md5',
                                 'sha1' => 'sha1',
                                 'password' => 'password',
                                 'uuid' => 'uuid',
                                 'uuid_short' => 'uuid_short'
                                 ],
-                                '',
-                                $opOptions
+                            '',
+                            $opOptions
                         );
                     }
                     $result .= '</td><td>';
@@ -701,36 +693,36 @@ class MyAdmin extends MyCommon
                     }
                     break;
                 case 'choice':
-                    $matches = $this->TableAdmin->decodeChoiceOptions($this->TableAdmin->fields[$key]['size']);
+                    $matches = $this->tableAdmin->decodeChoiceOptions($this->tableAdmin->fields[$key]['size']);
                     if ($value['type'] == 'set') {
                         $result .= Tools::htmlSelect(
-                                "op[$key]",
-                                $op + [
-                                'add' => $this->TableAdmin->translate('add options'),
-                                'remove' => $this->TableAdmin->translate('remove options'),
+                            "op[$key]",
+                            $op + [
+                                'add' => $this->tableAdmin->translate('add options'),
+                                'remove' => $this->tableAdmin->translate('remove options'),
                                 ],
-                                '',
-                                $opOptions
+                            '',
+                            $opOptions
                         );
                         $result .= '</td><td>' . Tools::htmlInput("fields[$key]", '', 1, 'hidden');
                         foreach ($matches as $matchKey => $match) {
                             $result .= Tools::htmlInput(
-                                    "fields[$key][]",
-                                    ($tmp = strtr($match, ["''" => "'", "\\\\" => "\\"])) === '' ? '<i>' . $this->TableAdmin->translate('nothing') . '</i>' : $tmp,
-                                    1 << $matchKey,
-                                    ['type' => 'checkbox', 'label-after' => true, 'class' => 'edit-selected', 'label-class' => 'ml-1 mr-2', 'random-id' => true, 'label-html' => $tmp === '']
+                                "fields[$key][]",
+                                ($tmp = strtr($match, ["''" => "'", "\\\\" => "\\"])) === '' ? '<i>' . $this->tableAdmin->translate('nothing') . '</i>' : $tmp,
+                                1 << $matchKey,
+                                ['type' => 'checkbox', 'label-after' => true, 'class' => 'edit-selected', 'label-class' => 'ml-1 mr-2', 'random-id' => true, 'label-html' => $tmp === '']
                             );
                         }
                     } else { //enum
                         $result .= Tools::htmlSelect("op[$key]", $op, '', $opOptions)
                             . '</td><td>'
-                            . '<i>' . Tools::htmlInput("fields[$key]", $this->TableAdmin->translate('empty'), 0, ['type' => 'radio', 'class' => 'edit-selected', 'label-after' => true, 'label-class' => 'mr-2', 'random-id' => true]) . '</i>';
+                            . '<i>' . Tools::htmlInput("fields[$key]", $this->tableAdmin->translate('empty'), 0, ['type' => 'radio', 'class' => 'edit-selected', 'label-after' => true, 'label-class' => 'mr-2', 'random-id' => true]) . '</i>';
                         foreach ($matches as $matchKey => $match) {
                             $result .= Tools::htmlInput(
-                                    "fields[$key]",
-                                    ($tmp = strtr($match, ["''" => "'", "\\\\" => "\\"])) === '' ? '<i>' . $this->TableAdmin->translate('nothing') . '</i>' : $tmp,
-                                    $matchKey + 1,
-                                    ['type' => 'radio', 'label-after' => true, 'class' => 'edit-selected', 'label-class' => 'ml-1 mr-2', 'random-id' => true, 'label-html' => $tmp === '']
+                                "fields[$key]",
+                                ($tmp = strtr($match, ["''" => "'", "\\\\" => "\\"])) === '' ? '<i>' . $this->tableAdmin->translate('nothing') . '</i>' : $tmp,
+                                $matchKey + 1,
+                                ['type' => 'radio', 'label-after' => true, 'class' => 'edit-selected', 'label-class' => 'ml-1 mr-2', 'random-id' => true, 'label-html' => $tmp === '']
                             );
                         }
                     }
@@ -741,10 +733,10 @@ class MyAdmin extends MyCommon
         }
         $result .= '</table><div>';
         if ($clone) {
-            $result .= '<button name="clone" class="btn btn-primary mr-1" value="1"><i class="fa fa-save mr-1"></i> ' . $this->TableAdmin->translate('Clone') . '</button>';
+            $result .= '<button name="clone" class="btn btn-primary mr-1" value="1"><i class="fa fa-save mr-1"></i> ' . $this->tableAdmin->translate('Clone') . '</button>';
         } else {
-            $result .= '<button name="save-selected" class="btn btn-primary mr-1" value="1"><i class="fa fa-save mr-1"></i> ' . $this->TableAdmin->translate('Save') . '</button>
-            <button name="delete-selected" class="btn btn-secondary" value="1"><i class="fa fa-trash mr-1"></i> ' . $this->TableAdmin->translate('Delete') . '</button>';
+            $result .= '<button name="save-selected" class="btn btn-primary mr-1" value="1"><i class="fa fa-save mr-1"></i> ' . $this->tableAdmin->translate('Save') . '</button>
+            <button name="delete-selected" class="btn btn-secondary" value="1"><i class="fa fa-trash mr-1"></i> ' . $this->tableAdmin->translate('Delete') . '</button>';
         }
         if (isset($_POST['check-all'])) {
             $result .= Tools::htmlInput('check-all', '', 1, 'hidden') . PHP_EOL;
@@ -774,19 +766,16 @@ class MyAdmin extends MyCommon
      */
     public function outputAdmin()
     {
-        //@todo replace the two local variables by the object wide variables below:
-        $MyCMS = $this->MyCMS;
-        $TableAdmin = $this->TableAdmin;
-        $MyCMS->csrfStart();
+        $this->MyCMS->csrfStart();
 
-        Debugger::barDump($MyCMS, 'MyCMS');
+        Debugger::barDump($this->MyCMS, 'MyCMS');
         Debugger::barDump($this->agendas, 'Agendas');
         Debugger::barDump($_SESSION, 'Session');
 
-        if (!in_array(Tools::set($_GET['table']), array_keys($TableAdmin->tables))) {
+        if (!in_array(Tools::set($_GET['table']), array_keys($this->tableAdmin->tables))) {
             $_GET['table'] = '';
         }
-        $TableAdmin->setTable($_GET['table']);
+        $this->tableAdmin->setTable($_GET['table']);
         if (!isset($_SESSION['user'])) {
             if (isset($_COOKIE['mycms_login'])) {
                 $_POST['user'] = explode("\0", $_COOKIE['mycms_login'], 2);
@@ -796,7 +785,7 @@ class MyAdmin extends MyCommon
                 $_POST['login'] = $_POST['autologin'] = 1;
                 $_POST['token'] = end($_SESSION['token']);
                 $_POST['autologin'] = 1;
-                $MyAdminProcess = new MyAdminProcess($this->MyCMS, ['tableAdmin' => $TableAdmin]);
+                $MyAdminProcess = new MyAdminProcess($this->MyCMS, ['tableAdmin' => $this->tableAdmin]);
                 $MyAdminProcess->processLogin($_POST);
             }
             $_GET['table'] = $_GET['media'] = $_GET['user'] = null;
@@ -835,7 +824,7 @@ class MyAdmin extends MyCommon
             $output .= $this->outputUser();
         } elseif ($this->projectSpecificSectionsCondition()) {
             // project-specific admin sections // TODO did this comment move removed 824 | ERROR | [ ] Expected 1 space after closing brace; newline|       |     found ??
-            $output .= $this->projectSpecificSections($TableAdmin);
+            $output .= $this->projectSpecificSections($this->tableAdmin);
         } else {
             // no agenda selected, showing "dashboard"
         }
@@ -862,10 +851,10 @@ class MyAdmin extends MyCommon
         }
         return mb_substr(Tools::set($_GET['table']), mb_strlen(TAB_PREFIX)) ?:
             (
-            isset($_GET['user']) ? $this->TableAdmin->translate('User') :
+                isset($_GET['user']) ? $this->tableAdmin->translate('User') :
             (
-            isset($_GET['media']) ? $this->TableAdmin->translate('Media') :
-            (isset($_GET['search']) ? $this->TableAdmin->translate('Search') : '')
+                isset($_GET['media']) ? $this->tableAdmin->translate('Media') :
+            (isset($_GET['search']) ? $this->tableAdmin->translate('Search') : '')
             )
             );
     }
