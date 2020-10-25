@@ -209,9 +209,9 @@ class MyFriendlyUrl extends MyCommon
             REDIRECTOR_ENABLED && $this->verboseBarDump(
                 (
                     $found = $this->MyCMS->fetchSingle(
-                    'SELECT `new_url` FROM ' . TAB_PREFIX . 'redirector WHERE `old_url`="' . $interestingPath
-                . '" AND `active` = "1"'
-                )
+                        'SELECT `new_url` FROM ' . TAB_PREFIX . 'redirector WHERE `old_url`="' . $interestingPath
+                        . '" AND `active` = "1"'
+                    )
                 ),
                 'friendlyIdentifyRedirect: found redirect'
             )

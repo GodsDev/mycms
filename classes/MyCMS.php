@@ -100,15 +100,18 @@ class MyCMS extends MyCMSMonoLingual
      */
     public function translate($id, $options = null)
     {
-        if (!isset($this->TRANSLATION[$id]) && isset($_SESSION['test-translations'])
-            && $_SESSION['language'] != DEFAULT_LANGUAGE) {
+        if (
+            !isset($this->TRANSLATION[$id]) && isset($_SESSION['test-translations'])
+            && $_SESSION['language'] != DEFAULT_LANGUAGE
+        ) {
             $this->logger->warning('Translation does not exist - ' . $id);
         }
         $result = isset($this->TRANSLATION[$id]) ? $this->TRANSLATION[$id] : $id;
         if ($options === L_UCFIRST) {
             $result = mb_strtoupper(mb_substr($result, 0, 1)) . mb_substr($result, 1);
-        } elseif (is_int($options)
-            && ($options == MB_CASE_UPPER || $options == MB_CASE_LOWER || $options == MB_CASE_TITLE)) {
+        } elseif (
+            is_int($options) && ($options == MB_CASE_UPPER || $options == MB_CASE_LOWER || $options == MB_CASE_TITLE)
+        ) {
             $result = mb_convert_case($result, $options);
         }
         return $result;

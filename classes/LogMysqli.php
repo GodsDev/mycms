@@ -184,7 +184,10 @@ class LogMysqli extends BackyardMysqli
         foreach ($columns as $column) {
             $result .= ',';
             $escColumn = $this->escapeDbIdentifier($column);
-            if (isset($fields[$column]['type']) && ($fields[$column]['type'] == 'set' || $fields[$column]['type'] == 'enum')) {
+            if (
+                isset($fields[$column]['type']) &&
+                ($fields[$column]['type'] == 'set' || $fields[$column]['type'] == 'enum')
+            ) {
                 $result .= "$escColumn - 0 AS $escColumn"; //NULLs will persist
             } else {
                 $result .= $escColumn;
@@ -255,7 +258,8 @@ class LogMysqli extends BackyardMysqli
      * Example: 'SELECT id,name,surname FROM employees' --> [3=>[name=>"John", surname=>"Smith"], [...]]
      * If the first column is non-unique, results are joined into an array.
      * Example: 'SELECT department_id,name FROM employees' --> [1=>['John', 'Mary'], 2=>['Joe','Pete','Sally']]
-     * Example: 'SELECT division_id,name,surname FROM employees' --> [1=>[[name=>'John',surname=>'Doe'], [name=>'Mary',surname=>'Saint']], 2=>[...]]
+     * Example: 'SELECT division_id,name,surname FROM employees' --> 
+     *     [1=>[[name=>'John',surname=>'Doe'], [name=>'Mary',surname=>'Saint']], 2=>[...]]
      *
      * @param string $sql SQL to be executed
      * @return mixed - either associative array, empty array on empty SELECT, or false on error
@@ -292,7 +296,8 @@ class LogMysqli extends BackyardMysqli
     /**
      * Extract data from an array and present it as values, field names, or pairs.
      * @example: $data = ['id'=>5, 'name'=>'John', 'surname'=>'Doe'];
-     * $sql = 'INSERT INTO employees (' . $this->values($data, 'fields') . ') VALUES (' . $this->values($data, 'values') . ')';
+     * $sql = 'INSERT INTO employees (' . $this->values($data, 'fields') 
+     *     . ') VALUES (' . $this->values($data, 'values') . ')';
      * $sql = 'UPDATE employees SET ' . $this->values($data, 'pairs') . ' WHERE id=5';
      *
      * @param array $data
