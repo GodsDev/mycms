@@ -104,7 +104,7 @@ class MyTableAdmin extends MyTableLister
                     . Tools::htmlInput('after', '', '', 'hidden') . PHP_EOL
                     . Tools::htmlInput('referer', '', base64_encode(Tools::xorCipher(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '?table=' . TAB_PREFIX . $_GET['table'], end($_SESSION['token']))), 'hidden') . PHP_EOL;
             }
-            // TODO fix Tools::htmlSelect .. default is mixed not string!
+            // TODO will be fixed in next Tools version: fix Tools::htmlSelect .. default is mixed not string!
             $output .= '<label><i class="fa fa-location-arrow"></i> ' . Tools::htmlSelect('after', [$this->translate('stay here'), $this->translate('go back')], false, ['class' => 'form-control form-control-sm w-initial d-inline-block']) . '</label></div>';
         }
         $output .= (isset($options['exclude-form']) && $options['exclude-form'] ? '' : '</fieldset></form>') . PHP_EOL;
@@ -209,8 +209,8 @@ class MyTableAdmin extends MyTableLister
                 }
                 $output .= '</table>';
             } else {
-                // TODO fix Parameter #3 $cols and #4 $rows of static method GodsDev\Tools\Tools::htmlTextarea() expects int, false given. 
-                $output .= Tools::htmlTextarea("fields[$key]", $value, false, false, [
+                // TODO ask CRS2 if replacing #3 $cols and #4 $rows false,false by 60,5 as int is expected is the right correction
+                $output .= Tools::htmlTextarea("fields[$key]", $value, 60, 5, [
                         'id' => $key . $this->rand, 'data-maxlength' => $field['size'],
                         'class' => 'form-control type-' . Tools::webalize($field['type']) . ($comment['display'] == 'html' ? ' richtext' : '') . ($comment['display'] == 'texyla' ? ' texyla' : '')
                     ])
@@ -331,12 +331,12 @@ class MyTableAdmin extends MyTableLister
                     break;
                 }
                 $input = '<div class="TableAdminTextarea">'
-                    // TODO fix Parameter #3 $cols and #4 $rows of static method GodsDev\Tools\Tools::htmlTextarea() expects int, false given. 
+                    // TODO ask CRS2 if replacing #3 $cols and #4 $rows false,false by 60,5 as int is expected is the right correction
                     . Tools::htmlTextarea(
                         "fields[$key]",
                         $value,
-                        false,
-                        false,
+                        60,
+                        5,
                         ['id' => $key . $this->rand, 'data-maxlength' => $field['size'],
                             'class' => 'form-control type-' . Tools::webalize($field['type']) . ($comment['display'] == 'html' ? ' richtext' : '') . ($comment['display'] == 'texyla' ? ' texyla' : '')
                         ]
@@ -367,7 +367,7 @@ class MyTableAdmin extends MyTableLister
      */
     public function outputSelectPath($name, $path_id = null, $options = [])
     {
-        // TODO what this construction means? Call to function is_array() with string will always evaluate to false.
+        // TODO what does this construction mean? Call to function is_array() with string will always evaluate to false.
         if (!is_array($name)) {
             $name = ['table' => $name, 'column' => $name];
         }

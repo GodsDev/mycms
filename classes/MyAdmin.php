@@ -695,8 +695,8 @@ class MyAdmin extends MyCommon
                     }
                     $result .= '</td><td>';
                     if (Tools::ends($value['type'], 'text') || Tools::ends($value['type'], 'blob')) {
-                        // todo ask CRS2 Parameter #3 $cols of static method GodsDev\Tools\Tools::htmlTextarea() expects int, null given.
-                        $result .= Tools::htmlTextarea("fields[$key]", '', null, 3, ['class' => 'form-control edit-selected', 'data-size' => $value['size']]) . '</td>';
+                        // TODO ask CRS2 if replacing #3 $cols null by 60 as int is expected is the right correction
+                        $result .= Tools::htmlTextarea("fields[$key]", '', 60, 3, ['class' => 'form-control edit-selected', 'data-size' => $value['size']]) . '</td>';
                     } else {
                         $result .= Tools::htmlInput("fields[$key]", '', '', ['type' => 'text', 'class' => 'form-control edit-selected', 'data-size' => $value['size']]) . '</td>';
                     }
@@ -810,7 +810,7 @@ class MyAdmin extends MyCommon
                 . $this->outputAgendas() . '</nav>' . PHP_EOL;
         }
         $output .= '<main class="ml-3 ml-sm-auto col-md-9 pt-3" role="main" id="admin-main">'
-            // TODO fix Tools::showMessages void or array to always return string
+            // TODO will be fixed in next Tools version: fix Tools::showMessages void or array to always return string
             . Tools::showMessages(false);
         foreach (glob(DIR_ASSETS . '*', GLOB_ONLYDIR) as $value) {
             $this->ASSETS_SUBFOLDERS [] = substr($value, strlen(DIR_ASSETS));

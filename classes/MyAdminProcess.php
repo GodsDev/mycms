@@ -559,7 +559,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user change password" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processUserChangePassword(&$post)
@@ -571,9 +571,15 @@ class MyAdminProcess extends MyCommon
                 if ($row = $this->MyCMS->fetchSingle('SELECT * FROM ' . TAB_PREFIX . 'admin WHERE admin="' . $this->MyCMS->escapeSQL($_SESSION['user']) . '"')) {
                     if ($row['active'] == '1' && $row['password_hashed'] == sha1($post['old-password'] . $row['salt'])) {
                         // TODO ask CRS2 Static method GodsDev\Tools\Tools::resolve() invoked with 5 parameters, 3 required.
-                        Tools::resolve($this->MyCMS->dbms->query('UPDATE ' . TAB_PREFIX . 'admin
+                        Tools::resolve(
+                            $this->MyCMS->dbms->query('UPDATE ' . TAB_PREFIX . 'admin
                     SET password_hashed="' . $this->MyCMS->escapeSQL(sha1($post['new-password'] . $row['salt'])) . '"
-                    WHERE admin="' . $this->MyCMS->escapeSQL($_SESSION['user']) . '"'), $this->tableAdmin->translate('Password was changed.'), $this->tableAdmin->translate('Error occured changing password.'), true, false); // this statement MUST NOT be logged by LogMysqli mechanism
+                    WHERE admin="' . $this->MyCMS->escapeSQL($_SESSION['user']) . '"'),
+                            $this->tableAdmin->translate('Password was changed.'),
+                            $this->tableAdmin->translate('Error occured changing password.'),
+                            true,
+                            false
+                        ); // this statement MUST NOT be logged by LogMysqli mechanism
                         $this->redir();
                     }
                 }
@@ -586,7 +592,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user create" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processUserCreate(&$post)
