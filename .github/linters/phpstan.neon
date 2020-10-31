@@ -31,11 +31,11 @@ parameters:
 #      -
 #        message: '#Reflection error: GodsDev\\Backyard\\BackyardMysqli not found.#'
 #        path: /github/workspace/classes/dist/prepare.php
-      -
-        message: '#Reflection error: Nette\\SmartObject not found\.#'
-        paths:
-          - ../../classes/MyTableLister.php
-          - ../../classes/MyCMSMonoLingual.php
-#      - '#Reflection error: Nette\\SmartObject not found\.#'
+      #-
+    #    message: '#Reflection error: Nette\\SmartObject not found\.#'
+      #  paths:
+       #   - ../../classes/MyTableLister.php
+     #     - ../../classes/MyCMSMonoLingual.php
+      - '#Reflection error: Nette\\SmartObject not found\.#'
 #      - '#Call to static method barDump\(\) on an unknown class Tracy\\Debugger.#'
 #      - '#Call to static method addMessage\(\) on an unknown class GodsDev\\Tools\\Tools.#'
