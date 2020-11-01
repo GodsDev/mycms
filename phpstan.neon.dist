@@ -8,14 +8,3 @@ parameters:
       -
         message: '#Ternary operator condition is always true.#'
         path: classes/MyAdminProcess.php
-      # These variables are responsibility of the including/included script (duplicates dist/conf/phpstan.common.neon section)
-      -
-        message: '#Variable \$MyCMS might not be defined.#'
-        path: dist\process.php
-      # Compensate for PHPUnit where $_POST may not be defined (duplicates dist/conf/phpstan.common.neon section)
-      -
-        message: '#Result of \|\| is always false.#'
-        path: dist\process.php
-      -
-        message: '#Variable \$_POST in isset\(\) always exists and is not nullable#'
-        path: dist\process.php
