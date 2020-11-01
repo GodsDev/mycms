@@ -237,7 +237,7 @@ class MyTableAdmin extends MyTableLister
             case 'mediumint':
             case 'bigint':
             case 'year':
-                // TODO fix Binary operation "+=" between arrays results in an error. 
+                // TODO fix Binary operation "+=" between arrays results in an error.
                 $input += ['type' => 'number', 'step' => 1, 'class' => 'form-control'];
                 if ($field['key'] == 'PRI') {
                     $input['readonly'] = 'readonly';
@@ -303,7 +303,7 @@ class MyTableAdmin extends MyTableLister
                 foreach ($choices as $k => $v) {
                     $tmp[$k] = Tools::htmlInput("fields[$key][$k]", $v === '' ? '<i>' . $this->translate('nothing') . '</i>' : $v, 1 << $k, [
                             'type' => 'checkbox',
-                            // todo ask CRS2 is_array($value) seeems to be always true, so Else branch is unreachable because ternary operator condition is always true. 
+                            // todo ask CRS2 is_array($value) seeems to be always true, so Else branch is unreachable because ternary operator condition is always true.
                             'checked' => ((1 << $k) & (int) (is_array($value) ? reset($value) : $value)) ? 'checked' : null,
                             'id' => "$key-$k-$this->rand",
                             'label-html' => $v === '',

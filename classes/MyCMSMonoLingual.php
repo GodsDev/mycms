@@ -123,6 +123,11 @@ class MyCMSMonoLingual
         return $this->dbms->fetchAll($sql);
     }
 
+    /**
+     *
+     * @param string $sql SQL to be executed
+     * @return array|false - either associative array, empty array on empty SELECT, or false on error
+     */
     public function fetchAndReindex($sql)
     {
         return $this->dbms->fetchAndReindex($sql);

@@ -1,5 +1,5 @@
 includes:
-      - phpstan.common.neon
+      - conf/phpstan.common.neon
 
 parameters:
     excludes_analyse:

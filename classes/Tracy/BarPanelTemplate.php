@@ -10,7 +10,6 @@ use Tracy\IBarPanel;
  */
 class BarPanelTemplate implements IBarPanel
 {
-
     protected $tabTitle;
 
     protected $panelDetails;

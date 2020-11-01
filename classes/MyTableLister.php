@@ -183,9 +183,9 @@ class MyTableLister
             throw new \RunTimeException('Could not get columns from table ' . $this->table . '.');
         }
         $query = $this->dbms->query(
-            'SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME 
-            FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def" 
-            AND TABLE_SCHEMA = "' . $this->escapeSQL($this->database) . '" 
+            'SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
+            FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME != "PRIMARY" AND CONSTRAINT_CATALOG = "def"
+            AND TABLE_SCHEMA = "' . $this->escapeSQL($this->database) . '"
             AND TABLE_NAME = "' . $this->escapeSQL($this->table) . '"'
         );
         if ($query) {
@@ -473,7 +473,7 @@ class MyTableLister
                 <span class="glyphicon glyphicon-list-alt fa fa-list-alt"></span>
             </button>
             </fieldset></form>
-            <script type="text/javascript"> 
+            <script type="text/javascript">
             LISTED_FIELDS=[' . Tools::arrayListed(array_keys($this->fields), 4, ',', '"', '"') . '];' . PHP_EOL;
         if (isset($_GET['col'], $_GET['op']) && is_array($_GET['col'])) {
             foreach ($_GET['col'] as $key => $value) {
@@ -578,7 +578,7 @@ class MyTableLister
         }
         $output .= '</tbody></table>' . PHP_EOL;
         if (!isset($options['no-selected-rows-operations'])) {
-            $output .= '<div class="selected-rows mb-2"><i class="fa fa-check-square"></i>=<span class="listed">0</span> 
+            $output .= '<div class="selected-rows mb-2"><i class="fa fa-check-square"></i>=<span class="listed">0</span>
                 <label class="btn btn-sm btn-light mx-1 mt-2">' . Tools::htmlInput('total-rows', '', $options['total-rows'], ['type' => 'checkbox', 'class' => 'total-rows']) . ' ' . $this->translate('Whole resultset') . '</label>
                 <button name="table-export" value="1" class="btn btn-sm ml-1" disabled="disabled"><i class="fa fa-download"></i> ' . $this->translate('Export') . '</button>
                 <button name="edit-selected" value="1" class="btn btn-sm ml-1" disabled="disabled"><i class="fa fa-edit"></i> ' . $this->translate('Edit') . '</button>
@@ -739,7 +739,8 @@ class MyTableLister
      * @param mixed $noChangeMessage optional message in case of no affected change
      *   false = use $successMessage
      *
-     * @return mixed true for success, false for failure of the query; if the query is empty return null (with no messages)
+     * @return bool|null true for success, false for failure of the query;
+     *   if the query is empty return null (with no messages)
      */
     public function resolveSQL($sql, $successMessage, $errorMessage, $noChangeMessage = false)
     {

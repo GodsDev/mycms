@@ -107,7 +107,7 @@ class MyFriendlyUrl extends MyCommon
      * matchResult = (1=pattern matches `PARSE_PATH_PATTERN`, 0=it does not, or FALSE=error)
      *
      * @param array $options
-     * @return mixed `bool (true)` when `TEMPLATE_NOT_FOUND` || `array` with redir string field
+     * @return array|true `bool (true)` when `TEMPLATE_NOT_FOUND` || `array` with redir string field
      *     || `array` with token string field and matches array field (see above)
      */
     protected function friendlyIdentifyRedirect(array $options = [])
@@ -240,7 +240,7 @@ class MyFriendlyUrl extends MyCommon
     /**
      * Checks rules against current get parameters
      *
-     * @return mixed string template name on success, null on necessity to continue
+     * @return string|null string template name on success, null on necessity to continue
      */
     private function parametricRuleToTemplate()
     {
@@ -435,7 +435,7 @@ class MyFriendlyUrl extends MyCommon
      *
      * @param string $outputKey `type`
      * @param string $outputValue `id`
-     * @return mixed null (do not change the output) or string (URL - friendly or parametric)
+     * @return string|null null (do not change the output) or string (URL - friendly or parametric)
      */
     protected function switchParametric($outputKey, $outputValue)
     {

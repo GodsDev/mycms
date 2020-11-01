@@ -72,7 +72,7 @@ class FriendlyUrl extends MyFriendlyUrl
      *
      * @param string $outputKey `type`
      * @param string $outputValue `id`
-     * @return mixed null (do not change the output) or string (URL - friendly or parametric)
+     * @return string|null null (do not change the output) or string (URL - friendly or parametric)
      */
     protected function switchParametric($outputKey, $outputValue)
     {

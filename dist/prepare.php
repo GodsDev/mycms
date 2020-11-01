@@ -16,7 +16,7 @@ use Tracy\Debugger;
 session_start() || error_log('session_start failed');
 $developmentEnvironment = (
     in_array($_SERVER['REMOTE_ADDR'], array('::1', '127.0.0.1')) || in_array($_SERVER['REMOTE_ADDR'], $debugIpArray)
-    );
+);
 
 Debugger::enable($developmentEnvironment ? Debugger::DEVELOPMENT : Debugger::PRODUCTION, __DIR__ . '/log');
 Debugger::$email = EMAIL_ADMIN;
