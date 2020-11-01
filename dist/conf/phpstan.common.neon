@@ -1,9 +1,9 @@
 parameters:
     level: 5
     bootstrapFiles:
-      - conf/config.php
-      - conf/config.local.dist.php
-      - .github/linters/conf/constants.php
+      - config.php
+      - config.local.dist.php
+      - ../.github/linters/conf/constants.php
     scanDirectories:
       - classes
     ignoreErrors:

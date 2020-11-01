@@ -258,7 +258,7 @@ class LogMysqli extends BackyardMysqli
      * Example: 'SELECT id,name,surname FROM employees' --> [3=>[name=>"John", surname=>"Smith"], [...]]
      * If the first column is non-unique, results are joined into an array.
      * Example: 'SELECT department_id,name FROM employees' --> [1=>['John', 'Mary'], 2=>['Joe','Pete','Sally']]
-     * Example: 'SELECT division_id,name,surname FROM employees' --> 
+     * Example: 'SELECT division_id,name,surname FROM employees' -->
      *     [1=>[[name=>'John',surname=>'Doe'], [name=>'Mary',surname=>'Saint']], 2=>[...]]
      *
      * @param string $sql SQL to be executed
@@ -296,7 +296,7 @@ class LogMysqli extends BackyardMysqli
     /**
      * Extract data from an array and present it as values, field names, or pairs.
      * @example: $data = ['id'=>5, 'name'=>'John', 'surname'=>'Doe'];
-     * $sql = 'INSERT INTO employees (' . $this->values($data, 'fields') 
+     * $sql = 'INSERT INTO employees (' . $this->values($data, 'fields')
      *     . ') VALUES (' . $this->values($data, 'values') . ')';
      * $sql = 'UPDATE employees SET ' . $this->values($data, 'pairs') . ' WHERE id=5';
      *

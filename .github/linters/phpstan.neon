@@ -1,6 +1,6 @@
 includes:
-      - ../../phpstan.common.neon
-      - ../../dist/.github/linters/phpstan.neon
+      - ../../conf/phpstan.common.neon
+      - ../../dist/conf/phpstan.mycms.neon
 
 #      - ../../phpstan.neon.dist
 #      - ../../.github/linters/phpstan.neon
@@ -27,7 +27,9 @@ parameters:
 #        path: /github/workspace/dist/set-environment.php 
       -
         message: '#Reflection error: GodsDev\\Backyard\\BackyardMysqli not found.#'
-        path: ../../classes/LogMysqli.php
+        paths:
+          - ../../classes/LogMysqli.php
+          - ../../dist/prepare.php
 #      -
 #        message: '#Reflection error: GodsDev\\Backyard\\BackyardMysqli not found.#'
 #        path: /github/workspace/classes/dist/prepare.php

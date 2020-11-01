@@ -1,6 +1,6 @@
 includes:
-      - phpstan.common.neon
-#      - dist/phpstan.common.neon
+      - conf/phpstan.common.neon
+#      - dist/conf/phpstan.common.neon
 #includes:
       - dist/phpstan.neon.dist
 #

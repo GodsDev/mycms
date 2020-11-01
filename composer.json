@@ -9,7 +9,7 @@
         "nette/utils": "^2.4.8",
         "texy/texy": "^2.7.1",
         "godsdev/tools": "dev-feature/phpstan-corrections",
-        "godsdev/backyard": "3.2.9",
+        "godsdev/backyard": "3.2.10",
         "ext-session": "*",
         "ext-mbstring": "*"
     },
