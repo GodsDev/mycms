@@ -80,7 +80,7 @@ class Mail extends MyCommon
      * @param string $subject
      * @param string $messageTxt
      * @param array $options
-     * @return mixed false or int
+     * @return int|false
      */
     public function sendMail($to, $subject, $messageTxt, array $options = [])
     {

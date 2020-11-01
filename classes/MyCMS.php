@@ -95,7 +95,7 @@ class MyCMS extends MyCMSMonoLingual
      * Returns original text if translation not found.
      *
      * @param string $id text to translate
-     * @param mixed $options case transposition - null || [MB_CASE_UPPER|MB_CASE_LOWER|MB_CASE_TITLE|L_UCFIRST]
+     * @param int|null $options case transposition - null || [MB_CASE_UPPER|MB_CASE_LOWER|MB_CASE_TITLE|L_UCFIRST]
      * @return string
      */
     public function translate($id, $options = null)

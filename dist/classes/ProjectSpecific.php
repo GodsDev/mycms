@@ -147,7 +147,7 @@ class ProjectSpecific extends ProjectCommon
      * Retrieves product info
      *
      * @param int $id
-     * @return mixed array first selected row, null on empty SELECT
+     * @return array|null array first selected row, null on empty SELECT
      * @throws \Exception on error
      */
     public function getProduct($id)
@@ -178,7 +178,7 @@ class ProjectSpecific extends ProjectCommon
      *
      * @param string $path
      * @param array $options OPTIONAL
-     * @return mixed
+     * @return array|false
      */
     public function getBreadcrumbs($path, array $options = array())
     {
@@ -199,20 +199,20 @@ class ProjectSpecific extends ProjectCommon
      * Get "children" content to a specified category/ies
      * TODO: make this method useful for dist project as a demonstration
      *
-     * @param mixed $category_id category/ies to search, either int or array of integers
+     * @param int|array<int> $category_id category/ies to search, either int or array of integers
      * @param array $options = []
      *          [path] - path of the category
      *          [level] - level to which seek for children
      *          [except_id] - id of the child to omit from the result
-     * @return mixed - either associative array, empty array on empty SELECT, or false on error
+     * @return array|false - either associative array, empty array on empty SELECT, or false on error
      */
     public function getChildren($category_id, array $options = [])
     {
         Tools::setifnotset($options['level'], 0);
         if ($options['level'] && Tools::nonzero($options['path'])) {
-            $category_id = array_keys($this->MyCMS->fetchAndReindex($sql = 'SELECT id FROM ' . TAB_PREFIX . 'category 
+            $category_id = array_keys($this->MyCMS->fetchAndReindex($sql = 'SELECT id FROM ' . TAB_PREFIX . 'category
                 WHERE LEFT(path, ' . strlen($options['path']) . ')="' . $this->MyCMS->escapeSQL($options['path']) . '"
-                AND LENGTH(path) > ' . strlen($options['path']) . ' 
+                AND LENGTH(path) > ' . strlen($options['path']) . '
                 AND LENGTH(path) <= ' . (strlen($options['path']) + $options['level'] * PATH_MODULE)));
         } else {
             $category_id = array($category_id);
