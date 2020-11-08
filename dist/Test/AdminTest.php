@@ -35,6 +35,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         global $backyardConf;
+        error_reporting(E_ALL); // incl E_NOTICE
         Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/../log');
         $backyard = new \GodsDev\Backyard\Backyard($backyardConf);
         $mycmsOptions = [

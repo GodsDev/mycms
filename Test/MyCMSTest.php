@@ -26,6 +26,7 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         global $backyardConf;
+        error_reporting(E_ALL); // incl E_NOTICE
         $backyard = new \GodsDev\Backyard\Backyard($backyardConf);
         $mycmsOptions = [
             'TRANSLATIONS' => [

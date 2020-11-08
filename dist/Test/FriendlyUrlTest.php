@@ -50,6 +50,7 @@ class FriendlyUrlTest extends \PHPUnit_Framework_TestCase
     {
         global $backyardConf,
         $myCmsConf;
+        error_reporting(E_ALL); // incl E_NOTICE
         Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/../log');
         $this->backyard = new \GodsDev\Backyard\Backyard($backyardConf);
         $myCmsConf['logger'] = $this->backyard->BackyardError;
