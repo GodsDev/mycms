@@ -89,7 +89,7 @@ class ProjectSpecific extends ProjectCommon
             . ' WHERE co.active="1"' . Tools::wrap($this->MyCMS->escapeSQL($code), ' AND co.code="', '"')
                 . Tools::wrap(intval($id), ' AND co.id=') . ' LIMIT 1'))
         ) {
-            $result['context'] = json_decode($result['context'], true) ?: array();
+            $result['context'] = json_decode($result['context'], true) ?: [];
             $result['added'] = Tools::localeDate($result['added'], $options['language'], false);
         }
         $options += array('path' => $result['path'], 'except_id' => $result['id']);
@@ -180,7 +180,7 @@ class ProjectSpecific extends ProjectCommon
      * @param array $options OPTIONAL
      * @return array|false
      */
-    public function getBreadcrumbs($path, array $options = array())
+    public function getBreadcrumbs($path, array $options = [])
     {
         $result = [];
         if ($path) {

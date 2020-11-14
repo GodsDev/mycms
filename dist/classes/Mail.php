@@ -24,7 +24,7 @@ class Mail extends MyCommon
     private $mailer = null;
 
     /**
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
+     * @param MyCMS $MyCMS
      * @param array $options overrides default values of properties
      */
     public function __construct(MyCMS $MyCMS, array $options = [])

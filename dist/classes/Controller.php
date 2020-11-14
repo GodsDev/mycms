@@ -20,7 +20,7 @@ class Controller extends MyController
     /** @var string */
     protected $requestUri; // = ''; // default is homepage
 
-    /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
+    /** @var ProjectSpecific */
     private $projectSpecific;
 
     /** @var string */
@@ -56,7 +56,7 @@ class Controller extends MyController
      * TAB_PREFIX
      *
      *
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
+     * @param MyCMS $MyCMS
      * @param array $options overrides default values of declared properties
      */
     public function __construct(MyCMS $MyCMS, array $options = [])

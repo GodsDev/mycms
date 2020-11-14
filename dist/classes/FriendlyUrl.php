@@ -22,7 +22,7 @@ class FriendlyUrl extends MyFriendlyUrl
     /** @var string */
     protected $requestUri = ''; // default is homepage
 
-    /** @var \GodsDev\mycmsprojectnamespace\ProjectSpecific */
+    /** @var ProjectSpecific */
     private $projectSpecific;
 
     /** @var string */
@@ -92,7 +92,7 @@ class FriendlyUrl extends MyFriendlyUrl
                     ) . '"' : ' code LIKE "' . $this->MyCMS->dbms->escapeSQL($outputValue) . '"')
                 );
                 Debugger::barDump($content, 'content piece');
-                return is_null($content) ? (self::PAGE_NOT_FOUND) : $content['link'];
+                return is_null($content) ? self::PAGE_NOT_FOUND : $content['link'];
             case 'category':
                 if (empty($outputValue)) {
                     return isset($this->get['offset']) ? "?category&offset=" . (int) $this->get['offset'] : "?category";
@@ -102,13 +102,13 @@ class FriendlyUrl extends MyFriendlyUrl
                     . ' FROM ' . TAB_PREFIX . 'category WHERE active = 1 '
                     . ' AND id = "' . $this->MyCMS->dbms->escapeSQL($outputValue) . '"');
                 Debugger::barDump($content, 'category');
-                return is_null($content) ? (self::PAGE_NOT_FOUND) : $content['link'];
+                return is_null($content) ? self::PAGE_NOT_FOUND : $content['link'];
             case 'language':
                 return null; // i.e. do not change the output or return "?{$outputKey}={$outputValue}";
             case 'product':
                 $content = $this->projectSpecific->getProduct((int) $outputValue);
                 Debugger::barDump($content, 'product');
-                return is_null($content) ? (self::PAGE_NOT_FOUND) : $content['link'];
+                return is_null($content) ? self::PAGE_NOT_FOUND : $content['link'];
             default:
                 Debugger::log(
                     "switchParametric: undefined friendlyfyUrl for {$outputKey} => {$outputValue}",

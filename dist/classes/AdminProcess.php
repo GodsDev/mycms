@@ -27,16 +27,6 @@ class AdminProcess extends MyAdminProcess
     protected $agendas;
 
     /**
-     *
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
-     * @param array $options overrides default values of properties
-     */
-    public function __construct(MyCMS $MyCMS, array $options = [])
-    {
-        parent::__construct($MyCMS, $options);
-    }
-
-    /**
      * Process admin commands. Most commands require admin logged in and/or CSRF check.
      * Commands with all required variables cause page redirection.
      * $_SESSION is manipulated by this function - mainly [messages] get added
