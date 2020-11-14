@@ -28,6 +28,7 @@ class MyTableAdmin extends MyTableLister
      *      [tabs] - divide fields into Bootstrap tabs, e.g. [null, 'English'=>'/^.+_en$/i', 'Chinese'=>'/^.+_cn$/i']
      *      [return-output] - non-zero: return output (instead of echo $output)
      * @return mixed void or string if $option[return-output] is non-zero
+     *      TODO can't be void|string, as it wouldn't be possible to make string operations on void result
      */
     public function outputForm($where, array $options = [])
     {

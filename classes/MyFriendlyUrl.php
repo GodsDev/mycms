@@ -271,7 +271,7 @@ class MyFriendlyUrl extends MyCommon
                     $this->get['id'] = filter_var(
                         $tempGetId = $this->get['id'],
                         FILTER_VALIDATE_INT,
-                        array('default' => 0, 'min_range' => 0, 'max_range' => 1e9)
+                        ['default' => 0, 'min_range' => 0, 'max_range' => 1e9]
                     );
                     if (!$this->get['id']) {
                         $this->MyCMS->logger->error($this->verboseBarDump(
@@ -361,7 +361,7 @@ class MyFriendlyUrl extends MyCommon
     private function pureFriendlyUrl(array $options, $token, array $matches)
     {
         //default scripts and language directories all result into the default template
-        if (in_array($token, array_merge(array(HOME_TOKEN, '', 'index'), array_keys($this->MyCMS->TRANSLATIONS)))) {
+        if (in_array($token, array_merge([HOME_TOKEN, '', 'index'], array_keys($this->MyCMS->TRANSLATIONS)))) {
             return $this->verboseBarDump(self::TEMPLATE_DEFAULT, 'pureFriendlyUrl return default');
         }
 

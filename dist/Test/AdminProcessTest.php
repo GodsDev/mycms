@@ -40,7 +40,7 @@ class AdminProcessTest extends \PHPUnit_Framework_TestCase
         $mycmsOptions = [
             'TRANSLATIONS' => [
                 'en' => 'English',
-                'cn' => '中文'
+                'zh' => '中文',
             ],
             'logger' => $backyard->BackyardError,
             'dbms' => new \GodsDev\MyCMS\LogMysqli(

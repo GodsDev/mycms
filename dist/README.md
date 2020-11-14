@@ -91,6 +91,8 @@ vendor/bin/phinx migrate -e development # or production or testing
 3. `vendor/bin/phpunit` to always check the functionality
 4. `sass styles/index.sass styles/index.css` to keep order in the generated css
 
+Note: To work on low performing environments, the script accepts number of seconds as parameter to be used as a waiting time between steps.
+
 ### reCAPTCHA
 
 Paste this snippet at the end of the <form> where you want the reCAPTCHA widget to appear:
@@ -310,14 +312,13 @@ super-linter uses PHPSTAN to identify PHPDoc errors
 * but github-action doesn't have access to libraries declared in composer (ignoreErrors)
 * and it needs to know which global constants are used (`.github/linters/conf/constants.php`) on top of standard config files
 * and where to look for present classes (scanDirectories), hence following files:
-* `.github/linters/phpstan.neon` - for super-linter on github
+* `.github/linters/phpstan.neon` - for super-linter (of this app) on github
 * `phpstan.neon.dist` - for local PHPSTAN
-* `phpstan.common.neon` - both for local and super-linter on github PHPSTAN
+* `conf/phpstan.common.neon` - both for local and super-linter on github PHPSTAN
+* `conf/phpstan.mycms.neon` - both for local and super-linter (of this app or mycms) on github PHPSTAN
 * Note: if your DEFAULT_BRANCH is not `develop`, change `.github/linters/phpstan.neon` accordingly
 * Note: when code becomes stable, change VALIDATE_ALL_CODEBASE to `false`
 
-* Note: PHPUnit 5.7.27 tests apparently are not possible to analyse with PHPSTAN
-* TODO: describe what phpstan.neon files are used in which scenario (mycms vs dist project)
 * TODO: .eslintrc.yml and dist/.eslintrc.yml - keep or delete?
 
 ## Error handling

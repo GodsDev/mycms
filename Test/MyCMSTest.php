@@ -31,7 +31,7 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
         $mycmsOptions = [
             'TRANSLATIONS' => [
                 'en' => 'English',
-                'cn' => '中文'
+                'zh' => '中文',
             ],
             'logger' => $backyard->BackyardError,
         ];
@@ -64,12 +64,12 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             'en',
-            $this->object->getSessionLanguage(['language' => 'en'], ['language' => 'cn'], false),
+            $this->object->getSessionLanguage(['language' => 'en'], ['language' => 'zh'], false),
             'get language should prevail'
         );
         $this->assertEquals(
-            'cn',
-            $this->object->getSessionLanguage(['language' => 'cn'], ['language' => 'en'], false),
+            'zh',
+            $this->object->getSessionLanguage(['language' => 'zh'], ['language' => 'en'], false),
             'get language should prevail'
         );
     }
@@ -80,13 +80,13 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
     public function testGetSessionLanguageAdvanced()
     {
         $this->assertEquals(
-            'cn',
-            $this->object->getSessionLanguage([], ['language' => 'cn'], false),
+            'zh',
+            $this->object->getSessionLanguage([], ['language' => 'zh'], false),
             'Solo session prevails'
         );
         $this->assertEquals(
-            'cn',
-            $this->object->getSessionLanguage(['language' => 'cn'], [], false),
+            'zh',
+            $this->object->getSessionLanguage(['language' => 'zh'], [], false),
             'Solo get is used'
         );
         $this->assertEquals(
@@ -100,8 +100,8 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
             'Solo wrong get is ignored'
         );
         $this->assertEquals(
-            'cn',
-            $this->object->getSessionLanguage(['language' => 'xx'], ['language' => 'cn'], false),
+            'zh',
+            $this->object->getSessionLanguage(['language' => 'xx'], ['language' => 'zh'], false),
             'get language should prevail only if correct'
         );
         $this->assertEquals(

@@ -90,7 +90,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "activity" action - update activity column of all admins, delete old tabs.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and output JSON
      */
     public function processActivity(&$post)
@@ -173,7 +173,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "export" action. If $post[download] is non-zero prompt the output as a download attachment.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @param array $get
      * @return void
      */
@@ -232,7 +232,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "file delete" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFileDelete(&$post)
@@ -261,7 +261,7 @@ class MyAdminProcess extends MyCommon
      * Files are added into the archive from the current directory and stored without directory.
      * The ZipArchive->addFile() method is used. Standard file/error handling is used.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFilePack(&$post)
@@ -308,7 +308,7 @@ class MyAdminProcess extends MyCommon
      * If the new file exists then the operation is aborted.
      * New file name must keep the same extension and consist only of letters, digits or ( ) . _
      *
-     * @param array $post &$post
+     * @param array $post $_POST by reference
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string) and "data" (string) of renamed file, if successful
      */
     public function processFileRename(&$post)
@@ -355,7 +355,7 @@ class MyAdminProcess extends MyCommon
      * 1) white list of file extentions
      * 2) file size limitation
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and output array JSON array containing indexes: "success" (bool), "messages" (string), "processed-files" (int)
      */
     public function processFileUnpack(&$post)
@@ -391,7 +391,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "files upload" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and on success reload the page
      * @todo change to return bool success. Or add $post[redir] as an option
      */
@@ -429,7 +429,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "login" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processLogin(&$post)
@@ -463,7 +463,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "logout" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processLogout(&$post)
@@ -480,7 +480,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Return files in /assets or its subfolder
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processSubfolder(&$post)
@@ -540,7 +540,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user change activation" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void and output array JSON array containing indexes: "success" (bool), "data" (string) admin name
      */
     public function processUserActivation(&$post)
@@ -611,7 +611,7 @@ class MyAdminProcess extends MyCommon
     /**
      * Process the "user delete" action.
      *
-     * @param array $post &$post $_POST
+     * @param array $post $_POST by reference
      * @return void
      */
     public function processUserDelete(&$post)
