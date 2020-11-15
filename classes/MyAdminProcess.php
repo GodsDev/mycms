@@ -585,7 +585,7 @@ class MyAdminProcess extends MyCommon
                             true,
                             false
                         );
-                        Debugger::log("Password for user: {$_SESSION['user']} was changed.", ILogger::INFO);
+                        Debugger::log("Password for user '{$_SESSION['user']}' was changed.", ILogger::INFO);
                         $this->redir();
                     }
                 }
@@ -614,7 +614,7 @@ class MyAdminProcess extends MyCommon
                 $this->tableAdmin->translate('User added.'),
                 $this->tableAdmin->translate($this->MyCMS->dbms->errorDuplicateEntry() ? 'User already exists.' : 'Error occured adding the user.')
             );
-            Debugger::log("User {$_SESSION['user']} was created.", ILogger::INFO);
+            Debugger::log("User '{$post['user']}' was created by '{$_SESSION['user']}'.", ILogger::INFO);
             $this->redir();
         }
     }
