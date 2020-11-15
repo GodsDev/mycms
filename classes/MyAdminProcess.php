@@ -585,7 +585,7 @@ class MyAdminProcess extends MyCommon
                             true,
                             false
                         );
-                        Debugger::log("Password for user '{$_SESSION['user']}' was changed.", ILogger::INFO);
+                        Debugger::log("User '{$_SESSION['user']}' changed password.", ILogger::INFO);
                         $this->redir();
                     }
                 }
