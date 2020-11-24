@@ -37,6 +37,7 @@ class FriendlyUrlTest extends \PHPUnit_Framework_TestCase
      * This method is called before a test is executed.
      *
      * @global array $backyardConf
+     * @global array $myCmsConf
      * @return void
      */
     protected function setUp()
@@ -44,11 +45,6 @@ class FriendlyUrlTest extends \PHPUnit_Framework_TestCase
         global $backyardConf,
         $myCmsConf;
         error_reporting(E_ALL); // incl E_NOTICE
-        if (!extension_loaded('mysqli')) {
-            $this->markTestSkipped(
-                'The MySQLi extension is not available.'
-            );
-        }
         Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/../log');
         $this->backyard = new Backyard($backyardConf);
         $myCmsConf['logger'] = $this->backyard->BackyardError;

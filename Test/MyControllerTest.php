@@ -25,7 +25,7 @@ class MyControllerTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
-     * @global type $backyardConf
+     * @global array $backyardConf
      */
     protected function setUp()
     {

@@ -36,11 +36,6 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         global $backyardConf;
-        if (!extension_loaded('mysqli')) {
-            $this->markTestSkipped(
-                'The MySQLi extension is not available.'
-            );
-        }
         error_reporting(E_ALL); // incl E_NOTICE
         Debugger::enable(Debugger::DEVELOPMENT, __DIR__ . '/../log');
         $backyard = new Backyard($backyardConf);

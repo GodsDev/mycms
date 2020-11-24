@@ -130,6 +130,9 @@ so for development, the environment has to be set up for `dist` as well.
 Note: running `vendor/bin/phpunit` from root will result in using MyCMS classes from the root Classes even from `mycms/dist/Test`.
 While running `vendor/bin/phpunit` from `dist` will result in using MyCMS classes from the `dist/vendor/godsdev/mycms/classes`.
 
+GitHub actions' version of PHPUnit uses config file [phpunit-github-actions.xml](phpunit-github-actions.xml) that ignores `Distribution Test Suite`
+because MySQLi environment isn't prepared (yet) and HTTP requests to self can't work in CLI only environment.
+
 ## How does Friendly URL works within Controller
 
 [SEO settings details including language management in `dist` folder](dist/README.md#seo)

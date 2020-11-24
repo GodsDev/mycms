@@ -17,11 +17,10 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
-     * @global type $backyardConf
+     * @global array $backyardConf
      */
     protected function setUp()
     {
-        phpinfo();
         global $backyardConf;
         error_reporting(E_ALL); // incl E_NOTICE
         $backyard = new Backyard($backyardConf);
