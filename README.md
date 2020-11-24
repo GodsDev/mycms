@@ -1,4 +1,6 @@
-# MyCMS [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms) [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms)
+# MyCMS [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms) [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/mycms.svg)](https://packagist.org/packages/godsdev/mycms) [![Lint Code Base](https://github.com/GodsDev/mycms/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/GodsDev/mycms/actions?query=workflow%3A%22Lint+Code+Base%22) [![PHP Composer + PHPUnit](https://github.com/GodsDev/mycms/workflows/PHP%20Composer%20+%20PHPUnit/badge.svg)](https://github.com/GodsDev/mycms/actions?query=workflow%3A%22PHP+Composer+%2B+PHPUnit%22)
+[![Lint Code Base](https://github.com/GodsDev/mycms/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/GodsDev/mycms/actions?query=workflow%3A%22Lint+Code+Base%22)
+[![PHP Composer + PHPUnit](https://github.com/GodsDev/mycms/workflows/PHP%20Composer%20+%20PHPUnit/badge.svg)](https://github.com/GodsDev/mycms/actions?query=workflow%3A%22PHP+Composer+%2B+PHPUnit%22)
 
 Brief MVC framework for interactive websites including general administration.
 Works as a devstack which you install and then write your classes specific for the project.
