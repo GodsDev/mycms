@@ -6,6 +6,9 @@
 # Friendly URL
 RewriteEngine on
 
+# Favicons in subfolder
+RewriteRule ^(android-icon-[0-9x]*\.png|apple-icon.*\.png|browserconfig.xml|favicon\.ico|favicon-[0-9x]*\.png|manifest\.json|ms-icon-[0-9x]*\.png) images/favicon/$1 [L,QSA]
+
 # redirect all requests to /en/assets* and /de/assets* to /assets*
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -22,9 +25,6 @@ RewriteRule ^admin\.php(\?.*)?$ admin.php [L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L,QSA]
-
-# Favicons in subfolder
-RewriteRule ^(android-icon-[0-9x]*\.png|apple-icon.*\.png|browserconfig.xml|favicon\.ico|favicon-[0-9x]*\.png|manifest\.json|ms-icon-[0-9x]*\.png) images/favicon/$1 [L,QSA]
 
 # Hide composer, logs
 # If mod_alias is not enabled, the Apache should fail to show anything in order to always hide the files in the section below
