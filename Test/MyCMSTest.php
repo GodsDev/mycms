@@ -21,6 +21,7 @@ class MyCMSTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        phpinfo();
         global $backyardConf;
         error_reporting(E_ALL); // incl E_NOTICE
         $backyard = new Backyard($backyardConf);
