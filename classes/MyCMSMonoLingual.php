@@ -10,14 +10,13 @@ use Tracy\Debugger;
  * This version has variable and methods for DBMS and result retrieval
  * and a rendering to a Latte templates.
  * For multi-language version of this class, use MyCMS.
- * 
- * For a new project it is expected to make a extended class and place 
+ *
+ * For a new project it is expected to make a extended class and place
  * additional attributes needed for running, then use that class.
- * 
+ *
  */
 class MyCMSMonoLingual
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -57,7 +56,10 @@ class MyCMSMonoLingual
             }
         }
         // Logger is obligatory
-        if (!is_object($this->logger) || !($this->logger instanceof LoggerInterface)) {
+        if (
+//            !is_object($this->logger) ||
+            !($this->logger instanceof LoggerInterface)
+        ) {
             error_log("Error: MyCMS constructed without logger. (" . get_class($this->logger) . ")");
             die('Fatal error - project is not configured.'); //@todo nicely formatted error page
         }
@@ -67,29 +69,6 @@ class MyCMSMonoLingual
             $this->logger->info("No database connection set!");
         }
     }
-
-    /**
-     * In case of form processing includes either admin-process.php or process.php.
-     *
-     * @todo - test fully
-     *
-     */
-    /* OBSOLETE METHOD - REMOVE SOON
-    public function formController($databaseTable = '')
-    {
-        // fork for for admin and form processing
-        if (isset($_POST) && is_array($_POST)) {
-            if (basename($_SERVER['PHP_SELF']) == 'admin.php') {
-                require_once './user-defined.php';
-                $GLOBALS['TableAdmin'] = new \GodsDev\MyCMS\TableAdmin($this->dbms, $databaseTable);
-                require_once './admin-process.php';
-            } else {
-                require_once './process.php';
-            }
-        }
-    }
-     * 
-     */
 
     /**
      * Add a new CSRF token in $_SESSION['token']
@@ -102,7 +81,7 @@ class MyCMSMonoLingual
             $_SESSION['token'] = [];
         }
         if (!$checkOnly || !count($_SESSION['token'])) {
-            $_SESSION['token'] []= rand(1e8, 1e9);
+            $_SESSION['token'] [] = rand((int) 1e8, (int) 1e9);
         }
     }
 
@@ -113,7 +92,8 @@ class MyCMSMonoLingual
      */
     public function csrfCheck($token)
     {
-        return isset($token, $_SESSION['token']) && is_array($_SESSION['token']) && in_array($token, $_SESSION['token']);
+        // Variable $token always exists and is not nullable.
+        return isset($_SESSION['token']) && is_array($_SESSION['token']) && in_array($token, $_SESSION['token']);
     }
 
     /**
@@ -126,7 +106,13 @@ class MyCMSMonoLingual
     {
         return $this->dbms->escapeSQL($string);
     }
-    
+
+    /**
+     *
+     * @param string $sql
+     * @return mixed first selected row (or its first column if only one column is selected),
+     *     null on empty SELECT, or false on error
+     */
     public function fetchSingle($sql)
     {
         return $this->dbms->fetchSingle($sql);
@@ -137,6 +123,11 @@ class MyCMSMonoLingual
         return $this->dbms->fetchAll($sql);
     }
 
+    /**
+     *
+     * @param string $sql SQL to be executed
+     * @return array|false - either associative array, empty array on empty SELECT, or false on error
+     */
     public function fetchAndReindex($sql)
     {
         return $this->dbms->fetchAndReindex($sql);
@@ -151,21 +142,28 @@ class MyCMSMonoLingual
      */
     public function renderLatte($dirTemplateCache, $customFilters, array $params)
     {
-        Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('Template: ' . $this->template, $this->context));
+        Debugger::getBar()->addPanel(
+            new \GodsDev\MyCMS\Tracy\BarPanelTemplate('Template: ' . $this->template, $this->context)
+        );
         if (isset($_SESSION['user'])) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION));
+            Debugger::getBar()->addPanel(
+                new \GodsDev\MyCMS\Tracy\BarPanelTemplate('User: ' . $_SESSION['user'], $_SESSION)
+            );
         }
-        $Latte = new \Latte\Engine;
+        $Latte = new \Latte\Engine();
         $Latte->setTempDirectory($dirTemplateCache);
         $Latte->addFilter(null, $customFilters);
         Debugger::barDump($params, 'Params');
         Debugger::barDump($_SESSION, 'Session'); //mainly for  $_SESSION['language']
         $Latte->render('template/' . $this->template . '.latte', $params); //@todo make it configurable
         unset($_SESSION['messages']);
-        $sqlStatementsArray = $this->dbms->getStatementsArray();
-        if (!empty($sqlStatementsArray)) {
-            Debugger::getBar()->addPanel(new \GodsDev\MyCMS\Tracy\BarPanelTemplate('SQL: ' . count($sqlStatementsArray), $sqlStatementsArray));
+        if (!empty($this->dbms->getStatementsArray())) {
+            Debugger::getBar()->addPanel(
+                new \GodsDev\MyCMS\Tracy\BarPanelTemplate(
+                    'SQL: ' . count($this->dbms->getStatementsArray()),
+                    $this->dbms->getStatementsArray()
+                )
+            );
         }
     }
-
 }

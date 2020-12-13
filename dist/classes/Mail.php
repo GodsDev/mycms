@@ -4,14 +4,11 @@ namespace GodsDev\mycmsprojectnamespace;
 
 use GodsDev\MyCMS\MyCMS;
 use GodsDev\MyCMS\MyCommon;
-use Assert\Assertion;
-
-//use Psr\Log\LoggerInterface;
-//use Tracy\Debugger;
+//TODO check if beberlei/assert was successfully replaced by Webmozart, check 2 Assert::email below
+use Webmozart\Assert\Assert;
 
 class Mail extends MyCommon
 {
-
     use \Nette\SmartObject;
 
     /**
@@ -27,10 +24,10 @@ class Mail extends MyCommon
     private $mailer = null;
 
     /**
-     * @param \GodsDev\MyCMS\MyCMS $MyCMS
+     * @param MyCMS $MyCMS
      * @param array $options overrides default values of properties
      */
-    public function __construct(MyCMS $MyCMS, array $options = array())
+    public function __construct(MyCMS $MyCMS, array $options = [])
     {
         parent::__construct($MyCMS, $options);
         $this->logger = $this->MyCMS->logger;
@@ -45,8 +42,8 @@ class Mail extends MyCommon
         // Create the Transport
         $this->logger->debug("SMTP transport uses " . SMTP_HOST . ":" . SMTP_PORT);
         $transport = \Swift_SmtpTransport::newInstance(SMTP_HOST, SMTP_PORT)
-                ->setUsername('')
-                ->setPassword('')
+            ->setUsername('')
+            ->setPassword('')
         ;
 
         /*
@@ -78,17 +75,17 @@ class Mail extends MyCommon
     }
 
     /**
-     * 
+     *
      * @param string $to
      * @param string $subject
      * @param string $messageTxt
      * @param array $options
-     * @return mixed false or int
+     * @return int|false
      */
-    public function sendMail($to, $subject, $messageTxt, array $options = array())
+    public function sendMail($to, $subject, $messageTxt, array $options = [])
     {
-        Assertion::email(NOTIFY_FROM_ADDRESS, 'E-mail sender');
-        Assertion::email($to, 'E-mail recipient');
+        Assert::email(NOTIFY_FROM_ADDRESS, 'E-mail sender');
+        Assert::email($to, 'E-mail recipient');
         if (defined('MAIL_SENDING_ACTIVE') && MAIL_SENDING_ACTIVE === false) {
             $this->logger->info("NOT SENDING {$to}/{$subject}/{$messageTxt}");
             return false;
@@ -103,13 +100,13 @@ class Mail extends MyCommon
 //        $filenameTxt = 'temp/' . 'test.txt';
 
         $message = \Swift_Message::newInstance($subject)
-                ->setFrom(array(NOTIFY_FROM_ADDRESS => NOTIFY_FROM_NAME))
-                ->setTo(array($to))
-                ->setBody(
+            ->setFrom(array(NOTIFY_FROM_ADDRESS => NOTIFY_FROM_NAME))
+            ->setTo(array($to))
+            ->setBody(
 //                        file_get_contents($filenameTxt)
 //                "Test sender at {$timestamp} "
                 $messageTxt
-                )
+            )
         // And optionally an alternative body
         //              ->addPart(file_get_contents($filename), 'text/html')
         ;
@@ -121,5 +118,4 @@ class Mail extends MyCommon
         $this->logger->info("SENT {$to}/{$subject}/{$message} | count of recipients: [{$successfulRecipientCount}]");
         return $successfulRecipientCount;
     }
-
 }

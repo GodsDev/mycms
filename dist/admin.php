@@ -1,33 +1,84 @@
 <?php
 
+use GodsDev\mycmsprojectnamespace\Admin;
+use GodsDev\mycmsprojectnamespace\AdminProcess;
+use GodsDev\mycmsprojectnamespace\TableAdmin;
+
 // Admin
 require_once './set-environment.php';
-
-//$AGENDAS setting MUST be before prepare.php because it is used in AdminProcess.php and after set-environment.php where DEFAULT_LANGUAGE is set. For reference see README.md.
-$AGENDAS = [
-    'category' => ['path' => 'path'], //TODO: create some sample table to demonstrate the usage
-];
-
 require_once './prepare.php';
 
-$TableAdmin = new \GodsDev\mycmsprojectnamespace\TableAdmin(
+//$AGENDAS is used in AdminProcess.php. If $_SESSION['language'] is used in it, set it after prepare.php,
+//where $_SESSION['language'] is fixed. For reference see README.md.
+$AGENDAS = [
+    'category' => [
+        'column' => "name_{$_SESSION['language']}",
+        'prefill' => [
+            'sort' => 0,
+            'added' => 'now',
+        ]
+    ],
+    'product' => [
+        'column' => "name_{$_SESSION['language']}",
+        'prefill' => [
+            'context' => '{}',
+            'sort' => 0,
+            'added' => 'now',
+        ],
+    ],
+    'article' => [
+        'table' => 'content',
+        'where' => 'type="article"',
+        'column' => ['code', "name_{$_SESSION['language']}"],
+        'prefill' => [
+            'type' => 'article',
+            'context' => '{}',
+            'sort' => 0,
+            'added' => 'now',
+        ],
+    ],
+    'ad' => [
+        'table' => 'content',
+        'where' => 'type="ad"',
+        'column' => ['code', "name_{$_SESSION['language']}"],
+        'prefill' => [
+            'type' => 'ad',
+            'context' => '{}',
+            'sort' => 0,
+            'added' => 'now',
+        ],
+    ],
+    'redirector' => [
+        'table' => 'redirector',
+        'column' => 'old_url',
+        'prefill' => [
+            'added' => 'now',
+        ],
+    ],
+];
+
+$tableAdmin = new TableAdmin(
     $MyCMS->dbms,
     (isset($_GET['table']) ? $_GET['table'] : ''),
-    ['SETTINGS' => $MyCMS->SETTINGS, 'language' => $_SESSION['language']]
+    [
+        'SETTINGS' => $MyCMS->SETTINGS,
+        'language' => $_SESSION['language'],
+        'TRANSLATIONS' => $MyCMS->TRANSLATIONS,
+    ]
 );
 
 
 $MyCMS->csrfStart();
 if (isset($_POST) && is_array($_POST) && !empty($_POST)) {
-    $adminProcess = new \GodsDev\mycmsprojectnamespace\AdminProcess($MyCMS, [
-        'tableAdmin' => $TableAdmin,
+    $adminProcess = new AdminProcess($MyCMS, [
+        'tableAdmin' => $tableAdmin,
         'agendas' => $AGENDAS
     ]);
     $adminProcess->adminProcess($_POST);
 }
-$admin = new \GodsDev\mycmsprojectnamespace\Admin($MyCMS, [
+$admin = new Admin($MyCMS, [
     'agendas' => $AGENDAS,
-    'TableAdmin' => $TableAdmin,
+    'tableAdmin' => $tableAdmin,
 //        'clientSideResources' => array(
 //            'css' => array(
 //            ),
