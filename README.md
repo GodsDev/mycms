@@ -1,5 +1,6 @@
-MyCMS
------
+# MyCMS
+
+ABANDONED - use [workofstan/mycms](https://github.com/WorkOfStan/mycms) instead, where it is actively maintained.
 
 Simple framework to help developing interactive websites. Works as a devstack which you install and then write your classes specific for the project.
 
